@@ -680,6 +680,30 @@ td {
   .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 
+.universe-accordion {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.acc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: var(--bg3);
+}
+
+.acc-header:hover { background: rgba(255,255,255,0.03); }
+
+.acc-body {
+  display: block;
+}
+
 .active-universe {
   color: var(--c1) !important;
   background: rgba(0,229,160,0.08) !important;
@@ -700,10 +724,6 @@ td {
 <!-- NAV -->
 <nav>
   <div class="nav-logo">DC<span>/</span>HQ</div>
-  <div style="display:flex;gap:4px;margin-right:16px">
-    <button class="nav-btn universe-btn active-universe" onclick="switchUniverse('ai')" id="univ-ai">🤖 IA</button>
-    <button class="nav-btn universe-btn" onclick="switchUniverse('energy')" id="univ-energy">⚡ Énergie</button>
-  </div>
   <button class="nav-btn active" onclick="showPage('dashboard')">Dashboard</button>
   <button class="nav-btn" onclick="showPage('analyse')">Analyses</button>
   <button class="nav-btn" onclick="showPage('veille')">Veille</button>
@@ -761,11 +781,24 @@ td {
     </div>
   </div>
 
-  <div class="table-wrap">
-    <div class="table-header-bar">
-      <h3>UNIVERS COMPLET</h3>
-      <span class="table-count">18 stocks</span>
+  <!-- UNIVERS IA -->
+  <div class="universe-accordion" id="acc-ia">
+    <div class="acc-header" onclick="toggleAccordion('ia')">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:16px">🤖</span>
+        <div>
+          <div style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700">Univers IA & Data Center</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">18 STOCKS · 4 COUCHES</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="decision-badge dec-invest">6 🟢 Investir</span>
+        <span class="decision-badge dec-veille">11 ⏳ Veille</span>
+        <span id="acc-ia-arrow" style="color:var(--c1);font-size:14px;transition:transform 0.3s">▼</span>
+      </div>
     </div>
+    <div class="acc-body" id="acc-ia-body">
+    <div class="table-wrap" style="border-radius:0 0 12px 12px;border-top:none;margin-bottom:0">
     <table>
       <thead>
         <tr>
@@ -947,7 +980,55 @@ td {
         </tr>
       </tbody>
     </table>
+    </div>
+    </div>
   </div>
+
+  <!-- UNIVERS ÉNERGIE -->
+  <div class="universe-accordion" id="acc-energy" style="margin-top:12px">
+    <div class="acc-header" onclick="toggleAccordion('energy')">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:16px">⚡</span>
+        <div>
+          <div style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700">Univers Énergie</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">1 STOCK · EN CONSTRUCTION</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="decision-badge dec-veille">1 ⏳ Veille</span>
+        <span id="acc-energy-arrow" style="color:var(--c4);font-size:14px;transition:transform 0.3s">▶</span>
+      </div>
+    </div>
+    <div class="acc-body" id="acc-energy-body" style="display:none">
+    <div class="table-wrap" style="border-radius:0 0 12px 12px;border-top:none;margin-bottom:0">
+    <table>
+      <thead>
+        <tr>
+          <th>Couche</th>
+          <th>Ticker</th>
+          <th>Société</th>
+          <th>Profil</th>
+          <th>Prix</th>
+          <th>Score</th>
+          <th>Décision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr onclick="openAnalysis('NEE')">
+          <td class="td-couche couche-c1">C1</td>
+          <td class="td-ticker">NEE</td>
+          <td class="td-société">NextEra Energy</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="NEE">$--</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:74%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">74</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- =================== ANALYSES =================== -->
@@ -1070,7 +1151,7 @@ const stockHistory = {
   ],
   GOOGL: [
     { date: '27 mai 2026', score: 79, price: 175, decision: 'invest', changes: [
-      { icon: '✅', text: 'Short interest 0.62% — plus faible de l'univers' },
+      { icon: '✅', text: 'Short interest 0.62% — plus faible de l\'univers' },
       { icon: '✅', text: 'Earnings passés 29 avril — piste libre' },
       { icon: '✅', text: 'Google Cloud +28% YoY' },
     ]},
@@ -1117,7 +1198,7 @@ const stockHistory = {
   ],
   MU: [
     { date: '27 mai 2026', score: 78, price: 750, decision: 'invest', changes: [
-      { icon: '✅', text: 'PEG 0.06 — le plus bas de l'univers' },
+      { icon: '✅', text: 'PEG 0.06 — le plus bas de l\'univers' },
       { icon: '✅', text: '12 signaux Buy / 0 Sell' },
       { icon: '🟡', text: '-8% du sommet' },
     ]},
@@ -1136,7 +1217,7 @@ const stockHistory = {
     { date: '27 mai 2026', score: 63, price: 200, decision: 'veille', changes: [
       { icon: '⚠️', text: 'Earnings ce soir — risque binaire maximum' },
       { icon: '✅', text: 'PEG 0.14 — très attractif' },
-      { icon: '⚠️', text: 'Quasi à l'ATH' },
+      { icon: '⚠️', text: 'Quasi à l\'ATH' },
     ]},
     { date: '28 mai 2026', score: 75, price: 200, decision: 'invest', changes: [
       { icon: '🚨', text: 'RÉVISION : Veille → Investir' },
@@ -1186,7 +1267,7 @@ const stockHistory = {
   DELL: [
     { date: '27 mai 2026', score: 64, price: 318, decision: 'veille', changes: [
       { icon: '⚠️', text: 'Earnings 28 mai demain — risque binaire' },
-      { icon: '✅', text: 'PEG 1.15 — moins cher de l'univers' },
+      { icon: '✅', text: 'PEG 1.15 — moins cher de l\'univers' },
       { icon: '🟡', text: 'Attendre résultats' },
     ]},
     { date: '29 mai 2026', score: 82, price: 318, decision: 'invest', changes: [
@@ -1262,7 +1343,7 @@ const stockHistory = {
     { date: '27 mai 2026', score: 53, price: 105, decision: 'veille', changes: [
       { icon: '🔴', text: 'Perte nette $740M Q1 — pas encore profitable' },
       { icon: '✅', text: 'Revenue +112% YoY. Backlog $66Mrd' },
-      { icon: '🔴', text: 'COO et CFO vendent depuis l'IPO' },
+      { icon: '🔴', text: 'COO et CFO vendent depuis l\'IPO' },
     ]},
     { date: '30 mai 2026', score: 53, price: 105, decision: 'veille', changes: [
       { icon: '=', text: 'Score inchangé — position spéculative maintenue' },
@@ -1857,64 +1938,77 @@ function buildHistorySection(ticker) {
   const latest = history[history.length - 1];
   const previous = history[history.length - 2];
   const scoreDiff = latest.score - previous.score;
-  const priceDiff = latest.price && previous.price ? ((latest.price - previous.price) / previous.price * 100).toFixed(1) : null;
+  const priceDiff = (latest.price && previous.price && previous.price > 0)
+    ? ((latest.price - previous.price) / previous.price * 100).toFixed(1)
+    : null;
   const scoreColor = scoreDiff > 0 ? 'var(--c1)' : scoreDiff < 0 ? 'var(--c3)' : 'var(--dim)';
   const scoreArrow = scoreDiff > 0 ? '↑' : scoreDiff < 0 ? '↓' : '=';
+  const scoreDiffText = scoreDiff !== 0 ? (scoreDiff > 0 ? '+' : '') + scoreDiff : '=';
 
-  // Build timeline
-  const timelineHTML = [...history].reverse().map((h, i) => {
+  const decBadgeHTML = function(dec) {
+    if (dec === 'invest') return '<span class="decision-badge dec-invest" style="font-size:9px;padding:2px 8px">🟢 Investir</span>';
+    if (dec === 'veille') return '<span class="decision-badge dec-veille" style="font-size:9px;padding:2px 8px">⏳ Veille</span>';
+    return '<span class="decision-badge dec-eviter" style="font-size:9px;padding:2px 8px">🔴 Éviter</span>';
+  };
+
+  let timelineHTML = '';
+  const reversed = [...history].reverse();
+  reversed.forEach(function(h, i) {
     const isLatest = i === 0;
-    const prevH = i < history.length - 1 ? [...history].reverse()[i + 1] : null;
+    const prevH = i < reversed.length - 1 ? reversed[i + 1] : null;
     const sd = prevH ? h.score - prevH.score : 0;
     const sdColor = sd > 0 ? 'var(--c1)' : sd < 0 ? 'var(--c3)' : 'var(--dim)';
-    const sdText = sd !== 0 ? `<span style="color:${sdColor};font-size:11px;margin-left:6px">${sd > 0 ? '+' : ''}${sd}</span>` : '';
-    const decBadge = h.decision === 'invest'
-      ? '<span class="decision-badge dec-invest" style="font-size:9px;padding:2px 8px">🟢 Investir</span>'
-      : h.decision === 'veille'
-      ? '<span class="decision-badge dec-veille" style="font-size:9px;padding:2px 8px">⏳ Veille</span>'
-      : '<span class="decision-badge dec-eviter" style="font-size:9px;padding:2px 8px">🔴 Éviter</span>';
+    const sdSpan = sd !== 0 ? '<span style="color:' + sdColor + ';font-size:11px;margin-left:6px">' + (sd > 0 ? '+' : '') + sd + '</span>' : '';
+    const dotColor = isLatest ? 'var(--c1)' : 'var(--dim)';
+    const cardBorder = isLatest ? 'border-color:rgba(0,229,160,0.15)' : '';
+    const latestBadge = isLatest ? '<span style="font-size:9px;color:var(--c1);background:rgba(0,229,160,0.08);padding:2px 8px;border-radius:10px;border:1px solid rgba(0,229,160,0.15)">DERNIÈRE ANALYSE</span>' : '';
+    const priceSpan = h.price ? '<span style="font-size:13px;color:var(--dim)">$' + h.price.toLocaleString() + '</span>' : '';
+    const connectorLine = !isLatest ? '<div style="width:2px;flex:1;background:rgba(255,255,255,0.05);margin-top:4px"></div>' : '';
 
-    const changesHTML = h.changes.map(c =>
-      `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:4px">
-        <span style="font-size:12px;flex-shrink:0">${c.icon}</span>
-        <span style="font-size:11px;color:#8a94a8;line-height:1.5">${c.text}</span>
-      </div>`
-    ).join('');
+    let changesHTML = '';
+    h.changes.forEach(function(c) {
+      changesHTML += '<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:4px">'
+        + '<span style="font-size:12px;flex-shrink:0">' + c.icon + '</span>'
+        + '<span style="font-size:11px;color:#8a94a8;line-height:1.5">' + c.text + '</span>'
+        + '</div>';
+    });
 
-    return `
-      <div style="display:flex;gap:16px;margin-bottom:${isLatest ? '0' : '16px'}">
-        <div style="display:flex;flex-direction:column;align-items:center">
-          <div style="width:10px;height:10px;border-radius:50%;background:${isLatest ? 'var(--c1)' : 'var(--dim)'};flex-shrink:0;margin-top:4px"></div>
-          ${!isLatest ? '<div style="width:2px;flex:1;background:rgba(255,255,255,0.05);margin-top:4px"></div>' : ''}
-        </div>
-        <div style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;${isLatest ? 'border-color:rgba(0,229,160,0.15)' : ''}">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <div style="display:flex;align-items:center;gap:8px">
-              <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:1px">${h.date}</span>
-              ${isLatest ? '<span style="font-size:9px;color:var(--c1);background:rgba(0,229,160,0.08);padding:2px 8px;border-radius:10px;border:1px solid rgba(0,229,160,0.15)">DERNIÈRE ANALYSE</span>' : ''}
-            </div>
-            <div style="display:flex;align-items:center;gap:8px">
-              ${decBadge}
-              <span style="font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;color:${getScoreColor(h.score)}">${h.score}${sdText}</span>
-              ${h.price ? `<span style="font-size:13px;color:var(--dim)">$${h.price.toLocaleString()}</span>` : ''}
-            </div>
-          </div>
-          <div>${changesHTML}</div>
-        </div>
-      </div>`;
-  }).join('');
+    timelineHTML += '<div style="display:flex;gap:16px;margin-bottom:' + (isLatest ? '0' : '16px') + '">'
+      + '<div style="display:flex;flex-direction:column;align-items:center">'
+      + '<div style="width:10px;height:10px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;margin-top:4px"></div>'
+      + connectorLine
+      + '</div>'
+      + '<div style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;' + cardBorder + '">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + '<span style="font-family:monospace;font-size:10px;color:var(--dim);letter-spacing:1px">' + h.date + '</span>'
+      + latestBadge
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + decBadgeHTML(h.decision)
+      + '<span style="font-family:sans-serif;font-size:18px;font-weight:700;color:' + getScoreColor(h.score) + '">' + h.score + sdSpan + '</span>'
+      + priceSpan
+      + '</div>'
+      + '</div>'
+      + '<div>' + changesHTML + '</div>'
+      + '</div>'
+      + '</div>';
+  });
 
-  return `
-    <div style="margin-top:20px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)">📈 Historique des analyses</div>
-        <div style="display:flex;gap:12px;align-items:center">
-          ${priceDiff ? `<span style="font-size:11px;color:${parseFloat(priceDiff) >= 0 ? 'var(--c1)' : 'var(--c3)'}">Prix ${parseFloat(priceDiff) >= 0 ? '+' : ''}${priceDiff}%</span>` : ''}
-          <span style="font-size:11px;color:${scoreColor}">${scoreArrow} Score ${scoreDiff > 0 ? '+' : ''}${scoreDiff !== 0 ? scoreDiff : '='}</span>
-        </div>
-      </div>
-      <div>${timelineHTML}</div>
-    </div>`;
+  const priceDiffHTML = priceDiff
+    ? '<span style="font-size:11px;color:' + (parseFloat(priceDiff) >= 0 ? 'var(--c1)' : 'var(--c3)') + '">Prix ' + (parseFloat(priceDiff) >= 0 ? '+' : '') + priceDiff + '%</span>'
+    : '';
+
+  return '<div style="margin-top:20px">'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">'
+    + '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)">📈 Historique des analyses</div>'
+    + '<div style="display:flex;gap:12px;align-items:center">'
+    + priceDiffHTML
+    + '<span style="font-size:11px;color:' + scoreColor + '">' + scoreArrow + ' Score ' + scoreDiffText + '</span>'
+    + '</div>'
+    + '</div>'
+    + '<div>' + timelineHTML + '</div>'
+    + '</div>';
 }
 
 function showReport(ticker) {
@@ -1978,7 +2072,7 @@ function showReport(ticker) {
         <div style="text-align:right">
           <div class="report-price">${d.price}</div>
           <div class="report-change ${d.changeDir}">${d.change}</div>
-          <div style="margin-top:12px;font-family:'Clash Display',sans-serif;font-size:42px;font-weight:700;color:${sc}">${d.score}<span style="font-size:16px;color:var(--dim)">/100</span></div>
+          <div style="margin-top:12px;font-family:sans-serif;font-size:42px;font-weight:700;color:${sc}">${d.score}<span style="font-size:16px;color:var(--dim)">/100</span></div>
         </div>
       </div>
       <div class="report-body">
@@ -2095,7 +2189,7 @@ function buildVeille() {
       </div>
       <div class="veille-right">
         ${v.reserve !== '—' ? `<div><div class="veille-reserve">${v.reserve}</div><div class="veille-reserve-label">Réservé</div></div>` : '<div style="color:var(--dim);font-size:11px">Non alloué</div>'}
-        <div style="font-family:\'Clash Display\',sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
+        <div style="font-family:sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
       </div>`;
     grid.appendChild(card);
   });
@@ -2302,6 +2396,16 @@ const energyVeille = [
 
 let currentUniverse = 'ai';
 
+function toggleAccordion(id) {
+  const body = document.getElementById('acc-' + id + '-body');
+  const arrow = document.getElementById('acc-' + id + '-arrow');
+  if (!body || !arrow) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  arrow.textContent = isOpen ? '▶' : '▼';
+  arrow.style.color = isOpen ? 'var(--dim)' : (id === 'ia' ? 'var(--c1)' : 'var(--c4)');
+}
+
 function switchUniverse(universe) {
   currentUniverse = universe;
 
@@ -2416,7 +2520,7 @@ function rebuildSidebarAndVeille() {
       </div>
       <div class="veille-right">
         ${v.reserve !== '—' ? `<div><div class="veille-reserve">${v.reserve}</div><div class="veille-reserve-label">Réservé</div></div>` : '<div style="color:var(--dim);font-size:11px">Non alloué</div>'}
-        <div style="font-family:\'Clash Display\',sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
+        <div style="font-family:sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
       </div>`;
     grid.appendChild(card);
   });
