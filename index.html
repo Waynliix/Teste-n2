@@ -671,13 +671,39 @@ td {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  nav { padding: 0 16px; }
-  .page { padding: 72px 16px 40px; }
+  nav { padding: 0 12px; gap: 2px; }
+  nav .nav-btn { font-size: 10px; padding: 5px 10px; }
+  .nav-capital { font-size: 10px; padding: 3px 8px; }
+  .page { padding: 68px 12px 40px; }
   .analysis-grid { grid-template-columns: 1fr; }
   .trade-plan { grid-template-columns: 1fr; }
   .criteria-grid { grid-template-columns: 1fr; }
   .veille-card { grid-template-columns: 1fr; }
   .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  
+  /* Hide less important columns on mobile */
+  table thead th:nth-child(3),
+  table tbody td:nth-child(3) { display: none; }
+  
+  /* Make table scrollable horizontally */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  
+  /* Tighten table cells */
+  td, th { padding: 10px 8px; font-size: 11px; }
+  .td-ticker { font-size: 14px; }
+  .score-track { width: 40px; }
+  .decision-badge { font-size: 9px; padding: 3px 8px; }
+  .profil-badge { font-size: 9px; padding: 2px 6px; }
+  
+  /* Stats grid 2 columns on mobile */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-value { font-size: 20px; }
+  
+  /* Accordion header on mobile */
+  .acc-header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+  
+  /* Page title smaller */
+  .page-title { font-size: 24px; }
 }
 
 .universe-accordion {
