@@ -1046,41 +1046,29 @@ td {
     </div>
   </div>
 
-  <div class="table-wrap" style="margin-bottom:20px">
+  <div id="alloc-deploy-wrap" class="table-wrap" style="margin-bottom:20px">
     <div class="table-header-bar">
-      <h3>DÉPLOIEMENT IMMÉDIAT — 9,100€</h3>
-      <span class="table-count">5 positions</span>
+      <h3 id="alloc-deploy-title">DÉPLOIEMENT IMMÉDIAT</h3>
+      <span class="table-count" id="alloc-deploy-count"></span>
     </div>
     <table>
       <thead>
-        <tr><th>Ticker</th><th>Société</th><th>Couche</th><th>Montant</th><th>%</th><th>Entrée</th><th>Stop-Loss</th><th>Cible</th></tr>
+        <tr><th>Ticker</th><th>Société</th><th>Couche</th><th>Montant</th><th>%</th><th>Entrée</th><th>Stop</th><th>Cible</th><th>R/R</th></tr>
       </thead>
-      <tbody>
-        <tr><td class="td-ticker">MSFT</td><td class="td-société">Microsoft</td><td class="td-couche couche-c4">C4</td><td style="color:var(--c4);font-weight:600">2,200€</td><td class="td-société">17%</td><td style="color:var(--c-leader)">$415–420</td><td style="color:var(--c3)">$395</td><td style="color:var(--c1)">$560</td></tr>
-        <tr><td class="td-ticker">GOOGL</td><td class="td-société">Alphabet</td><td class="td-couche couche-c4">C4</td><td style="color:var(--c4);font-weight:600">2,200€</td><td class="td-société">17%</td><td style="color:var(--c-leader)">$170–178</td><td style="color:var(--c3)">$155</td><td style="color:var(--c1)">$220</td></tr>
-        <tr><td class="td-ticker">NVDA</td><td class="td-société">Nvidia</td><td class="td-couche couche-c3">C3</td><td style="color:var(--c4);font-weight:600">2,000€</td><td class="td-société">15%</td><td style="color:var(--c-leader)">$210–218</td><td style="color:var(--c3)">$195</td><td style="color:var(--c1)">$280</td></tr>
-        <tr><td class="td-ticker">AMZN</td><td class="td-société">Amazon</td><td class="td-couche couche-c4">C4</td><td style="color:var(--c4);font-weight:600">1,800€</td><td class="td-société">14%</td><td style="color:var(--c-leader)">$205–212</td><td style="color:var(--c3)">$190</td><td style="color:var(--c1)">$265</td></tr>
-        <tr><td class="td-ticker">MRVL</td><td class="td-société">Marvell</td><td class="td-couche couche-c3">C3</td><td style="color:var(--c4);font-weight:600">900€</td><td class="td-société">7%</td><td style="color:var(--c-leader)">$195–205</td><td style="color:var(--c3)">$170</td><td style="color:var(--c1)">$260</td></tr>
-      </tbody>
+      <tbody id="alloc-deploy-tbody"></tbody>
     </table>
   </div>
 
-  <div class="table-wrap">
+  <div id="alloc-reserve-wrap" class="table-wrap">
     <div class="table-header-bar">
-      <h3>RÉSERVE VEILLE — 3,900€</h3>
-      <span class="table-count">5 positions</span>
+      <h3 id="alloc-reserve-title">RÉSERVE VEILLE</h3>
+      <span class="table-count" id="alloc-reserve-count"></span>
     </div>
     <table>
       <thead>
-        <tr><th>Ticker</th><th>Société</th><th>Réservé</th><th>Condition</th><th>Priorité</th></tr>
+        <tr><th>Ticker</th><th>Société</th><th>Réservé</th><th>Condition d'entrée</th><th>Priorité</th></tr>
       </thead>
-      <tbody>
-        <tr><td class="td-ticker">ORCL</td><td class="td-société">Oracle</td><td style="color:var(--c4);font-weight:600">1,200€</td><td style="font-size:11px;color:var(--dim)">Post-earnings 10 juin</td><td><span class="priorité-badge prio-haute">🔴 Haute</span></td></tr>
-        <tr><td class="td-ticker">MU</td><td class="td-société">Micron</td><td style="color:var(--c4);font-weight:600">900€</td><td style="font-size:11px;color:var(--dim)">Pullback $820–840</td><td><span class="priorité-badge prio-haute">🔴 Haute</span></td></tr>
-        <tr><td class="td-ticker">DELL</td><td class="td-société">Dell</td><td style="color:var(--c4);font-weight:600">900€</td><td style="font-size:11px;color:var(--dim)">Consolidation $290–300</td><td><span class="priorité-badge prio-moyenne">🟡 Moyenne</span></td></tr>
-        <tr><td class="td-ticker">CRDO</td><td class="td-société">Credo Tech</td><td style="color:var(--c4);font-weight:600">500€</td><td style="font-size:11px;color:var(--dim)">Post-earnings 1er juin</td><td><span class="priorité-badge prio-moyenne">🟡 Moyenne</span></td></tr>
-        <tr><td class="td-ticker">BUFFER</td><td class="td-société">Opportunité</td><td style="color:var(--dim);font-weight:600">400€</td><td style="font-size:11px;color:var(--dim)">Imprévu / renfort</td><td><span class="priorité-badge prio-basse">— Flexible</span></td></tr>
-      </tbody>
+      <tbody id="alloc-reserve-tbody"></tbody>
     </table>
   </div>
 </div>
@@ -1102,7 +1090,7 @@ const stockHistory = {
     ]},
   ],
   GOOGL: [
-    { date: '27 mai 2026', score: 79, price: 175, decision: 'invest', changes: [
+    { date: '27 mai 2026', score: 79, price: 390, decision: 'invest', changes: [
       { icon: '✅', text: 'Short interest 0.62% — plus faible de notre univers' },
       { icon: '✅', text: 'Earnings passés 29 avril — piste libre' },
       { icon: '✅', text: 'Google Cloud +28% YoY' },
@@ -1220,12 +1208,57 @@ const stockHistory = {
 };
 
 
+// ====== PRIX & CONFIG CENTRALISÉS ======
+const PORTFOLIO = {
+  capital_total: 13000,
+  capital_deploye: 8000,
+  capital_reserve: 5000,
+};
+
+const STOCK_CONFIG = {
+  MSFT: { entry_low: 420, entry_high: 430, stop: 395, target: 560, reserve: 2500 },
+  GOOGL: { entry_low: 380, entry_high: 395, stop: 355, target: 480, reserve: 2000 },
+  AMZN: { entry_low: 245, entry_high: 255, stop: 225, target: 320, reserve: 1500 },
+  ORCL: { entry_low: 205, entry_high: 215, stop: 185, target: 300, reserve: 1200 },
+  NVDA: { entry_low: 210, entry_high: 220, stop: 195, target: 280, reserve: 2000 },
+  MU:   { entry_low: 880, entry_high: 920, stop: 820, target: 1200, reserve: 1000 },
+  MRVL: { entry_low: 198, entry_high: 210, stop: 175, target: 270, reserve: 1500 },
+  DELL: { entry_low: 385, entry_high: 400, stop: 355, target: 565, reserve: 900 },
+  CRDO: { entry_low: 200, entry_high: 220, stop: 175, target: 320, reserve: 500 },
+  AVGO: { entry_low: 400, entry_high: 420, stop: 370, target: 550, reserve: 500 },
+};
+
+function fmtEntry(t) {
+  var c = STOCK_CONFIG[t];
+  return c ? '$' + c.entry_low + '–' + c.entry_high : '—';
+}
+function fmtStop(t) {
+  var c = STOCK_CONFIG[t];
+  return c ? '$' + c.stop : '—';
+}
+function fmtTarget(t) {
+  var c = STOCK_CONFIG[t];
+  return c ? '$' + c.target : '—';
+}
+function fmtRR(t) {
+  var c = STOCK_CONFIG[t];
+  if (!c) return '—';
+  var entry = (c.entry_low + c.entry_high) / 2;
+  var risk = entry - c.stop;
+  var reward = c.target - entry;
+  return '1:' + (reward / risk).toFixed(1);
+}
+function fmtReserve(t) {
+  var c = STOCK_CONFIG[t];
+  return c && c.reserve > 0 ? c.reserve.toLocaleString('fr-FR') + '€' : '—';
+}
+
 // ====== DATA ======
 const stocks = {
   MSFT: {
     name: 'Microsoft Corporation', price: '$427', couche: 'C4 — Hyperscaler',
     score: 80, decision: 'invest', profil: 'leader',
-    entry: '$420–430', stop: '$395', target: '$560', rr: '1:5.0',
+    entry: fmtEntry('MSFT'), stop: fmtStop('MSFT'), target: fmtTarget('MSFT'), rr: fmtRR('MSFT'),
     change: '+3.9%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 8, flag: '✅', note: 'RSI 61.9 — neutre/haussier. MACD 3.90 Buy. MA50 $416 et MA200 $416 confluentes — support double béton.' },
@@ -1259,7 +1292,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   GOOGL: {
     name: 'Alphabet Inc.', price: '$390', couche: 'C4 — Hyperscaler',
     score: 80, decision: 'invest', profil: 'leader',
-    entry: '$380–395', stop: '$355', target: '$480', rr: '1:3.5',
+    entry: fmtEntry('GOOGL'), stop: fmtStop('GOOGL'), target: fmtTarget('GOOGL'), rr: fmtRR('GOOGL'),
     change: '+2.1%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière solide. MAs toutes haussières. RSI neutre.' },
@@ -1293,7 +1326,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   AMZN: {
     name: 'Amazon.com Inc.', price: '$272', couche: 'C4 — Hyperscaler',
     score: 72, decision: 'veille', profil: 'leader',
-    entry: '$245–255', stop: '$225', target: '$320', rr: '1:3.0',
+    entry: fmtEntry('AMZN'), stop: fmtStop('AMZN'), target: fmtTarget('AMZN'), rr: fmtRR('AMZN'),
     change: '+1.2%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'Proche du 52W high $278. RSI en zone haute. Momentum fort mais prudence.' },
@@ -1325,7 +1358,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   ORCL: {
     name: 'Oracle Corporation', price: '$226', couche: 'C4 — Hyperscaler',
     score: 70, decision: 'veille', profil: 'leader',
-    entry: '$205–215', stop: '$185', target: '$300', rr: '1:4.0',
+    entry: fmtEntry('ORCL'), stop: fmtStop('ORCL'), target: fmtTarget('ORCL'), rr: fmtRR('ORCL'),
     change: '+6.5%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'MACD Buy. MA50 $189 et MA200 $181 loin en dessous — prix a beaucoup monté.' },
@@ -1359,7 +1392,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   NVDA: {
     name: 'NVIDIA Corporation', price: '$216', couche: 'C3 — Semi-conducteurs',
     score: 78, decision: 'invest', profil: 'leader',
-    entry: '$210–220', stop: '$195', target: '$280', rr: '1:4.0',
+    entry: fmtEntry('NVDA'), stop: fmtStop('NVDA'), target: fmtTarget('NVDA'), rr: '1:4.0',
     change: '+1.6%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI neutre. MA50 $192 et MA200 $187 — prix bien au-dessus des deux. Volume normalisé.' },
@@ -1393,7 +1426,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   MU: {
     name: 'Micron Technology Inc.', price: '$969', couche: 'C3 — Semi-conducteurs',
     score: 78, decision: 'veille', profil: 'challenger',
-    entry: '$880–920', stop: '$820', target: '$1200', rr: '1:3.5',
+    entry: fmtEntry('MU'), stop: fmtStop('MU'), target: fmtTarget('MU'), rr: fmtRR('MU'),
     change: '+4.9%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'MACD Buy $43.82. MA50 $774 et MA200 $637 — prix très au-dessus. RSI élevé post-gap.' },
@@ -1425,7 +1458,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   MRVL: {
     name: 'Marvell Technology Inc.', price: '$205', couche: 'C3 — Semi-conducteurs',
     score: 76, decision: 'invest', profil: 'challenger',
-    entry: '$198–210', stop: '$175', target: '$270', rr: '1:2.8',
+    entry: fmtEntry('MRVL'), stop: fmtStop('MRVL'), target: fmtTarget('MRVL'), rr: fmtRR('MRVL'),
     change: '+0.1%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI 65.87 neutre/haussier. MACD Buy $2.31. MA50 $191 et MA200 $170 — Strong Buy 10/10 ChartMill.' },
@@ -1459,7 +1492,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   DELL: {
     name: 'Dell Technologies Inc.', price: '$423', couche: 'C2 — Infrastructure',
     score: 82, decision: 'veille', profil: 'challenger',
-    entry: '$385–400', stop: '$355', target: '$565', rr: '1:5.5',
+    entry: fmtEntry('DELL'), stop: fmtStop('DELL'), target: fmtTarget('DELL'), rr: fmtRR('DELL'),
     change: '+1.2%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'Nouveau 52W high $437. RSI en zone haute post-gap. Consolidation nécessaire.' },
@@ -1490,7 +1523,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   CRDO: {
     name: 'Credo Technology Group', price: '$235', couche: 'C3 — Semi-conducteurs',
     score: 62, decision: 'veille', profil: 'specu',
-    entry: '$200–220', stop: '$175', target: '$320', rr: '1:4.0',
+    entry: fmtEntry('CRDO'), stop: '$175', target: fmtTarget('CRDO'), rr: '1:4.0',
     change: '+6.0%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 4, flag: '⚠️', note: 'Quasi ATH. Momentum pré-earnings fort. RSI en zone haute.' },
@@ -1522,7 +1555,7 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
   AVGO: {
     name: 'Broadcom Inc.', price: '$446', couche: 'C3 — Semi-conducteurs',
     score: 65, decision: 'veille', profil: 'leader',
-    entry: '$400–420', stop: '$370', target: '$550', rr: '1:3.5',
+    entry: fmtEntry('AVGO'), stop: fmtStop('AVGO'), target: fmtTarget('AVGO'), rr: '1:3.5',
     change: '+4.8%', changeDir: 'pos',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 5, flag: '🟡', note: 'RSI 79.10 — suracheté. MACD 19.59 Sell. Tension technique élevée.' },
@@ -1694,6 +1727,14 @@ function buildHistorySection(ticker) {
 }
 
 function showReport(ticker) {
+  // Override entry/stop/target/rr from STOCK_CONFIG if available
+  if (stocks[ticker] && STOCK_CONFIG[ticker]) {
+    stocks[ticker].entry = fmtEntry(ticker);
+    stocks[ticker].stop = fmtStop(ticker);
+    stocks[ticker].target = fmtTarget(ticker);
+    stocks[ticker].rr = fmtRR(ticker);
+  }
+
   document.querySelectorAll('.stock-sidebar-btn').forEach(b => b.classList.remove('active'));
   const btn = document.getElementById('sbtn-' + ticker);
   if (btn) btn.classList.add('active');
@@ -2224,6 +2265,81 @@ updateDate();
 addPriceStatus();
 patchTablePrices();
 startPriceRefresh();
+buildAllocation();
+
+// Build allocation tables from STOCK_CONFIG
+function buildAllocation() {
+  var deployStocks = [
+    { ticker: 'MSFT', name: 'Microsoft', couche: 'C4', couche_class: 'couche-c4', montant: 2500 },
+    { ticker: 'GOOGL', name: 'Alphabet', couche: 'C4', couche_class: 'couche-c4', montant: 2000 },
+    { ticker: 'NVDA', name: 'Nvidia', couche: 'C3', couche_class: 'couche-c3', montant: 2000 },
+    { ticker: 'MRVL', name: 'Marvell', couche: 'C3', couche_class: 'couche-c3', montant: 1500 },
+  ];
+
+  var reserveStocks = [
+    { ticker: 'AMZN', name: 'Amazon', montant: 1500, prio: 'haute', condition: 'Pullback $245–255' },
+    { ticker: 'ORCL', name: 'Oracle', montant: 1200, prio: 'haute', condition: 'Pullback $205–215 + post-earnings Jun 16' },
+    { ticker: 'MU', name: 'Micron', montant: 1000, prio: 'haute', condition: 'Pullback $880–920' },
+    { ticker: 'DELL', name: 'Dell', montant: 900, prio: 'moyenne', condition: 'Consolidation $385–400' },
+    { ticker: 'CRDO', name: 'Credo Tech', montant: 500, prio: 'moyenne', condition: 'Post-earnings Jun 1' },
+    { ticker: 'AVGO', name: 'Broadcom', montant: 500, prio: 'moyenne', condition: 'Post-earnings Jun 3' },
+    { ticker: 'BUFFER', name: 'Opportunité', montant: 400, prio: 'basse', condition: 'Imprévu / renfort' },
+  ];
+
+  // Calculate totals
+  var totalDeploy = deployStocks.reduce(function(s, x) { return s + x.montant; }, 0);
+  var totalReserve = reserveStocks.reduce(function(s, x) { return s + x.montant; }, 0);
+
+  // Update headers
+  var dt = document.getElementById('alloc-deploy-title');
+  var dc = document.getElementById('alloc-deploy-count');
+  var rt = document.getElementById('alloc-reserve-title');
+  var rc = document.getElementById('alloc-reserve-count');
+  if (dt) dt.textContent = 'DÉPLOIEMENT IMMÉDIAT — ' + totalDeploy.toLocaleString('fr-FR') + '€';
+  if (dc) dc.textContent = deployStocks.length + ' positions · ' + Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '%';
+  if (rt) rt.textContent = 'RÉSERVE VEILLE — ' + totalReserve.toLocaleString('fr-FR') + '€';
+  if (rc) rc.textContent = reserveStocks.length + ' positions · ' + Math.round(totalReserve/PORTFOLIO.capital_total*100) + '%';
+
+  // Build deploy tbody
+  var dbody = document.getElementById('alloc-deploy-tbody');
+  if (dbody) {
+    dbody.innerHTML = '';
+    deployStocks.forEach(function(s) {
+      var pct = Math.round(s.montant / PORTFOLIO.capital_total * 100);
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td class="td-ticker">' + s.ticker + '</td>'
+        + '<td class="td-société">' + s.name + '</td>'
+        + '<td class="td-couche ' + s.couche_class + '">' + s.couche + '</td>'
+        + '<td style="color:var(--c4);font-weight:600">' + s.montant.toLocaleString('fr-FR') + '€</td>'
+        + '<td class="td-société">' + pct + '%</td>'
+        + '<td style="color:var(--c-leader)">' + fmtEntry(s.ticker) + '</td>'
+        + '<td style="color:var(--c3)">' + fmtStop(s.ticker) + '</td>'
+        + '<td style="color:var(--c1)">' + fmtTarget(s.ticker) + '</td>'
+        + '<td style="color:var(--c1)">' + fmtRR(s.ticker) + '</td>';
+      dbody.appendChild(tr);
+    });
+  }
+
+  // Build reserve tbody
+  var rbody = document.getElementById('alloc-reserve-tbody');
+  if (rbody) {
+    rbody.innerHTML = '';
+    reserveStocks.forEach(function(s) {
+      var prioBadge = s.prio === 'haute'
+        ? '<span class="priorité-badge prio-haute">🔴 Haute</span>'
+        : s.prio === 'moyenne'
+        ? '<span class="priorité-badge prio-moyenne">🟡 Moyenne</span>'
+        : '<span class="priorité-badge prio-basse">— Flexible</span>';
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td class="td-ticker">' + s.ticker + '</td>'
+        + '<td class="td-société">' + s.name + '</td>'
+        + '<td style="color:var(--c4);font-weight:600">' + s.montant.toLocaleString('fr-FR') + '€</td>'
+        + '<td style="font-size:11px;color:var(--dim)">' + s.condition + '</td>'
+        + '<td>' + prioBadge + '</td>';
+      rbody.appendChild(tr);
+    });
+  }
+}
 
 // Auto-select first stock
 showReport('MSFT');
