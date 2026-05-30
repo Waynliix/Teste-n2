@@ -679,6 +679,20 @@ td {
   .veille-card { grid-template-columns: 1fr; }
   .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
+
+.active-universe {
+  color: var(--c1) !important;
+  background: rgba(0,229,160,0.08) !important;
+  border: 1px solid rgba(0,229,160,0.2) !important;
+}
+.universe-btn { border: 1px solid transparent; }
+.universe-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
 </style>
 </head>
 <body>
@@ -686,6 +700,10 @@ td {
 <!-- NAV -->
 <nav>
   <div class="nav-logo">DC<span>/</span>HQ</div>
+  <div style="display:flex;gap:4px;margin-right:16px">
+    <button class="nav-btn universe-btn active-universe" onclick="switchUniverse('ai')" id="univ-ai">🤖 IA</button>
+    <button class="nav-btn universe-btn" onclick="switchUniverse('energy')" id="univ-energy">⚡ Énergie</button>
+  </div>
   <button class="nav-btn active" onclick="showPage('dashboard')">Dashboard</button>
   <button class="nav-btn" onclick="showPage('analyse')">Analyses</button>
   <button class="nav-btn" onclick="showPage('veille')">Veille</button>
@@ -1035,6 +1053,223 @@ td {
 </div>
 
 <script>
+
+// ====== HISTORIQUE DES UPDATES ======
+const stockHistory = {
+  MSFT: [
+    { date: '27 mai 2026', score: 78, price: 415, decision: 'invest', changes: [
+      { icon: '✅', text: 'Earnings Q3 FY2026 passés — EPS $4.27 vs $4.05 estimé' },
+      { icon: '✅', text: 'Division IA +123% à $37Mrd' },
+      { icon: '🟡', text: 'Prix -25% du 52W high $555' },
+    ]},
+    { date: '30 mai 2026', score: 80, price: 427, decision: 'invest', changes: [
+      { icon: '✅', text: 'Prix +3% — volume élevé 47M vs moyenne 31M' },
+      { icon: '✅', text: 'Nasdaq en hausse — momentum sectoriel favorable' },
+      { icon: '✅', text: 'MA50 et MA200 toujours confluentes à $416 — support confirmé' },
+    ]},
+  ],
+  GOOGL: [
+    { date: '27 mai 2026', score: 79, price: 175, decision: 'invest', changes: [
+      { icon: '✅', text: 'Short interest 0.62% — plus faible de l'univers' },
+      { icon: '✅', text: 'Earnings passés 29 avril — piste libre' },
+      { icon: '✅', text: 'Google Cloud +28% YoY' },
+    ]},
+    { date: '30 mai 2026', score: 79, price: 175, decision: 'invest', changes: [
+      { icon: '=', text: 'Aucun changement majeur — score stable' },
+      { icon: '✅', text: 'Position maintenue — fondamentaux intacts' },
+    ]},
+  ],
+  AMZN: [
+    { date: '27 mai 2026', score: 76, price: 210, decision: 'invest', changes: [
+      { icon: '✅', text: 'AWS #1 cloud mondial. Short interest 0.85%' },
+      { icon: '✅', text: 'Earnings passés 29 avril' },
+      { icon: '🟡', text: 'PEG 1.49 — raisonnable' },
+    ]},
+    { date: '30 mai 2026', score: 76, price: 210, decision: 'invest', changes: [
+      { icon: '=', text: 'Aucun changement majeur — score stable' },
+      { icon: '✅', text: 'Position maintenue' },
+    ]},
+  ],
+  ORCL: [
+    { date: '27 mai 2026', score: 72, price: 190, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings 10 juin — risque binaire' },
+      { icon: '⚠️', text: 'Larry Ellison vend régulièrement' },
+      { icon: '✅', text: 'Double bottom validé, PEG 1.03' },
+    ]},
+    { date: '30 mai 2026', score: 77, price: 210, decision: 'invest', changes: [
+      { icon: '🚨', text: 'RÉVISION : Veille → Investir' },
+      { icon: '✅', text: 'Contrat gouvernement US $30 milliards annoncé' },
+      { icon: '✅', text: 'Prix +10.5% en 48h — momentum fort' },
+      { icon: '⚠️', text: 'Earnings 10 juin toujours à venir — surveiller' },
+    ]},
+  ],
+  NVDA: [
+    { date: '27 mai 2026', score: 77, price: 212, decision: 'invest', changes: [
+      { icon: '✅', text: 'Earnings 20 mai passés — résultats record' },
+      { icon: '✅', text: 'PEG 0.50 exceptionnel. ROE 114%' },
+      { icon: '⚠️', text: 'Beta 2.24 — très volatil' },
+    ]},
+    { date: '30 mai 2026', score: 77, price: 216, decision: 'invest', changes: [
+      { icon: '✅', text: 'Prix stable +1.9% — consolidation saine' },
+      { icon: '✅', text: 'Volume normal — pas de pression vendeuse' },
+      { icon: '=', text: 'Score inchangé — setup maintenu' },
+    ]},
+  ],
+  MU: [
+    { date: '27 mai 2026', score: 78, price: 750, decision: 'invest', changes: [
+      { icon: '✅', text: 'PEG 0.06 — le plus bas de l'univers' },
+      { icon: '✅', text: '12 signaux Buy / 0 Sell' },
+      { icon: '🟡', text: '-8% du sommet' },
+    ]},
+    { date: '29 mai 2026', score: 78, price: 882, decision: 'veille', changes: [
+      { icon: '🚨', text: 'RÉVISION : Investir → Veille' },
+      { icon: '⚠️', text: '+25% en 1 journée après UBS cible $1,625' },
+      { icon: '⚠️', text: 'Gap parabolic — attendre consolidation $820-840' },
+    ]},
+    { date: '30 mai 2026', score: 80, price: 969, decision: 'veille', changes: [
+      { icon: '⚠️', text: '+10% supplémentaire — $969. Zone entrée révisée $880-900' },
+      { icon: '✅', text: 'Fondamentaux encore plus solides — demande HBM IA' },
+      { icon: '⚠️', text: 'Earnings 24 juin — ne pas entrer trop proche' },
+    ]},
+  ],
+  MRVL: [
+    { date: '27 mai 2026', score: 63, price: 200, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings ce soir — risque binaire maximum' },
+      { icon: '✅', text: 'PEG 0.14 — très attractif' },
+      { icon: '⚠️', text: 'Quasi à l'ATH' },
+    ]},
+    { date: '28 mai 2026', score: 75, price: 200, decision: 'invest', changes: [
+      { icon: '🚨', text: 'RÉVISION : Veille → Investir' },
+      { icon: '✅', text: 'Earnings record Q1 FY27 — guidance relevée FY27/FY28' },
+      { icon: '✅', text: 'Citi $225, Barclays $275, Deutsche Bank $240' },
+      { icon: '✅', text: 'Risque calendrier éliminé' },
+    ]},
+    { date: '30 mai 2026', score: 75, price: 205, decision: 'invest', changes: [
+      { icon: '=', text: 'Score stable — position maintenue' },
+      { icon: '✅', text: 'Prix +2.5% — momentum post-earnings solide' },
+    ]},
+  ],
+  AVGO: [
+    { date: '27 mai 2026', score: 58, price: 431, decision: 'veille', changes: [
+      { icon: '🔴', text: 'RSI 79 — suracheté' },
+      { icon: '⚠️', text: 'Earnings 3 juin — risque binaire' },
+      { icon: '✅', text: 'PEG 0.75 — fondamentaux bons' },
+    ]},
+    { date: '30 mai 2026', score: 65, price: 446, decision: 'veille', changes: [
+      { icon: '✅', text: 'RSI redescend légèrement — tension réduite' },
+      { icon: '⚠️', text: 'Earnings 3 juin dans 4 jours — attendre' },
+      { icon: '✅', text: 'Prix +3.5% — momentum secteur semis' },
+    ]},
+  ],
+  CRDO: [
+    { date: '27 mai 2026', score: 60, price: 215, decision: 'veille', changes: [
+      { icon: '🔴', text: 'ATH absolu — 0% de marge' },
+      { icon: '⚠️', text: 'Earnings 1er juin dans 5 jours' },
+      { icon: '✅', text: 'Revenue +200% YoY — fondamentaux exceptionnels' },
+    ]},
+    { date: '30 mai 2026', score: 68, price: 235, decision: 'veille', changes: [
+      { icon: '✅', text: '+9% en 3 jours — momentum pré-earnings fort' },
+      { icon: '⚠️', text: 'Earnings lundi 1er juin — décision urgente' },
+      { icon: '✅', text: 'Score amélioré — catalyseurs sectoriels renforcés' },
+    ]},
+  ],
+  ALAB: [
+    { date: '27 mai 2026', score: 62, price: 200, decision: 'veille', changes: [
+      { icon: '✅', text: 'RSI 47 — neutre parfait' },
+      { icon: '✅', text: '-37% du 52W high — bonne marge' },
+      { icon: '⚠️', text: 'Short interest 8.43% élevé' },
+    ]},
+    { date: '30 mai 2026', score: 62, price: 200, decision: 'veille', changes: [
+      { icon: '=', text: 'Score inchangé — attente confirmée' },
+    ]},
+  ],
+  DELL: [
+    { date: '27 mai 2026', score: 64, price: 318, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings 28 mai demain — risque binaire' },
+      { icon: '✅', text: 'PEG 1.15 — moins cher de l'univers' },
+      { icon: '🟡', text: 'Attendre résultats' },
+    ]},
+    { date: '29 mai 2026', score: 82, price: 318, decision: 'invest', changes: [
+      { icon: '🚨', text: 'RÉVISION : Veille → Investir' },
+      { icon: '✅', text: 'EPS $4.86 vs $2.96 estimé — +64% surprise historique' },
+      { icon: '✅', text: 'Revenue +88% YoY. AI backlog $51.3Mrd' },
+      { icon: '⚠️', text: '+39% en after-hours — attendre consolidation $290-300' },
+    ]},
+    { date: '30 mai 2026', score: 88, price: 423, decision: 'invest', changes: [
+      { icon: '✅', text: 'Prix $423 — momentum exceptionnel confirmé' },
+      { icon: '✅', text: 'Mizuho relève cible à $435' },
+      { icon: '⚠️', text: 'Nouveau 52W high $437 — attendre consolidation $390-400' },
+    ]},
+  ],
+  VRT: [
+    { date: '27 mai 2026', score: 70, price: 325, decision: 'veille', changes: [
+      { icon: '✅', text: 'PEG 0.63 — excellent' },
+      { icon: '⚠️', text: '-14% du sommet — insuffisant' },
+      { icon: '⚠️', text: 'Beta 2.10 — très volatil' },
+    ]},
+    { date: '30 mai 2026', score: 70, price: 325, decision: 'veille', changes: [
+      { icon: '=', text: 'Score inchangé — attendre pullback $290-310' },
+    ]},
+  ],
+  ETN: [
+    { date: '27 mai 2026', score: 64, price: 391, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'PEG 3.06 — trop élevé pour profil croissance' },
+      { icon: '✅', text: 'Beta 1.16 — stable. Dividende solide' },
+    ]},
+    { date: '30 mai 2026', score: 64, price: 391, decision: 'veille', changes: [
+      { icon: '=', text: 'Score inchangé' },
+    ]},
+  ],
+  MOD: [
+    { date: '27 mai 2026', score: 59, price: 0, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings 27 mai — résultats à analyser' },
+      { icon: '✅', text: 'Data center revenue +60% 2026' },
+    ]},
+    { date: '30 mai 2026', score: 59, price: 0, decision: 'veille', changes: [
+      { icon: '=', text: 'En attente résultats earnings — score maintenu' },
+    ]},
+  ],
+  EQIX: [
+    { date: '27 mai 2026', score: 68, price: 1085, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Insiders ont vendu $25.1M en 3 mois' },
+      { icon: '✅', text: '98.70% détenu par institutionnels' },
+      { icon: '⚠️', text: '-4% du 52W high — trop proche' },
+    ]},
+    { date: '30 mai 2026', score: 68, price: 1085, decision: 'veille', changes: [
+      { icon: '=', text: 'Score inchangé — attendre pullback $950-980' },
+    ]},
+  ],
+  DLR: [
+    { date: '27 mai 2026', score: 70, price: 192, decision: 'veille', changes: [
+      { icon: '✅', text: 'Short interest 0.01% — quasi zéro' },
+      { icon: '✅', text: '309 data centers, 6.3GW en développement' },
+      { icon: '🟡', text: '-8% du 52W high' },
+    ]},
+    { date: '30 mai 2026', score: 70, price: 192, decision: 'veille', changes: [
+      { icon: '=', text: 'Score inchangé' },
+    ]},
+  ],
+  IRM: [
+    { date: '27 mai 2026', score: 55, price: 95, decision: 'eviter', changes: [
+      { icon: '🔴', text: 'PE 240 — très difficile à justifier' },
+      { icon: '🔴', text: 'Dette nette -$18.96Mrd' },
+    ]},
+    { date: '30 mai 2026', score: 55, price: 95, decision: 'eviter', changes: [
+      { icon: '=', text: 'Score inchangé — toujours à éviter' },
+    ]},
+  ],
+  CRWV: [
+    { date: '27 mai 2026', score: 53, price: 105, decision: 'veille', changes: [
+      { icon: '🔴', text: 'Perte nette $740M Q1 — pas encore profitable' },
+      { icon: '✅', text: 'Revenue +112% YoY. Backlog $66Mrd' },
+      { icon: '🔴', text: 'COO et CFO vendent depuis l'IPO' },
+    ]},
+    { date: '30 mai 2026', score: 53, price: 105, decision: 'veille', changes: [
+      { icon: '=', text: 'Score inchangé — position spéculative maintenue' },
+    ]},
+  ],
+};
+
 // ====== DATA ======
 const stocks = {
   MSFT: {
@@ -1615,6 +1850,73 @@ function buildSidebar() {
   });
 }
 
+function buildHistorySection(ticker) {
+  const history = stockHistory[ticker];
+  if (!history || history.length < 2) return '';
+
+  const latest = history[history.length - 1];
+  const previous = history[history.length - 2];
+  const scoreDiff = latest.score - previous.score;
+  const priceDiff = latest.price && previous.price ? ((latest.price - previous.price) / previous.price * 100).toFixed(1) : null;
+  const scoreColor = scoreDiff > 0 ? 'var(--c1)' : scoreDiff < 0 ? 'var(--c3)' : 'var(--dim)';
+  const scoreArrow = scoreDiff > 0 ? '↑' : scoreDiff < 0 ? '↓' : '=';
+
+  // Build timeline
+  const timelineHTML = [...history].reverse().map((h, i) => {
+    const isLatest = i === 0;
+    const prevH = i < history.length - 1 ? [...history].reverse()[i + 1] : null;
+    const sd = prevH ? h.score - prevH.score : 0;
+    const sdColor = sd > 0 ? 'var(--c1)' : sd < 0 ? 'var(--c3)' : 'var(--dim)';
+    const sdText = sd !== 0 ? `<span style="color:${sdColor};font-size:11px;margin-left:6px">${sd > 0 ? '+' : ''}${sd}</span>` : '';
+    const decBadge = h.decision === 'invest'
+      ? '<span class="decision-badge dec-invest" style="font-size:9px;padding:2px 8px">🟢 Investir</span>'
+      : h.decision === 'veille'
+      ? '<span class="decision-badge dec-veille" style="font-size:9px;padding:2px 8px">⏳ Veille</span>'
+      : '<span class="decision-badge dec-eviter" style="font-size:9px;padding:2px 8px">🔴 Éviter</span>';
+
+    const changesHTML = h.changes.map(c =>
+      `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:4px">
+        <span style="font-size:12px;flex-shrink:0">${c.icon}</span>
+        <span style="font-size:11px;color:#8a94a8;line-height:1.5">${c.text}</span>
+      </div>`
+    ).join('');
+
+    return `
+      <div style="display:flex;gap:16px;margin-bottom:${isLatest ? '0' : '16px'}">
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div style="width:10px;height:10px;border-radius:50%;background:${isLatest ? 'var(--c1)' : 'var(--dim)'};flex-shrink:0;margin-top:4px"></div>
+          ${!isLatest ? '<div style="width:2px;flex:1;background:rgba(255,255,255,0.05);margin-top:4px"></div>' : ''}
+        </div>
+        <div style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;${isLatest ? 'border-color:rgba(0,229,160,0.15)' : ''}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:1px">${h.date}</span>
+              ${isLatest ? '<span style="font-size:9px;color:var(--c1);background:rgba(0,229,160,0.08);padding:2px 8px;border-radius:10px;border:1px solid rgba(0,229,160,0.15)">DERNIÈRE ANALYSE</span>' : ''}
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              ${decBadge}
+              <span style="font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;color:${getScoreColor(h.score)}">${h.score}${sdText}</span>
+              ${h.price ? `<span style="font-size:13px;color:var(--dim)">$${h.price.toLocaleString()}</span>` : ''}
+            </div>
+          </div>
+          <div>${changesHTML}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div style="margin-top:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)">📈 Historique des analyses</div>
+        <div style="display:flex;gap:12px;align-items:center">
+          ${priceDiff ? `<span style="font-size:11px;color:${parseFloat(priceDiff) >= 0 ? 'var(--c1)' : 'var(--c3)'}">Prix ${parseFloat(priceDiff) >= 0 ? '+' : ''}${priceDiff}%</span>` : ''}
+          <span style="font-size:11px;color:${scoreColor}">${scoreArrow} Score ${scoreDiff > 0 ? '+' : ''}${scoreDiff !== 0 ? scoreDiff : '='}</span>
+        </div>
+      </div>
+      <div>${timelineHTML}</div>
+    </div>`;
+}
+
 function showReport(ticker) {
   document.querySelectorAll('.stock-sidebar-btn').forEach(b => b.classList.remove('active'));
   const btn = document.getElementById('sbtn-' + ticker);
@@ -1717,6 +2019,7 @@ function showReport(ticker) {
           <div class="source-tags">${sourcesHTML}</div>
         </div>
         ${pineHTML}
+        ${buildHistorySection(ticker)}
       </div>
     </div>`;
 }
@@ -1805,7 +2108,7 @@ function updateDate() {
 }
 
 // ====== LIVE PRICES ======
-const allTickers = Object.keys(stocks);
+let allTickers = Object.keys(stocks);
 let livePrices = {};
 
 async function fetchPrices() {
@@ -1953,6 +2256,180 @@ function patchTablePrices() {
     }
   });
 }
+
+// ====== ENERGY UNIVERSE ======
+const energyStocks = {
+  NEE: {
+    name: 'NextEra Energy Inc.', price: '$--', couche: 'C1 — Utilities / Renouvelable',
+    score: 74, decision: 'veille', profil: 'leader',
+    entry: '$65–70', stop: '$58', target: '$95', rr: '1:3.5',
+    change: '--', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière en reconstruction. MA200 support clé.' },
+      { name: 'Distance ATH + marge sécurité', score: 7, flag: '✅', note: '-30% du 52W high $97. Bonne marge de sécurité.' },
+      { name: 'Force tendance (ADX)', score: 6, flag: '🟡', note: 'Tendance de fond solide mais lente — secteur utilities.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 2.1. Croissance dividende +10% par an depuis 20 ans. EPS +8% YoY.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: '#1 mondial éolien + solaire. Demande électricité IA data centers = catalyseur massif.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Vanguard, BlackRock top holders. 85%+ institutionnels.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.2% — très faible.' },
+      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Earnings passés avril. Prochains juillet.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Neutre. Management stable.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 0.57 — défensif. Sensible aux taux mais dividende protège.' },
+    ],
+    sources: ['StockAnalysis.com', 'Yahoo Finance', 'TipRanks', 'Barchart'],
+    pine: `//@version=5
+indicator("NEE Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 58 and close <= 70
+rsiOk = rsi >= 35 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma200
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="NEE — ENTRÉE OPTIMALE",
+  message="NEE dans la zone d\'entrée. RSI neutre + MACD buy + au-dessus MA200.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  }
+};
+
+const energyVeille = [
+  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'moyenne', condition: 'Pullback vers <span class="cond-price">$65–70</span>. RSI doit descendre sous 55. Sensible aux taux — surveiller la Fed.' },
+];
+
+let currentUniverse = 'ai';
+
+function switchUniverse(universe) {
+  currentUniverse = universe;
+
+  // Update universe buttons
+  document.querySelectorAll('.universe-btn').forEach(b => b.classList.remove('active-universe'));
+  document.getElementById('univ-' + universe).classList.add('active-universe');
+
+  if (universe === 'ai') {
+    // Restore AI universe
+    Object.assign(window.stocksActive, stocks);
+    window.veilleActive = veilleData;
+    document.querySelector('.page-title .accent').textContent = 'Data Center';
+    document.querySelector('.page-sub').textContent = 'ETF Perso · 18 stocks · 4 couches · Mis à jour 29 mai 2026';
+    document.querySelector('#page-dashboard .table-header-bar h3').textContent = 'UNIVERS COMPLET';
+    document.querySelector('#page-dashboard .table-count').textContent = '18 stocks';
+  } else {
+    // Switch to energy universe
+    Object.assign(window.stocksActive, energyStocks);
+    window.veilleActive = energyVeille;
+    document.querySelector('.page-title .accent').textContent = 'Énergie';
+    document.querySelector('.page-sub').textContent = 'Univers Énergie · 1 stock · En construction ⚡';
+    document.querySelector('#page-dashboard .table-header-bar h3').textContent = 'UNIVERS ÉNERGIE';
+    document.querySelector('#page-dashboard .table-count').textContent = '1 stock';
+  }
+
+  // Refresh all pages
+  rebuildDashboardTable();
+  rebuildSidebarAndVeille();
+  allTickers = Object.keys(window.stocksActive);
+  fetchPrices();
+}
+
+function rebuildDashboardTable() {
+  const tbody = document.querySelector('#page-dashboard tbody');
+  tbody.innerHTML = '';
+  Object.entries(window.stocksActive).forEach(([ticker, data]) => {
+    const sc = getScoreColor(data.score);
+    const couche = data.couche.split(' — ')[0];
+    const coucheColor = couche === 'C4' ? 'couche-c4' : couche === 'C3' ? 'couche-c3' : couche === 'C2' ? 'couche-c2' : 'couche-c1';
+    const tr = document.createElement('tr');
+    tr.onclick = () => openAnalysis(ticker);
+    tr.innerHTML = `
+      <td class="td-couche ${coucheColor}">${couche}</td>
+      <td class="td-ticker">${ticker}</td>
+      <td class="td-société">${data.name.split(' ').slice(0,2).join(' ')}</td>
+      <td>${getProfilBadge(data.profil)}</td>
+      <td data-price-ticker="${ticker}">${data.price}</td>
+      <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:${data.score}%;background:${sc}"></div></div><span class="score-num" style="color:${sc}">${data.score}</span></div></td>
+      <td>${getDecisionBadge(data.decision)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function rebuildSidebarAndVeille() {
+  // Rebuild sidebar
+  const sb = document.getElementById('stockSidebar');
+  sb.innerHTML = '';
+  Object.entries(window.stocksActive).forEach(([ticker, data]) => {
+    const btn = document.createElement('button');
+    btn.className = 'stock-sidebar-btn';
+    btn.id = 'sbtn-' + ticker;
+    btn.onclick = () => showReport(ticker);
+    const sc = getScoreColor(data.score);
+    btn.innerHTML = `
+      <div>
+        <div class="ssb-ticker">${ticker}</div>
+        <div class="ssb-name">${data.name.split(' ').slice(0,2).join(' ')}</div>
+      </div>
+      <div class="ssb-right">
+        ${getDecisionBadge(data.decision)}
+        <span style="font-size:12px;font-weight:600;color:${sc}">${data.score}</span>
+      </div>`;
+    sb.appendChild(btn);
+  });
+
+  // Rebuild veille
+  const grid = document.getElementById('veilleGrid');
+  grid.innerHTML = '';
+  window.veilleActive.forEach(v => {
+    const d = window.stocksActive[v.ticker];
+    const sc = getScoreColor(d ? d.score : 60);
+    const prioClass = v.prio === 'haute' ? 'haute' : v.prio === 'moyenne' ? 'moyenne' : 'basse';
+    const prioBadge = v.prio === 'haute'
+      ? '<span class="priorité-badge prio-haute">🔴 Haute priorité</span>'
+      : v.prio === 'moyenne'
+      ? '<span class="priorité-badge prio-moyenne">🟡 Priorité moyenne</span>'
+      : '<span class="priorité-badge prio-basse">⬛ Basse priorité</span>';
+    const pineHTML = d && d.pine ? `
+      <div class="pine-section" style="margin-top:12px">
+        <div class="pine-header" onclick="togglePine('vpine-${v.ticker}')">
+          <span class="pine-header-label">📡 PINE SCRIPT ALERT — TradingView</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="copy-btn" onclick="copyPineText(\`${d.pine.replace(/`/g,'\`')}\`,event)">COPIER</button>
+            <span class="pine-toggle" id="pine-toggle-vpine-${v.ticker}">▼ VOIR</span>
+          </div>
+        </div>
+        <div class="pine-code" id="vpine-${v.ticker}">
+          <pre>${d.pine.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+        </div>
+      </div>` : '';
+    const card = document.createElement('div');
+    card.className = `veille-card ${prioClass}`;
+    card.innerHTML = `
+      <div>
+        <div class="veille-ticker" style="cursor:pointer" onclick="openAnalysis('${v.ticker}')">${v.ticker}</div>
+        <div class="veille-name">${v.name}</div>
+        <div style="margin-top:8px">${prioBadge}</div>
+      </div>
+      <div>
+        <div class="veille-condition">${v.condition}</div>
+        ${pineHTML}
+      </div>
+      <div class="veille-right">
+        ${v.reserve !== '—' ? `<div><div class="veille-reserve">${v.reserve}</div><div class="veille-reserve-label">Réservé</div></div>` : '<div style="color:var(--dim);font-size:11px">Non alloué</div>'}
+        <div style="font-family:\'Clash Display\',sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // Show first stock report
+  const firstTicker = Object.keys(window.stocksActive)[0];
+  showReport(firstTicker);
+  document.getElementById('sbtn-' + firstTicker)?.classList.add('active');
+}
+
+// Init active stocks
+window.stocksActive = {...stocks};
+window.veilleActive = veilleData;
 
 // INIT
 buildSidebar();
