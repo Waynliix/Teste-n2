@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DATA CENTER HQ — Portefeuille</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Clash+Display:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090f;
+  --bg2: #0d1117;
+  --bg3: #131922;
+  --border: rgba(255,255,255,0.06);
+  --text: #e2e8f4;
+  --dim: #5a6480;
+  --c1: #00e5a0;
+  --c2: #6c63ff;
+  --c3: #ff5f57;
+  --c4: #ffc94a;
+  --c-leader: #4a9eff;
+  --c-challenger: #a78bfa;
+  --c-specu: #fb923c;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(7,9,15,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  height: 56px;
+  gap: 4px;
+}
+
+.nav-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--c1);
+  text-transform: uppercase;
+  margin-right: 32px;
+  white-space: nowrap;
+}
+
+.nav-logo span { color: var(--dim); }
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.nav-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-btn.active { color: var(--c1); background: rgba(0,229,160,0.08); border: 1px solid rgba(0,229,160,0.2); }
+
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-date {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+
+.nav-capital {
+  font-size: 11px;
+  color: var(--c4);
+  background: rgba(255,201,74,0.08);
+  border: 1px solid rgba(255,201,74,0.2);
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+/* PAGES */
+.page { display: none; padding: 80px 32px 60px; max-width: 1200px; margin: 0 auto; }
+.page.active { display: block; animation: fadeIn 0.4s ease; }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.page-title .accent { color: var(--c1); }
+.page-sub { font-size: 11px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+
+/* LEGEND */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+/* DASHBOARD STATS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  transition: all 0.2s;
+}
+
+.stat-card:hover { border-color: rgba(0,229,160,0.2); }
+.stat-label { font-size: 9px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.stat-value { font-family: 'Clash Display', sans-serif; font-size: 26px; font-weight: 700; }
+.stat-sub { font-size: 10px; color: var(--dim); margin-top: 4px; }
+.stat-green { color: var(--c1); }
+.stat-yellow { color: var(--c4); }
+.stat-red { color: var(--c3); }
+.stat-blue { color: var(--c-leader); }
+
+/* MAIN TABLE */
+.table-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.table-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+.table-header-bar h3 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.table-count {
+  font-size: 10px;
+  color: var(--dim);
+  background: var(--bg);
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 12px 16px;
+  text-align: left;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+tbody tr:last-child { border-bottom: none; }
+
+td {
+  padding: 14px 16px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.td-couche {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+
+.td-ticker {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.td-société { color: var(--dim); font-size: 11px; }
+
+.profil-badge {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.profil-leader { background: rgba(74,158,255,0.1); color: var(--c-leader); border: 1px solid rgba(74,158,255,0.2); }
+.profil-challenger { background: rgba(167,139,250,0.1); color: var(--c-challenger); border: 1px solid rgba(167,139,250,0.2); }
+.profil-specu { background: rgba(251,146,60,0.1); color: var(--c-specu); border: 1px solid rgba(251,146,60,0.2); }
+
+.score-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-track {
+  width: 60px; height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+.score-num {
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 28px;
+}
+
+.decision-badge {
+  font-size: 10px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dec-invest { background: rgba(0,229,160,0.1); color: var(--c1); border: 1px solid rgba(0,229,160,0.25); }
+.dec-veille { background: rgba(255,201,74,0.1); color: var(--c4); border: 1px solid rgba(255,201,74,0.25); }
+.dec-eviter { background: rgba(255,95,87,0.1); color: var(--c3); border: 1px solid rgba(255,95,87,0.25); }
+
+.couche-c4 { color: var(--c4); }
+.couche-c3 { color: var(--c3); }
+.couche-c2 { color: var(--c2); }
+.couche-c1 { color: var(--c1); }
+
+/* ANALYSE PAGE */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  min-height: 600px;
+}
+
+.stock-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stock-sidebar-btn {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stock-sidebar-btn:hover { border-color: rgba(255,255,255,0.12); }
+.stock-sidebar-btn.active { border-color: var(--c1); background: rgba(0,229,160,0.05); }
+
+.ssb-ticker {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ssb-name { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+.ssb-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+/* REPORT CARD */
+.report-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.report-header {
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.report-ticker {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.report-company { font-size: 14px; color: var(--dim); margin-top: 6px; }
+.report-price { font-family: 'Clash Display', sans-serif; font-size: 36px; font-weight: 700; }
+.report-change { font-size: 12px; margin-top: 4px; }
+.report-change.pos { color: var(--c1); }
+.report-change.neg { color: var(--c3); }
+
+.report-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.report-body { padding: 24px 32px; }
+
+/* SCORE SECTION */
+.score-section {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.score-section-title {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 16px;
+}
+
+.score-rows { display: flex; flex-direction: column; gap: 10px; }
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-row-label { font-size: 11px; color: var(--dim); width: 200px; flex-shrink: 0; }
+
+.score-row-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-row-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.score-row-num { font-size: 12px; font-weight: 500; width: 32px; text-align: right; }
+.score-row-flag { font-size: 11px; width: 20px; }
+
+.score-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.score-total-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); }
+.score-total-num { font-family: 'Clash Display', sans-serif; font-size: 32px; font-weight: 700; }
+
+/* TRADE PLAN */
+.trade-plan {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tp-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.tp-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+.tp-value { font-family: 'Clash Display', sans-serif; font-size: 22px; font-weight: 700; }
+.tp-entry { color: var(--c-leader); }
+.tp-stop { color: var(--c3); }
+.tp-target { color: var(--c1); }
+.tp-sub { font-size: 10px; color: var(--dim); margin-top: 4px; }
+
+/* RR BADGE */
+.rr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+}
+
+.rr-label { font-size: 11px; color: var(--dim); letter-spacing: 1px; }
+.rr-value { font-family: 'Clash Display', sans-serif; font-size: 24px; font-weight: 700; color: var(--c1); }
+.rr-verdict { font-size: 11px; }
+
+/* CRITERIA DETAIL */
+.criteria-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.crit-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.crit-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.crit-name { font-size: 10px; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; }
+.crit-score { font-size: 13px; font-weight: 500; }
+.crit-text { font-size: 11px; color: #8a94a8; line-height: 1.5; }
+
+/* SOURCE BOX */
+.source-box {
+  background: rgba(0,229,160,0.03);
+  border: 1px solid rgba(0,229,160,0.1);
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.source-box-title { font-size: 9px; letter-spacing: 2px; color: var(--c1); text-transform: uppercase; margin-bottom: 8px; }
+.source-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.source-tag {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(0,229,160,0.06);
+  color: var(--dim);
+  border: 1px solid rgba(0,229,160,0.1);
+}
+
+/* VEILLE PAGE */
+.veille-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.veille-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.veille-card:hover { border-color: rgba(255,201,74,0.2); }
+.veille-card.haute { border-left: 3px solid var(--c3); }
+.veille-card.moyenne { border-left: 3px solid var(--c4); }
+.veille-card.basse { border-left: 3px solid var(--dim); }
+
+.veille-ticker { font-family: 'Clash Display', sans-serif; font-size: 28px; font-weight: 700; }
+.veille-name { font-size: 11px; color: var(--dim); margin-top: 2px; }
+.veille-condition { font-size: 12px; line-height: 1.6; }
+.veille-condition strong { color: var(--text); }
+.veille-condition .cond-date { color: var(--c4); }
+.veille-condition .cond-price { color: var(--c-leader); }
+
+.veille-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+.veille-reserve {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c4);
+}
+
+.veille-reserve-label { font-size: 9px; color: var(--dim); letter-spacing: 1px; }
+
+.priorité-badge {
+  font-size: 9px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.prio-haute { background: rgba(255,95,87,0.1); color: var(--c3); border: 1px solid rgba(255,95,87,0.2); }
+.prio-moyenne { background: rgba(255,201,74,0.1); color: var(--c4); border: 1px solid rgba(255,201,74,0.2); }
+.prio-basse { background: rgba(90,100,128,0.1); color: var(--dim); border: 1px solid rgba(90,100,128,0.2); }
+
+/* PINE SECTION */
+.pine-section {
+  margin-top: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pine-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.pine-header-label { font-size: 10px; color: var(--dim); letter-spacing: 1px; }
+.pine-toggle { font-size: 10px; color: var(--c1); }
+
+.pine-code {
+  display: none;
+  background: #0a0f1a;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.pine-code.open { display: block; }
+
+.pine-code pre {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #8ab4f8;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.pine-code .kw { color: #ff79c6; }
+.pine-code .fn { color: #50fa7b; }
+.pine-code .str { color: #f1fa8c; }
+.pine-code .num { color: #bd93f9; }
+.pine-code .com { color: #6272a4; }
+
+.copy-btn {
+  background: rgba(0,229,160,0.1);
+  border: 1px solid rgba(0,229,160,0.2);
+  color: var(--c1);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover { background: rgba(0,229,160,0.2); }
+
+/* ALLOCATION SECTION */
+.alloc-section {
+  margin-top: 32px;
+  background: var(--bg2);
+  border: 1px solid rgba(255,201,74,0.15);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.alloc-title { font-family: 'Clash Display', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.alloc-title span { color: var(--c4); }
+
+.alloc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+
+.alloc-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+
+.alloc-ticker { font-family: 'Clash Display', sans-serif; font-size: 18px; font-weight: 700; }
+.alloc-amount { font-size: 18px; font-weight: 500; color: var(--c4); margin-top: 4px; }
+.alloc-pct { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 0 16px; }
+  .page { padding: 72px 16px 40px; }
+  .analysis-grid { grid-template-columns: 1fr; }
+  .trade-plan { grid-template-columns: 1fr; }
+  .criteria-grid { grid-template-columns: 1fr; }
+  .veille-card { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DC<span>/</span>HQ</div>
+  <button class="nav-btn active" onclick="showPage('dashboard')">Dashboard</button>
+  <button class="nav-btn" onclick="showPage('analyse')">Analyses</button>
+  <button class="nav-btn" onclick="showPage('veille')">Veille</button>
+  <button class="nav-btn" onclick="showPage('allocation')">Allocation</button>
+  <div class="nav-right">
+    <span class="nav-date" id="navDate"></span>
+    <span class="nav-capital">13,000 €</span>
+  </div>
+</nav>
+
+<!-- =================== DASHBOARD =================== -->
+<div class="page active" id="page-dashboard">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Data Center <span class="accent">Universe</span></div>
+      <div class="page-sub">ETF Perso · 18 stocks · 4 couches · Mis à jour 29 mai 2026</div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-leader)"></div>🏛️ Leader</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-challenger)"></div>⚡ Challenger</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-specu)"></div>🚀 Spéculatif</div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Investir maintenant</div>
+      <div class="stat-value stat-green">6</div>
+      <div class="stat-sub">stocks prêts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">En veille</div>
+      <div class="stat-value stat-yellow">11</div>
+      <div class="stat-sub">à surveiller</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">À éviter</div>
+      <div class="stat-value stat-red">1</div>
+      <div class="stat-sub">IRM</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Capital déployé</div>
+      <div class="stat-value stat-blue">9,100€</div>
+      <div class="stat-sub">70% du capital</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Réserve</div>
+      <div class="stat-value stat-yellow">3,900€</div>
+      <div class="stat-sub">30% en attente</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Objectif</div>
+      <div class="stat-value" style="color:var(--c-specu)">x2</div>
+      <div class="stat-sub">horizon 2 ans</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header-bar">
+      <h3>UNIVERS COMPLET</h3>
+      <span class="table-count">18 stocks</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Couche</th>
+          <th>Ticker</th>
+          <th>Société</th>
+          <th>Profil</th>
+          <th>Prix</th>
+          <th>Score</th>
+          <th>Décision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- C4 -->
+        <tr onclick="openAnalysis('MSFT')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">MSFT</td>
+          <td class="td-société">Microsoft</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$415</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">78</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('GOOGL')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">GOOGL</td>
+          <td class="td-société">Alphabet</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$175</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:79%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">79</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('AMZN')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">AMZN</td>
+          <td class="td-société">Amazon</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$210</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:76%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">76</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('ORCL')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">ORCL</td>
+          <td class="td-société">Oracle</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$190</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:72%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">72</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('CRWV')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">CRWV</td>
+          <td class="td-société">CoreWeave</td>
+          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
+          <td>$105</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:53%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">53</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <!-- C3 -->
+        <tr onclick="openAnalysis('NVDA')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">NVDA</td>
+          <td class="td-société">Nvidia</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$212</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:77%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">77</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('MU')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">MU</td>
+          <td class="td-société">Micron</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td>$882</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">78</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('MRVL')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">MRVL</td>
+          <td class="td-société">Marvell</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td>$200</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:75%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">75</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('AVGO')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">AVGO</td>
+          <td class="td-société">Broadcom</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$431</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:58%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">58</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('CRDO')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">CRDO</td>
+          <td class="td-société">Credo Tech</td>
+          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
+          <td>$215</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:60%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">60</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('ALAB')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">ALAB</td>
+          <td class="td-société">Astera Labs</td>
+          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
+          <td>$200</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:62%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">62</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <!-- C2 -->
+        <tr onclick="openAnalysis('DELL')">
+          <td class="td-couche couche-c2">C2</td>
+          <td class="td-ticker">DELL</td>
+          <td class="td-société">Dell Tech</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td>$318</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:82%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">82</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('VRT')">
+          <td class="td-couche couche-c2">C2</td>
+          <td class="td-ticker">VRT</td>
+          <td class="td-société">Vertiv</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td>$325</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:70%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">70</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('ETN')">
+          <td class="td-couche couche-c2">C2</td>
+          <td class="td-ticker">ETN</td>
+          <td class="td-société">Eaton</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$391</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:64%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">64</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('MOD')">
+          <td class="td-couche couche-c2">C2</td>
+          <td class="td-ticker">MOD</td>
+          <td class="td-société">Modine</td>
+          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
+          <td>—</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:59%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">59</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <!-- C1 -->
+        <tr onclick="openAnalysis('EQIX')">
+          <td class="td-couche couche-c1">C1</td>
+          <td class="td-ticker">EQIX</td>
+          <td class="td-société">Equinix</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$1,085</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:68%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">68</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('DLR')">
+          <td class="td-couche couche-c1">C1</td>
+          <td class="td-ticker">DLR</td>
+          <td class="td-société">Digital Realty</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$192</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:70%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">70</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('IRM')">
+          <td class="td-couche couche-c1">C1</td>
+          <td class="td-ticker">IRM</td>
+          <td class="td-société">Iron Mountain</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td>$95</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:55%;background:var(--c3)"></div></div><span class="score-num" style="color:var(--c3)">55</span></div></td>
+          <td><span class="decision-badge dec-eviter">🔴 Éviter</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- =================== ANALYSES =================== -->
+<div class="page" id="page-analyse">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Rapports <span class="accent">Citadel</span></div>
+      <div class="page-sub">Analyse technique complète · 10 critères · Score /100</div>
+    </div>
+  </div>
+
+  <div class="analysis-grid">
+    <div class="stock-sidebar" id="stockSidebar"></div>
+    <div id="reportContainer">
+      <div style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--dim);font-size:12px;letter-spacing:2px;text-transform:uppercase;">
+        ← Sélectionne un stock
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== VEILLE =================== -->
+<div class="page" id="page-veille">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Stocks en <span class="accent">Veille</span></div>
+      <div class="page-sub">TradingView Pine Script · Conditions d'entrée · Réserve allouée</div>
+    </div>
+  </div>
+
+  <div class="veille-grid" id="veilleGrid"></div>
+</div>
+
+<!-- =================== ALLOCATION =================== -->
+<div class="page" id="page-allocation">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Mon <span class="accent">Allocation</span></div>
+      <div class="page-sub">Capital 13,000€ · Objectif x2 en 2 ans · Revolut</div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Capital total</div>
+      <div class="stat-value" style="color:var(--text)">13,000€</div>
+      <div class="stat-sub">100%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Déployé maintenant</div>
+      <div class="stat-value stat-green">9,100€</div>
+      <div class="stat-sub">70%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Réserve veille</div>
+      <div class="stat-value stat-yellow">3,900€</div>
+      <div class="stat-sub">30%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Objectif 2 ans</div>
+      <div class="stat-value" style="color:var(--c-specu)">26,000€</div>
+      <div class="stat-sub">scénario base</div>
+    </div>
+  </div>
+
+  <div class="table-wrap" style="margin-bottom:20px">
+    <div class="table-header-bar">
+      <h3>DÉPLOIEMENT IMMÉDIAT — 9,100€</h3>
+      <span class="table-count">5 positions</span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Ticker</th><th>Société</th><th>Couche</th><th>Montant</th><th>%</th><th>Entrée</th><th>Stop-Loss</th><th>Cible</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-ticker">MSFT</td><td class="td-société">Microsoft</td><td class="td-couche couche-c4">C4</td><td style="color:var(--c4);font-weight:600">2,200€</td><td class="td-société">17%</td><td style="color:var(--c-leader)">$415–420</td><td style="color:var(--c3)">$395</td><td style="color:var(--c1)">$560</td></tr>
+        <tr><td class="td-ticker">GOOGL</td><td class="td-société">Alphabet</td><td class="td-couche couche-c4">C4</td><td style="color:var(--c4);font-weight:600">2,200€</td><td class="td-société">17%</td><td style="color:var(--c-leader)">$170–178</td><td style="color:var(--c3)">$155</td><td style="color:var(--c1)">$220</td></tr>
+        <tr><td class="td-ticker">NVDA</td><td class="td-société">Nvidia</td><td class="td-couche couche-c3">C3</td><td style="color:var(--c4);font-weight:600">2,000€</td><td class="td-société">15%</td><td style="color:var(--c-leader)">$210–218</td><td style="color:var(--c3)">$195</td><td style="color:var(--c1)">$280</td></tr>
+        <tr><td class="td-ticker">AMZN</td><td class="td-société">Amazon</td><td class="td-couche couche-c4">C4</td><td style="color:var(--c4);font-weight:600">1,800€</td><td class="td-société">14%</td><td style="color:var(--c-leader)">$205–212</td><td style="color:var(--c3)">$190</td><td style="color:var(--c1)">$265</td></tr>
+        <tr><td class="td-ticker">MRVL</td><td class="td-société">Marvell</td><td class="td-couche couche-c3">C3</td><td style="color:var(--c4);font-weight:600">900€</td><td class="td-société">7%</td><td style="color:var(--c-leader)">$195–205</td><td style="color:var(--c3)">$170</td><td style="color:var(--c1)">$260</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header-bar">
+      <h3>RÉSERVE VEILLE — 3,900€</h3>
+      <span class="table-count">5 positions</span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Ticker</th><th>Société</th><th>Réservé</th><th>Condition</th><th>Priorité</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-ticker">ORCL</td><td class="td-société">Oracle</td><td style="color:var(--c4);font-weight:600">1,200€</td><td style="font-size:11px;color:var(--dim)">Post-earnings 10 juin</td><td><span class="priorité-badge prio-haute">🔴 Haute</span></td></tr>
+        <tr><td class="td-ticker">MU</td><td class="td-société">Micron</td><td style="color:var(--c4);font-weight:600">900€</td><td style="font-size:11px;color:var(--dim)">Pullback $820–840</td><td><span class="priorité-badge prio-haute">🔴 Haute</span></td></tr>
+        <tr><td class="td-ticker">DELL</td><td class="td-société">Dell</td><td style="color:var(--c4);font-weight:600">900€</td><td style="font-size:11px;color:var(--dim)">Consolidation $290–300</td><td><span class="priorité-badge prio-moyenne">🟡 Moyenne</span></td></tr>
+        <tr><td class="td-ticker">CRDO</td><td class="td-société">Credo Tech</td><td style="color:var(--c4);font-weight:600">500€</td><td style="font-size:11px;color:var(--dim)">Post-earnings 1er juin</td><td><span class="priorité-badge prio-moyenne">🟡 Moyenne</span></td></tr>
+        <tr><td class="td-ticker">BUFFER</td><td class="td-société">Opportunité</td><td style="color:var(--dim);font-weight:600">400€</td><td style="font-size:11px;color:var(--dim)">Imprévu / renfort</td><td><span class="priorité-badge prio-basse">— Flexible</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ====== DATA ======
+const stocks = {
+  MSFT: {
+    name: 'Microsoft Corporation', price: '$415', couche: 'C4 — Hyperscaler',
+    score: 78, decision: 'invest', profil: 'leader',
+    entry: '$415–420', stop: '$395', target: '$560', rr: '1:6.2',
+    change: '+1.2%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 8, flag: '✅', note: 'RSI 57, MACD Buy, 9 signaux Buy / 3 Sell. MA50 et MA200 confluentes à $416.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-25% du 52W high $555. Correction saine sur un stock fondamentalement solide.' },
+      { name: 'Force tendance (ADX)', score: 6, flag: '🟡', note: 'Tendance en reconstruction après correction. Daily haussier.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.40. Revenue +16.7% YoY, EPS +23%. Division IA +123% à $37Mrd.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Azure IA +123%, Copilot déploiement massif, partenariat OpenAI central.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Ownership institutionnel dominant. Smart Money stable et accumulant.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.06% — quasi inexistant. Personne ne parie contre MSFT.' },
+      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Derniers earnings 29 avril passés. Prochains juillet — piste libre.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Quelques ventes normales de dirigeants. Aucun signal alarmant.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.09 — proche du marché. Peu sensible aux taux.' },
+    ],
+    sources: ['StockAnalysis.com', 'TipRanks', 'Investing.com', 'Yahoo Finance', 'TradingView'],
+    pine: `// MSFT — Alerte entrée optimale
+//@version=5
+indicator("MSFT Entry Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 395 and close <= 420
+rsiOk = rsi >= 45 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50 and close > ma200
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="MSFT — ENTRÉE OPTIMALE",
+  message="MSFT dans la zone d'entrée. RSI neutre + MACD buy + au-dessus MAs.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  GOOGL: {
+    name: 'Alphabet Inc.', price: '$175', couche: 'C4 — Hyperscaler',
+    score: 79, decision: 'invest', profil: 'leader',
+    entry: '$170–178', stop: '$155', target: '$220', rr: '1:3.3',
+    change: '+0.8%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière solide sur le daily et le weekly.' },
+      { name: 'Distance ATH + marge sécurité', score: 7, flag: '✅', note: 'Correction modérée depuis les sommets. Bonne marge de sécurité.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: '+128.87% en 52 semaines. Tendance de fond exceptionnelle.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 1.88 — très raisonnable. PE 29 proche de la moyenne historique.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Google Cloud +28%, puces TPU, Gemini IA, Search dominance absolue.' },
+      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap ultra institutionnalisé. Vanguard, BlackRock top holders.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.62% — le plus faible de tout l\'univers.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Prochains juillet — piste libre.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Neutre. Aucun signal négatif des dirigeants.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.27 — modéré. Résistant aux chocs macro.' },
+    ],
+    sources: ['Yahoo Finance', 'TipRanks', 'StockAnalysis.com', 'CNBC', 'Barchart'],
+    pine: `// GOOGL — Alerte entrée optimale
+//@version=5
+indicator("GOOGL Entry Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 155 and close <= 178
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma200
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="GOOGL — ENTRÉE OPTIMALE",
+  message="GOOGL dans la zone d\'entrée optimale. Conditions réunies.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  NVDA: {
+    name: 'NVIDIA Corporation', price: '$212', couche: 'C3 — Semi-conducteurs',
+    score: 77, decision: 'invest', profil: 'leader',
+    entry: '$210–218', stop: '$195', target: '$280', rr: '1:4.5',
+    change: '-1.1%', changeDir: 'neg',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 53.7 neutre. MA50 à $196, MA200 à $187 — prix au-dessus des deux.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-9% du 52W high $236. Limite — mais compensé par les fondamentaux.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance de fond structurelle. GPU IA = pilier de l\'infrastructure mondiale.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.50 exceptionnel. ROE 114%, ROIC 104%. Les chiffres les plus forts du secteur.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'GPU H100/B200 = colonne vertébrale de toute l\'IA mondiale. Monopole de facto.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: '65%+ détenu par institutionnels. State Street augmentant sa position.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.17% — quasi inexistant. Consensus haussier total.' },
+      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings du 20 mai passés — résultats record. Piste libre jusqu\'en août.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Jensen Huang conserve ses positions. Aucune vente significative.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.24 — très volatil. Risque géopolitique Taiwan à surveiller.' },
+    ],
+    sources: ['Yahoo Finance', 'StockAnalysis.com', 'Finviz', 'TradingView', 'GuruFocus'],
+    pine: `// NVDA — Alerte entrée optimale
+//@version=5
+indicator("NVDA Entry Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 195 and close <= 218
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="NVDA — ENTRÉE OPTIMALE",
+  message="NVDA zone d\'entrée optimale. RSI neutre + MACD buy + au-dessus MA50.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  AMZN: {
+    name: 'Amazon.com Inc.', price: '$210', couche: 'C4 — Hyperscaler',
+    score: 76, decision: 'invest', profil: 'leader',
+    entry: '$205–212', stop: '$190', target: '$265', rr: '1:3.7',
+    change: '+0.3%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure solide. MAs haussières, momentum positif sur le daily.' },
+      { name: 'Distance ATH + marge sécurité', score: 6, flag: '🟡', note: 'Correction modérée depuis les sommets. Acceptable.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: '+28.83% en 52 semaines. Tendance régulière et moins volatile que les autres.' },
+      { name: 'Momentum fondamental (PEG)', score: 7, flag: '✅', note: 'PEG 1.49. ROE 24%, ROIC 13%. AWS reste #1 cloud mondial.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'AWS #1 cloud mondial. $15Mrd investis en Indiana. Puces Trainium maison.' },
+      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap. Vanguard, BlackRock, State Street top holders.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.85% — quasi inexistant.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Piste libre jusqu\'en juillet.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Jeff Bezos vend méthodiquement mais programmatiquement — normal.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.47 — modéré. Diversification business (retail + cloud) protège.' },
+    ],
+    sources: ['Yahoo Finance', 'CNBC', 'StockAnalysis.com', 'Barchart', 'TipRanks'],
+    pine: `// AMZN — Alerte entrée optimale
+//@version=5
+indicator("AMZN Entry Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 190 and close <= 212
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma200
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="AMZN — ENTRÉE OPTIMALE",
+  message="AMZN dans la zone d\'entrée. Conditions réunies.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  MRVL: {
+    name: 'Marvell Technology Inc.', price: '$200', couche: 'C3 — Semi-conducteurs',
+    score: 75, decision: 'invest', profil: 'challenger',
+    entry: '$195–205', stop: '$170', target: '$260', rr: '1:2.5',
+    change: '+3.0%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 67 — neutre/haussier. MACD 14.08 buy signal. Williams %R oversold.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: 'Quasi à l\'ATH. Compensé par les fondamentaux post-earnings.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+176% en 52 semaines. Momentum exceptionnel. Tendance très forte.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 0.14. Data center +76% YoY. Revenue total $8.2Mrd FY2026.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Custom ASICs pour AWS et Microsoft. Data center = 74% du revenue.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Goldman Sachs, hedge funds en accumulation post-earnings.' },
+      { name: 'Sentiment (short interest)', score: 7, flag: '🟡', note: 'Short interest 3.24% — modéré.' },
+      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings Q1 FY27 passés le 27 mai — résultats record. Piste libre.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre. Quelques ventes programmées normales.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.25 — très volatil. À dimensionner en conséquence.' },
+    ],
+    sources: ['StockAnalysis.com', 'TradingKey', 'TipRanks', 'Google Finance', 'MarketBeat'],
+    pine: `// MRVL — Alerte entrée optimale
+//@version=5
+indicator("MRVL Entry Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 170 and close <= 205
+rsiOk = rsi >= 40 and rsi <= 70
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="MRVL — ENTRÉE OPTIMALE",
+  message="MRVL en zone d\'entrée. Post-earnings + conditions réunies.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  DELL: {
+    name: 'Dell Technologies Inc.', price: '$318', couche: 'C2 — Infrastructure',
+    score: 82, decision: 'invest', profil: 'challenger',
+    entry: '$290–300', stop: '$270', target: '$400', rr: '1:4.0',
+    change: '+39%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Breakout massif post-earnings. Nouveau 52W high à $320.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: 'Vient de faire un ATH — attendre consolidation $290-300.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+200%+ depuis 52W low. Momentum explosif post-earnings.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'EPS $4.86 vs $2.96 estimé (+64% surprise). PEG 1.15. Forward PE 18.8.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Revenue +88% YoY. AI Server backlog $51.3Mrd. Guidance $165-169Mrd FY27.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Bien couvert institutionnellement. Upgrade massif post-earnings.' },
+      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.56% — modéré.' },
+      { name: 'Calendrier earnings', score: 10, flag: '✅', note: 'Earnings Q1 FY27 passés hier — résultats historiques. Piste libre.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Michael Dell conserve sa position majeure.' },
+      { name: 'Corrélation macro', score: 8, flag: '✅', note: 'Beta 1.06 — stable. Dividende versé.' },
+    ],
+    sources: ['Motley Fool', 'MarketBeat', 'TipRanks', 'Investing.com', 'SEC EDGAR'],
+    pine: `// DELL — Alerte consolidation post-earnings
+//@version=5
+indicator("DELL Consolidation Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+consolidationZone = close >= 270 and close <= 300
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+
+signal = consolidationZone and rsiOk and macdOk
+
+alertcondition(signal, title="DELL — ZONE CONSOLIDATION",
+  message="DELL en zone de consolidation post-earnings. Entrée possible.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  ORCL: {
+    name: 'Oracle Corporation', price: '$190', couche: 'C4 — Hyperscaler',
+    score: 72, decision: 'veille', profil: 'leader',
+    entry: '$185–192', stop: '$168', target: '$263', rr: '1:3.3',
+    change: '+0.5%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Double bottom validé à $163. Breakout au-dessus de $188 confirmé.' },
+      { name: 'Distance ATH + marge sécurité', score: 7, flag: '✅', note: '-45% du 52W high $345. Meilleure marge de sécurité de tout le C4.' },
+      { name: 'Force tendance (ADX)', score: 6, flag: '🟡', note: 'Tendance haussière naissante. Daily et weekly en reconstruction.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.03. OCI revenue +84% YoY. Backlog $553Mrd de contrats signés.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Partenaire OpenAI, Meta, Microsoft. OCI = cloud IA en forte demande.' },
+      { name: 'Flux institutionnels', score: 6, flag: '🟡', note: 'Quelques hésitations institutionnelles post-correction majeure.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.09% — très faible.' },
+      { name: 'Calendrier earnings', score: 5, flag: '⚠️', note: 'Earnings le 10 juin — dans 12 jours. Risque binaire important.' },
+      { name: 'Insider transactions', score: 5, flag: '⚠️', note: 'Larry Ellison vend régulièrement des blocs importants.' },
+      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.54 — plus volatil que le marché. Dette $100Mrd+.' },
+    ],
+    sources: ['StockAnalysis.com', 'Barchart', 'TipRanks', 'Yahoo Finance', 'SEC EDGAR'],
+    pine: `// ORCL — Alerte post-earnings
+//@version=5
+indicator("ORCL Post-Earnings Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 168 and close <= 195
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMAs = close > ma50 and close > ma200
+
+signal = entryZone and rsiOk and macdOk and aboveMAs
+
+alertcondition(signal, title="ORCL — ENTRÉE POST-EARNINGS",
+  message="ORCL : conditions réunies après earnings du 10 juin.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  MU: {
+    name: 'Micron Technology Inc.', price: '$882', couche: 'C3 — Semi-conducteurs',
+    score: 78, decision: 'veille', profil: 'challenger',
+    entry: '$820–840', stop: '$780', target: '$1,000+', rr: '1:3.5',
+    change: '+25%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: '12 signaux Buy / 0 Sell. RSI 65. MA50 à $519 — prix largement au-dessus.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: '+8% AU-DESSUS de l\'ancien ATH après gap de +25% en 1 journée.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: 'ADX 34 — tendance très forte. +$1,000 Mrd market cap franchi.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.06 — le plus bas de tout l\'univers. Forward PE seulement 8.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Mémoire HBM pour GPU IA. Demande mondiale > offre jusqu\'en 2027+.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'David Tepper et billionaires en accumulation. UBS cible $1,625.' },
+      { name: 'Sentiment (short interest)', score: 6, flag: '🟡', note: 'Short interest 3.31% — légèrement plus élevé.' },
+      { name: 'Calendrier earnings', score: 5, flag: '⚠️', note: 'Earnings le 24 juin — dans 26 jours. Risque modéré.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'CEO Mehrotra investit dans l\'expansion US. Confiant.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 1.92 — volatil. Sensible aux cycles mémoire.' },
+    ],
+    sources: ['StockAnalysis.com', 'CNBC', 'TipRanks', 'Barchart', 'UBS Research'],
+    pine: `// MU — Alerte pullback zone d'entrée
+//@version=5
+indicator("MU Pullback Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+pullbackZone = close >= 780 and close <= 840
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+
+signal = pullbackZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="MU — PULLBACK ZONE ENTRÉE",
+  message="MU est revenu en zone d\'entrée $780-840. RSI normalisé.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  CRDO: {
+    name: 'Credo Technology Group', price: '$215', couche: 'C3 — Semi-conducteurs',
+    score: 60, decision: 'veille', profil: 'specu',
+    entry: '$180–200', stop: '$155', target: '$300', rr: '1:4.0',
+    change: '—', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 4, flag: '⚠️', note: 'ATH absolu atteint le 22 mai à $218. Prix quasi au sommet.' },
+      { name: 'Distance ATH + marge sécurité', score: 2, flag: '🔴', note: '0% du sommet. Aucune marge de sécurité actuellement.' },
+      { name: 'Force tendance (ADX)', score: 10, flag: '✅', note: '+263% en 52 semaines. Le momentum le plus fort de tout l\'univers.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.40. ROIC 60%. Revenue +200% YoY. EPS beat +17%.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Câbles AEC = composant indispensable dans chaque rack IA. TAM $10Mrd+.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Forte accumulation institutionnelle sur les derniers trimestres.' },
+      { name: 'Sentiment (short interest)', score: 5, flag: '⚠️', note: 'Short interest 5.14% — élevé pour un spéculatif.' },
+      { name: 'Calendrier earnings', score: 3, flag: '🔴', note: 'Earnings le 1er juin — dans 3 jours. Risque binaire maximum.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre. Aucun signal fort dans un sens ou l\'autre.' },
+      { name: 'Corrélation macro', score: 3, flag: '🔴', note: 'Beta 3.80 — extrêmement volatil. Peut corriger -30% du jour au lendemain.' },
+    ],
+    sources: ['StockAnalysis.com', 'TipRanks', 'Yahoo Finance', 'Barchart'],
+    pine: `// CRDO — Alerte post-earnings
+//@version=5
+indicator("CRDO Post-Earnings Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 155 and close <= 200
+rsiOk = rsi >= 35 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="CRDO — ENTRÉE POST-EARNINGS",
+  message="CRDO après earnings du 1er juin. Zone d\'entrée atteinte.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  AVGO: {
+    name: 'Broadcom Inc.', price: '$431', couche: 'C3 — Semi-conducteurs',
+    score: 58, decision: 'veille', profil: 'leader',
+    entry: '$380–400', stop: '$350', target: '$500', rr: '1:2.5',
+    change: '+0.5%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 3, flag: '🔴', note: 'RSI 79 — zone de danger suracheté. MACD Sell signal.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '🔴', note: '-5% du 52W high $442. Quasi au sommet.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance haussière forte mais extended. +81% en 1 an.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 0.75. Custom AI chips +140%. Networking IA dominant.' },
+      { name: 'Catalyseurs sectoriels', score: 8, flag: '✅', note: 'XPU custom pour Google, Meta, Apple. Segment IA en hypercroissance.' },
+      { name: 'Flux institutionnels', score: 6, flag: '🟡', note: 'Stanley Druckenmiller acheteur — signal positif notable.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.08% — très faible.' },
+      { name: 'Calendrier earnings', score: 3, flag: '🔴', note: 'Earnings le 3 juin — dans 5 jours. Risque binaire majeur.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
+      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.44 — modéré.' },
+    ],
+    sources: ['Robinhood', 'TipRanks', 'StockAnalysis.com', 'CNN Markets'],
+    pine: `// AVGO — Alerte post-earnings + pullback
+//@version=5
+indicator("AVGO Post-Earnings Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 350 and close <= 400
+rsiOk = rsi >= 40 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="AVGO — ENTRÉE POST-EARNINGS",
+  message="AVGO : RSI normalisé post-earnings. Zone d\'entrée atteinte.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  VRT: {
+    name: 'Vertiv Holdings', price: '$325', couche: 'C2 — Infrastructure',
+    score: 70, decision: 'veille', profil: 'challenger',
+    entry: '$290–310', stop: '$270', target: '$387', rr: '1:2.8',
+    change: '+0.2%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 5, flag: '🟡', note: 'Proche ATH. MACD court terme faible. MA50 à $256.' },
+      { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: '-14% du 52W high $379. Insuffisant pour notre profil.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: 'Tendance structurelle très forte. +254% en 52 semaines.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 0.63 — excellent. Earnings +83% YoY.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Liquid cooling = besoin absolu des GPU clusters IA. TD Cowen cible $387.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Momentum fort, institutionnels encore bien positionnés.' },
+      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.09% — modéré.' },
+      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Earnings 22 avril passés. Prochains juillet.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Quelques prises de profits normales.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.10 — très volatil. Amplification des mouvements x2.' },
+    ],
+    sources: ['StockAnalysis.com', 'TipRanks', 'TD Cowen Research', 'Barchart'],
+    pine: `// VRT — Alerte pullback zone d'entrée
+//@version=5
+indicator("VRT Pullback Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+pullbackZone = close >= 270 and close <= 310
+rsiOk = rsi >= 35 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+
+signal = pullbackZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="VRT — PULLBACK ZONE ENTRÉE",
+  message="VRT revenu en zone d\'entrée $270-310. Setup favorable.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  ALAB: {
+    name: 'Astera Labs Inc.', price: '$200', couche: 'C3 — Semi-conducteurs',
+    score: 62, decision: 'veille', profil: 'specu',
+    entry: '$185–205', stop: '$160', target: '$280', rr: '1:3.0',
+    change: '—', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 47 — neutre parfait. Ni suracheté ni survendu.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-37% du 52W high $315. Bonne marge parmi les spéculatifs.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: '+182% en 52 semaines. Momentum fort.' },
+      { name: 'Momentum fondamental (PEG)', score: 7, flag: '✅', note: 'Revenue +93% YoY. Gross margin 75.7%. PEG 2.34.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Scorpio switch PCIe Gen6. Acquisition aiXscale Photonics. Morgan Stanley top pick.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'ProShare Advisors en accumulation. Morgan Stanley recommande.' },
+      { name: 'Sentiment (short interest)', score: 4, flag: '⚠️', note: 'Short interest 8.43% — élevé. Beaucoup de sceptiques.' },
+      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Earnings passés le 5 mai. Prochains août — piste libre.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
+      { name: 'Corrélation macro', score: 4, flag: '⚠️', note: 'Beta 3.36 — très volatil. Petite cap sensible.' },
+    ],
+    sources: ['StockAnalysis.com', 'Seeking Alpha', 'Morgan Stanley Research', 'Barchart'],
+    pine: `// ALAB — Alerte zone d'entrée
+//@version=5
+indicator("ALAB Entry Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+entryZone = close >= 160 and close <= 205
+rsiOk = rsi >= 35 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+
+signal = entryZone and rsiOk and macdOk and aboveMA
+
+alertcondition(signal, title="ALAB — ENTRÉE ZONE OPTIMALE",
+  message="ALAB dans la zone d\'entrée. RSI neutre + MACD buy.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  ETN: {
+    name: 'Eaton Corporation', price: '$391', couche: 'C2 — Infrastructure',
+    score: 64, decision: 'veille', profil: 'leader',
+    entry: '$360–380', stop: '$335', target: '$450', rr: '1:2.3',
+    change: '+0.3%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Rating 10/10 ChartMill. MAs haussières confirmées.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-10% du 52W high $435. Limite acceptable.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance de fond confirmée. Stable.' },
+      { name: 'Momentum fondamental (PEG)', score: 4, flag: '⚠️', note: 'PEG 3.06 — surévalué par rapport à sa croissance. Point faible.' },
+      { name: 'Catalyseurs sectoriels', score: 7, flag: '✅', note: 'Data center power + aerospace. Acquisition Boyd Thermal.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Bien tenu par les institutionnels.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 2.28% — faible.' },
+      { name: 'Calendrier earnings', score: 6, flag: '🟡', note: 'Earnings passés 5 mai.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.16 — relativement stable. Dividende solide.' },
+    ],
+    sources: ['StockAnalysis.com', 'ChartMill', 'Yahoo Finance', 'MarketBeat'],
+    pine: `// ETN — Alerte pullback zone d'entrée
+//@version=5
+indicator("ETN Pullback Alert", overlay=true)
+
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+
+pullbackZone = close >= 335 and close <= 380
+rsiOk = rsi >= 35 and rsi <= 55
+macdOk = macdLine > signalLine
+aboveMAs = close > ma200
+
+signal = pullbackZone and rsiOk and macdOk and aboveMAs
+
+alertcondition(signal, title="ETN — PULLBACK ZONE ENTRÉE",
+  message="ETN revenu en zone d\'entrée. RSI normalisé.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  EQIX: { name: 'Equinix Inc.', price: '$1,085', couche: 'C1 — REITs', score: 68, decision: 'veille', profil: 'leader', entry: '$950–980', stop: '$900', target: '$1,250', rr: '1:3.5', change: '+0.2%', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Proche ATH.'},{name:'Distance ATH',score:4,flag:'⚠️',note:'-4% du 52W high $1,128.'},{name:'Force tendance',score:7,flag:'✅',note:'Tendance haussière confirmée.'},{name:'PEG/Fondamentaux',score:7,flag:'✅',note:'Revenue +6.67% YoY. 86 trimestres consécutifs de croissance.'},{name:'Catalyseurs',score:9,flag:'✅',note:'Demande IA forte. Q1 record. Guidance relevée.'},{name:'Institutionnels',score:9,flag:'✅',note:'98.70% détenu par institutionnels.'},{name:'Short interest',score:8,flag:'✅',note:'1.84% — très faible.'},{name:'Calendrier',score:8,flag:'✅',note:'Earnings 29 avril passés.'},{name:'Insiders',score:4,flag:'⚠️',note:'$25.1M vendus par insiders en 3 mois.'},{name:'Macro',score:7,flag:'✅',note:'Beta 1.00 — stable.'}], sources:['StockAnalysis.com','TipRanks','Barchart'], pine:`//@version=5\nindicator("EQIX Pullback Alert", overlay=true)\nma50 = ta.sma(close, 50)\nrsi = ta.rsi(close, 14)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\npullbackZone = close >= 900 and close <= 980\nrsiOk = rsi >= 35 and rsi <= 55\nmacdOk = macdLine > signalLine\nsignal = pullbackZone and rsiOk and macdOk\nalertcondition(signal, title="EQIX — PULLBACK", message="EQIX en zone d'entrée $950-980.")\nplot(ma50, "MA50", color.new(color.blue,0), 2)\nbgcolor(signal ? color.new(color.green, 90) : na)` },
+  DLR: { name: 'Digital Realty Trust', price: '$192', couche: 'C1 — REITs', score: 70, decision: 'veille', profil: 'leader', entry: '$178–185', stop: '$165', target: '$218', rr: '1:2.5', change: '+0.1%', changeDir: 'pos', criteria: [{name:'Setup technique',score:6,flag:'🟡',note:'MAs haussières.'},{name:'Distance ATH',score:6,flag:'🟡',note:'-8% du 52W high $208.'},{name:'Force tendance',score:6,flag:'🟡',note:'Tendance stable.'},{name:'PEG/Fondamentaux',score:6,flag:'🟡',note:'Revenue +11.88%.'},{name:'Catalyseurs',score:8,flag:'✅',note:'309 DCs, 6.3GW en développement.'},{name:'Institutionnels',score:8,flag:'✅',note:'Acheteurs en Q1.'},{name:'Short interest',score:10,flag:'✅',note:'0.01% — quasi zéro.'},{name:'Calendrier',score:7,flag:'✅',note:'Earnings 23 avril passés.'},{name:'Insiders',score:6,flag:'🟡',note:'Neutre.'},{name:'Macro',score:7,flag:'✅',note:'Beta 1.09 — stable.'}], sources:['StockAnalysis.com','Yahoo Finance','Barchart'], pine:`//@version=5\nindicator("DLR Entry Alert", overlay=true)\nma50 = ta.sma(close, 50)\nrsi = ta.rsi(close, 14)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\nentryZone = close >= 165 and close <= 185\nrsiOk = rsi >= 35 and rsi <= 60\nmacdOk = macdLine > signalLine\naboveMA = close > ma50\nsignal = entryZone and rsiOk and macdOk and aboveMA\nalertcondition(signal, title="DLR — ENTRÉE", message="DLR en zone d'entrée $165-185.")\nplot(ma50, "MA50", color.new(color.blue,0), 2)\nbgcolor(signal ? color.new(color.green, 90) : na)` },
+  IRM: { name: 'Iron Mountain Inc.', price: '$95', couche: 'C1 — REITs', score: 55, decision: 'eviter', profil: 'leader', entry: '—', stop: '—', target: '—', rr: '—', change: '—', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Neutre.'},{name:'Distance ATH',score:6,flag:'🟡',note:'Moyenne.'},{name:'Force tendance',score:5,flag:'🟡',note:'Mixte.'},{name:'PEG/Fondamentaux',score:2,flag:'🔴',note:'PE 240. Net income $144M sur $6.9Mrd revenue. Très faible rentabilité.'},{name:'Catalyseurs',score:7,flag:'✅',note:'Data center en transition.'},{name:'Institutionnels',score:5,flag:'🟡',note:'Neutre.'},{name:'Short interest',score:7,flag:'✅',note:'2.75%.'},{name:'Calendrier',score:7,flag:'✅',note:'Earnings 30 avril passés.'},{name:'Insiders',score:5,flag:'🟡',note:'Neutre.'},{name:'Macro',score:6,flag:'🟡',note:'Beta 1.15. Dette nette -$18.96Mrd.'}], sources:['StockAnalysis.com','Yahoo Finance'], pine:'' },
+  CRWV: { name: 'CoreWeave Inc.', price: '$105', couche: 'C4 — Hyperscaler', score: 53, decision: 'veille', profil: 'specu', entry: '$95–105', stop: '$80', target: '$180', rr: '1:6.0', change: '—', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Daily neutre, weekly Strong Buy.'},{name:'Distance ATH',score:7,flag:'✅',note:'-44% du 52W high $187.'},{name:'Force tendance',score:7,flag:'✅',note:'+197% en 52 semaines.'},{name:'PEG/Fondamentaux',score:3,flag:'🔴',note:'Perte nette $740M en Q1. Pas encore profitable.'},{name:'Catalyseurs',score:10,flag:'✅',note:'Revenue +112% YoY. Backlog $66Mrd. Guidance $12-13Mrd 2026.'},{name:'Institutionnels',score:5,flag:'🟡',note:'Récent IPO en phase de découverte.'},{name:'Short interest',score:4,flag:'⚠️',note:'Élevé — scepticisme sur la profitabilité.'},{name:'Calendrier',score:6,flag:'🟡',note:'Earnings passés. Prochains août.'},{name:'Insiders',score:3,flag:'🔴',note:'COO et CFO vendent depuis l\'IPO.'},{name:'Macro',score:3,flag:'🔴',note:'Très volatil. Dépendant NVDA. Dette massive.'}], sources:['StockAnalysis.com','TipRanks'], pine:`//@version=5\nindicator("CRWV Entry Alert", overlay=true)\nma50 = ta.sma(close, 50)\nrsi = ta.rsi(close, 14)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\nentryZone = close >= 80 and close <= 105\nrsiOk = rsi >= 35 and rsi <= 60\nmacdOk = macdLine > signalLine\nsignal = entryZone and rsiOk and macdOk\nalertcondition(signal, title="CRWV — ENTRÉE", message="CRWV en zone d'entrée $80-105.")\nplot(ma50, "MA50", color.new(color.blue,0), 2)\nbgcolor(signal ? color.new(color.green, 90) : na)` },
+  MOD: { name: 'Modine Manufacturing', price: '—', couche: 'C2 — Infrastructure', score: 59, decision: 'veille', profil: 'specu', entry: 'Post-earnings', stop: '—', target: '—', rr: '—', change: '—', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Neutre.'},{name:'Distance ATH',score:6,flag:'🟡',note:'Correction récente post-ATH.'},{name:'Force tendance',score:8,flag:'✅',note:'+179% en 52 semaines.'},{name:'PEG/Fondamentaux',score:6,flag:'🟡',note:'PEG 1.71. Forward PE 37.5.'},{name:'Catalyseurs',score:10,flag:'✅',note:'Data center revenue +60% 2026. Order book 5 ans. Spin-off en cours.'},{name:'Institutionnels',score:5,flag:'🟡',note:'Small cap — moins couvert.'},{name:'Short interest',score:4,flag:'⚠️',note:'6.59% — élevé.'},{name:'Calendrier',score:3,flag:'🔴',note:'Earnings 27 mai — résultats à analyser.'},{name:'Insiders',score:6,flag:'🟡',note:'Neutre.'},{name:'Macro',score:6,flag:'🟡',note:'Beta 1.66 — modéré.'}], sources:['StockAnalysis.com','MarketBeat'], pine:'' },
+};
+
+// ====== VEILLE DATA ======
+const veilleData = [
+  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Post-earnings <span class="cond-date">10 juin 2026</span>. Si résultats positifs → score 80+ → investir. Entrée visée : <span class="cond-price">$185–192</span>. Stop : $168.' },
+  { ticker: 'MU', name: 'Micron', reserve: '900€', prio: 'haute', condition: 'Pullback vers <span class="cond-price">$820–840</span> après gap +25%. Attendre RSI < 60 + consolidation. Stop : $780.' },
+  { ticker: 'CRDO', name: 'Credo Tech', reserve: '500€', prio: 'haute', condition: 'Post-earnings <span class="cond-date">1er juin 2026</span>. Si beat → entrée sur consolidation <span class="cond-price">$180–200</span>. Stop : $155.' },
+  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'moyenne', condition: 'Consolidation post-earnings attendue. Zone : <span class="cond-price">$290–300</span>. Stop : $270. Résultats Q1 FY27 historiques.' },
+  { ticker: 'AVGO', name: 'Broadcom', reserve: '—', prio: 'moyenne', condition: 'Post-earnings <span class="cond-date">3 juin 2026</span>. RSI doit redescendre sous 60. Zone : <span class="cond-price">$380–400</span>. Stop : $350.' },
+  { ticker: 'VRT', name: 'Vertiv', reserve: '—', prio: 'moyenne', condition: 'Pullback vers <span class="cond-price">$290–310</span> (support MA50). RSI doit descendre sous 55. Stop : $270.' },
+  { ticker: 'ALAB', name: 'Astera Labs', reserve: '—', prio: 'moyenne', condition: 'Zone d\'entrée <span class="cond-price">$185–205</span>. RSI actuellement neutre à 47 — le meilleur setup parmi les spéculatifs.' },
+  { ticker: 'EQIX', name: 'Equinix', reserve: '—', prio: 'basse', condition: 'Pullback vers <span class="cond-price">$950–980</span>. Attendre aussi normalisation des ventes insiders.' },
+  { ticker: 'DLR', name: 'Digital Realty', reserve: '—', prio: 'basse', condition: 'Zone entrée <span class="cond-price">$178–185</span>. Short interest 0.01% — personne ne shorte. Profil défensif.' },
+  { ticker: 'ETN', name: 'Eaton', reserve: '—', prio: 'basse', condition: 'Pullback <span class="cond-price">$360–380</span>. PEG 3.06 trop élevé pour croissance — plutôt profil défensif/dividende.' },
+  { ticker: 'CRWV', name: 'CoreWeave', reserve: '—', prio: 'basse', condition: 'Zone <span class="cond-price">$95–105</span>. Spéculatif pur — attendre profitabilité avant position significative.' },
+];
+
+// ====== FUNCTIONS ======
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function getScoreColor(s) {
+  if (s >= 75) return 'var(--c1)';
+  if (s >= 60) return 'var(--c4)';
+  return 'var(--c3)';
+}
+
+function getDecisionBadge(d) {
+  if (d === 'invest') return '<span class="decision-badge dec-invest">🟢 Investir</span>';
+  if (d === 'veille') return '<span class="decision-badge dec-veille">⏳ Veille</span>';
+  return '<span class="decision-badge dec-eviter">🔴 Éviter</span>';
+}
+
+function getProfilBadge(p) {
+  if (p === 'leader') return '<span class="profil-badge profil-leader">🏛️ Leader</span>';
+  if (p === 'challenger') return '<span class="profil-badge profil-challenger">⚡ Challenger</span>';
+  return '<span class="profil-badge profil-specu">🚀 Spéculatif</span>';
+}
+
+// Build sidebar
+function buildSidebar() {
+  const sb = document.getElementById('stockSidebar');
+  sb.innerHTML = '';
+  Object.entries(stocks).forEach(([ticker, data]) => {
+    const btn = document.createElement('button');
+    btn.className = 'stock-sidebar-btn';
+    btn.id = 'sbtn-' + ticker;
+    btn.onclick = () => showReport(ticker);
+    const sc = getScoreColor(data.score);
+    btn.innerHTML = `
+      <div>
+        <div class="ssb-ticker">${ticker}</div>
+        <div class="ssb-name">${data.name.split(' ').slice(0,2).join(' ')}</div>
+      </div>
+      <div class="ssb-right">
+        ${getDecisionBadge(data.decision)}
+        <span style="font-size:12px;font-weight:600;color:${sc}">${data.score}</span>
+      </div>`;
+    sb.appendChild(btn);
+  });
+}
+
+function showReport(ticker) {
+  document.querySelectorAll('.stock-sidebar-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('sbtn-' + ticker);
+  if (btn) btn.classList.add('active');
+
+  const d = stocks[ticker];
+  if (!d) return;
+  const sc = getScoreColor(d.score);
+
+  const criteriaHTML = d.criteria.map(c => {
+    const cc = getScoreColor(c.score);
+    return `<div class="crit-card">
+      <div class="crit-header">
+        <span class="crit-name">${c.name}</span>
+        <span class="crit-score" style="color:${cc}">${c.flag} ${c.score}/10</span>
+      </div>
+      <div class="crit-text">${c.note}</div>
+    </div>`;
+  }).join('');
+
+  const scoreRowsHTML = d.criteria.map(c => {
+    const cc = getScoreColor(c.score);
+    return `<div class="score-row">
+      <span class="score-row-label">${c.name}</span>
+      <div class="score-row-track"><div class="score-row-fill" style="width:${c.score*10}%;background:${cc}"></div></div>
+      <span class="score-row-num" style="color:${cc}">${c.score}</span>
+      <span class="score-row-flag">${c.flag}</span>
+    </div>`;
+  }).join('');
+
+  const sourcesHTML = d.sources.map(s => `<span class="source-tag">${s}</span>`).join('');
+
+  const pineHTML = d.pine ? `
+    <div class="pine-section">
+      <div class="pine-header" onclick="togglePine('pine-${ticker}')">
+        <span class="pine-header-label">📡 CODE PINE SCRIPT — TradingView Alert</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="copy-btn" onclick="copyPine('${ticker}',event)">COPIER</button>
+          <span class="pine-toggle" id="pine-toggle-${ticker}">▼ VOIR</span>
+        </div>
+      </div>
+      <div class="pine-code" id="pine-${ticker}">
+        <pre>${d.pine.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+      </div>
+    </div>` : '';
+
+  document.getElementById('reportContainer').innerHTML = `
+    <div class="report-card">
+      <div class="report-header">
+        <div>
+          <div class="report-ticker">${ticker}</div>
+          <div class="report-company">${d.name}</div>
+          <div class="report-meta">
+            <span class="td-couche" style="font-size:11px;color:var(--dim)">${d.couche}</span>
+            ${getProfilBadge(d.profil)}
+            ${getDecisionBadge(d.decision)}
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="report-price">${d.price}</div>
+          <div class="report-change ${d.changeDir}">${d.change}</div>
+          <div style="margin-top:12px;font-family:'Clash Display',sans-serif;font-size:42px;font-weight:700;color:${sc}">${d.score}<span style="font-size:16px;color:var(--dim)">/100</span></div>
+        </div>
+      </div>
+      <div class="report-body">
+        <div class="score-section">
+          <div class="score-section-title">Scoring détaillé — 10 critères</div>
+          <div class="score-rows">${scoreRowsHTML}</div>
+          <div class="score-total-row">
+            <span class="score-total-label">Score final pondéré</span>
+            <span class="score-total-num" style="color:${sc}">${d.score}/100</span>
+          </div>
+        </div>
+        ${d.entry !== '—' ? `
+        <div class="trade-plan">
+          <div class="tp-card">
+            <div class="tp-label">Entrée idéale</div>
+            <div class="tp-value tp-entry">${d.entry}</div>
+            <div class="tp-sub">Zone d'achat</div>
+          </div>
+          <div class="tp-card">
+            <div class="tp-label">Stop-Loss</div>
+            <div class="tp-value tp-stop">${d.stop}</div>
+            <div class="tp-sub">Sortie si invalidé</div>
+          </div>
+          <div class="tp-card">
+            <div class="tp-label">Cible</div>
+            <div class="tp-value tp-target">${d.target}</div>
+            <div class="tp-sub">Objectif 12-24 mois</div>
+          </div>
+        </div>
+        <div class="rr-row">
+          <span class="rr-label">RISK / REWARD RATIO</span>
+          <span class="rr-value">${d.rr}</span>
+          <span class="rr-verdict" style="color:var(--dim)">${d.rr !== '—' && parseFloat(d.rr.split(':')[1]) >= 3 ? '🔥 Excellent' : '✅ Acceptable'}</span>
+        </div>` : ''}
+        <div class="criteria-grid">${criteriaHTML}</div>
+        <div class="source-box">
+          <div class="source-box-title">Sources utilisées</div>
+          <div class="source-tags">${sourcesHTML}</div>
+        </div>
+        ${pineHTML}
+      </div>
+    </div>`;
+}
+
+function togglePine(id) {
+  const el = document.getElementById(id);
+  const toggle = document.getElementById(id.replace('pine-','pine-toggle-'));
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+    toggle.textContent = '▼ VOIR';
+  } else {
+    el.classList.add('open');
+    toggle.textContent = '▲ CACHER';
+  }
+}
+
+function copyPine(ticker, e) {
+  e.stopPropagation();
+  const d = stocks[ticker];
+  navigator.clipboard.writeText(d.pine).then(() => {
+    const btn = e.target;
+    btn.textContent = 'COPIÉ ✓';
+    setTimeout(() => btn.textContent = 'COPIER', 2000);
+  });
+}
+
+function openAnalysis(ticker) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-analyse').classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn')[1].classList.add('active');
+  setTimeout(() => showReport(ticker), 50);
+}
+
+// Build veille
+function buildVeille() {
+  const grid = document.getElementById('veilleGrid');
+  veilleData.forEach(v => {
+    const d = stocks[v.ticker];
+    const sc = getScoreColor(d ? d.score : 60);
+    const prioClass = v.prio === 'haute' ? 'haute' : v.prio === 'moyenne' ? 'moyenne' : 'basse';
+    const prioBadge = v.prio === 'haute'
+      ? '<span class="priorité-badge prio-haute">🔴 Haute priorité</span>'
+      : v.prio === 'moyenne'
+      ? '<span class="priorité-badge prio-moyenne">🟡 Priorité moyenne</span>'
+      : '<span class="priorité-badge prio-basse">⬛ Basse priorité</span>';
+
+    const pineHTML = d && d.pine ? `
+      <div class="pine-section" style="margin-top:12px">
+        <div class="pine-header" onclick="togglePine('vpine-${v.ticker}')">
+          <span class="pine-header-label">📡 PINE SCRIPT ALERT — TradingView</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="copy-btn" onclick="copyPine('${v.ticker}',event)">COPIER</button>
+            <span class="pine-toggle" id="pine-toggle-vpine-${v.ticker}">▼ VOIR</span>
+          </div>
+        </div>
+        <div class="pine-code" id="vpine-${v.ticker}">
+          <pre>${d.pine.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+        </div>
+      </div>` : '';
+
+    const card = document.createElement('div');
+    card.className = `veille-card ${prioClass}`;
+    card.innerHTML = `
+      <div>
+        <div class="veille-ticker" style="cursor:pointer" onclick="openAnalysis('${v.ticker}')">${v.ticker}</div>
+        <div class="veille-name">${v.name}</div>
+        <div style="margin-top:8px">${prioBadge}</div>
+      </div>
+      <div>
+        <div class="veille-condition">${v.condition}</div>
+        ${pineHTML}
+      </div>
+      <div class="veille-right">
+        ${v.reserve !== '—' ? `<div><div class="veille-reserve">${v.reserve}</div><div class="veille-reserve-label">Réservé</div></div>` : '<div style="color:var(--dim);font-size:11px">Non alloué</div>'}
+        <div style="font-family:\'Clash Display\',sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// Date
+function updateDate() {
+  const now = new Date();
+  document.getElementById('navDate').textContent = now.toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ====== LIVE PRICES ======
+const allTickers = Object.keys(stocks);
+let livePrices = {};
+
+async function fetchPrices() {
+  const indicator = document.getElementById('priceStatus');
+  if (indicator) {
+    indicator.textContent = '⟳ Chargement...';
+    indicator.style.color = 'var(--c4)';
+  }
+
+  const FINNHUB_KEY = 'd8csu7hr01qt0j1i9d3gd8csu7hr01qt0j1i9d40';
+
+  try {
+    // Fetch all tickers in parallel via Finnhub
+    const results = await Promise.allSettled(
+      allTickers.map(ticker =>
+        fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`)
+          .then(r => r.json())
+          .then(d => ({ ticker, c: d.c, pc: d.pc, dp: d.dp }))
+      )
+    );
+
+    let quotes = results
+      .filter(r => r.status === 'fulfilled' && r.value.c > 0)
+      .map(r => r.value);
+
+    if (!quotes.length) throw new Error('no data');
+
+    // Normalize to same format as before
+    quotes = quotes.map(q => ({
+      symbol: q.ticker,
+      regularMarketPrice: q.c,
+      regularMarketChangePercent: q.dp,
+      regularMarketChange: q.c - q.pc,
+    }));
+
+    const fakeData = { quoteResponse: { result: quotes } };
+    const allQuotes = fakeData.quoteResponse.result;
+    // reuse existing processing below
+    allQuotes.forEach(q => {
+
+      const ticker = q.symbol;
+      const price = q.regularMarketPrice;
+      const changePct = q.regularMarketChangePercent;
+      const changeAbs = q.regularMarketChange;
+
+      if (!price) return;
+
+      livePrices[ticker] = {
+        price,
+        changePct,
+        changeAbs,
+        display: price >= 1000
+          ? `$${price.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0})}`
+          : `$${price.toFixed(2)}`,
+        changeDisplay: `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`,
+        dir: changePct >= 0 ? 'pos' : 'neg'
+      };
+
+      // Update stocks object
+      if (stocks[ticker]) {
+        stocks[ticker].price = livePrices[ticker].display;
+        stocks[ticker].change = livePrices[ticker].changeDisplay;
+        stocks[ticker].changeDir = livePrices[ticker].dir;
+      }
+    });
+
+    // Refresh UI
+    updateAllPricesInUI();
+
+    if (indicator) {
+      indicator.textContent = `✓ Live · ${new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})}`;
+      indicator.style.color = 'var(--c1)';
+    }
+
+  } catch (err) {
+    console.warn('Price fetch failed:', err);
+    if (indicator) {
+      indicator.textContent = '⚠ Prix statiques';
+      indicator.style.color = 'var(--c3)';
+    }
+  }
+}
+
+function updateAllPricesInUI() {
+  // Update dashboard table prices
+  allTickers.forEach(ticker => {
+    const lp = livePrices[ticker];
+    if (!lp) return;
+
+    // Update price cells in dashboard table
+    const cells = document.querySelectorAll(`[data-price-ticker="${ticker}"]`);
+    cells.forEach(cell => {
+      cell.textContent = lp.display;
+      cell.style.color = lp.dir === 'pos' ? 'var(--c1)' : 'var(--c3)';
+    });
+
+    const changeCells = document.querySelectorAll(`[data-change-ticker="${ticker}"]`);
+    changeCells.forEach(cell => {
+      cell.textContent = lp.changeDisplay;
+      cell.className = `report-change ${lp.dir}`;
+    });
+  });
+
+  // Rebuild sidebar to reflect updated prices
+  buildSidebar();
+
+  // If a report is open, refresh it
+  const activeBtn = document.querySelector('.stock-sidebar-btn.active');
+  if (activeBtn) {
+    const ticker = activeBtn.id.replace('sbtn-', '');
+    showReport(ticker);
+    document.getElementById('sbtn-' + ticker)?.classList.add('active');
+  }
+}
+
+// Auto-refresh every 60 seconds
+function startPriceRefresh() {
+  fetchPrices();
+  setInterval(fetchPrices, 60000);
+}
+
+// Add price status to nav
+function addPriceStatus() {
+  const navRight = document.querySelector('.nav-right');
+  const span = document.createElement('span');
+  span.id = 'priceStatus';
+  span.style.cssText = 'font-size:10px;color:var(--dim);letter-spacing:1px;cursor:pointer';
+  span.title = 'Cliquer pour rafraîchir';
+  span.textContent = '⟳ Chargement...';
+  span.onclick = fetchPrices;
+  navRight.insertBefore(span, navRight.firstChild);
+}
+
+// Patch dashboard table to add data attributes for live price updates
+function patchTablePrices() {
+  const rows = document.querySelectorAll('tbody tr');
+  rows.forEach(row => {
+    const tickerCell = row.querySelector('.td-ticker');
+    if (!tickerCell) return;
+    const ticker = tickerCell.textContent.trim();
+    const cells = row.querySelectorAll('td');
+    // Price is the 5th td (index 4)
+    if (cells[4]) {
+      cells[4].setAttribute('data-price-ticker', ticker);
+    }
+  });
+}
+
+// INIT
+buildSidebar();
+buildVeille();
+updateDate();
+addPriceStatus();
+patchTablePrices();
+startPriceRefresh();
+
+// Auto-select first stock
+showReport('MSFT');
+document.getElementById('sbtn-MSFT').classList.add('active');
+</script>
+</body>
+</html>
