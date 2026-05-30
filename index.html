@@ -739,7 +739,7 @@ td {
   <div class="page-header">
     <div>
       <div class="page-title">Data Center <span class="accent">Universe</span></div>
-      <div class="page-sub">ETF Perso · 18 stocks · 4 couches · Mis à jour 29 mai 2026</div>
+      <div class="page-sub">ETF Perso · 10 stocks · 3 couches · Mis à jour 29 mai 2026</div>
     </div>
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:var(--c-leader)"></div>🏛️ Leader</div>
@@ -788,12 +788,12 @@ td {
         <span style="font-size:16px">🤖</span>
         <div>
           <div style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700">Univers IA & Data Center</div>
-          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">18 STOCKS · 4 COUCHES</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">10 STOCKS · 3 COUCHES</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:12px">
-        <span class="decision-badge dec-invest">6 🟢 Investir</span>
-        <span class="decision-badge dec-veille">11 ⏳ Veille</span>
+        <span class="decision-badge dec-invest">3 🟢 Investir</span>
+        <span class="decision-badge dec-veille">7 ⏳ Veille</span>
         <span id="acc-ia-arrow" style="color:var(--c1);font-size:14px;transition:transform 0.3s">▼</span>
       </div>
     </div>
@@ -818,8 +818,8 @@ td {
           <td class="td-ticker">MSFT</td>
           <td class="td-société">Microsoft</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$415</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">78</span></div></td>
+          <td data-price-ticker="MSFT">$427</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">80</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('GOOGL')">
@@ -827,8 +827,8 @@ td {
           <td class="td-ticker">GOOGL</td>
           <td class="td-société">Alphabet</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$175</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:79%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">79</span></div></td>
+          <td data-price-ticker="GOOGL">$390</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">80</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('AMZN')">
@@ -836,26 +836,17 @@ td {
           <td class="td-ticker">AMZN</td>
           <td class="td-société">Amazon</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$210</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:76%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">76</span></div></td>
-          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+          <td data-price-ticker="AMZN">$272</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:72%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">72</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
         <tr onclick="openAnalysis('ORCL')">
           <td class="td-couche couche-c4">C4</td>
           <td class="td-ticker">ORCL</td>
           <td class="td-société">Oracle</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$190</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:72%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">72</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
-        </tr>
-        <tr onclick="openAnalysis('CRWV')">
-          <td class="td-couche couche-c4">C4</td>
-          <td class="td-ticker">CRWV</td>
-          <td class="td-société">CoreWeave</td>
-          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
-          <td>$105</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:53%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">53</span></div></td>
+          <td data-price-ticker="ORCL">$226</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:70%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">70</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
         <!-- C3 -->
@@ -864,8 +855,8 @@ td {
           <td class="td-ticker">NVDA</td>
           <td class="td-société">Nvidia</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$212</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:77%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">77</span></div></td>
+          <td data-price-ticker="NVDA">$216</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">78</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('MU')">
@@ -873,7 +864,7 @@ td {
           <td class="td-ticker">MU</td>
           <td class="td-société">Micron</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td>$882</td>
+          <td data-price-ticker="MU">$969</td>
           <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">78</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
@@ -882,8 +873,8 @@ td {
           <td class="td-ticker">MRVL</td>
           <td class="td-société">Marvell</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td>$200</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:75%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">75</span></div></td>
+          <td data-price-ticker="MRVL">$205</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:76%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">76</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('AVGO')">
@@ -891,8 +882,8 @@ td {
           <td class="td-ticker">AVGO</td>
           <td class="td-société">Broadcom</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$431</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:58%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">58</span></div></td>
+          <td data-price-ticker="AVGO">$446</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:65%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">65</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
         <tr onclick="openAnalysis('CRDO')">
@@ -900,16 +891,7 @@ td {
           <td class="td-ticker">CRDO</td>
           <td class="td-société">Credo Tech</td>
           <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
-          <td>$215</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:60%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">60</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
-        </tr>
-        <tr onclick="openAnalysis('ALAB')">
-          <td class="td-couche couche-c3">C3</td>
-          <td class="td-ticker">ALAB</td>
-          <td class="td-société">Astera Labs</td>
-          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
-          <td>$200</td>
+          <td data-price-ticker="CRDO">$235</td>
           <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:62%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">62</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
@@ -919,66 +901,10 @@ td {
           <td class="td-ticker">DELL</td>
           <td class="td-société">Dell Tech</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td>$318</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:82%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">82</span></div></td>
-          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
-        </tr>
-        <tr onclick="openAnalysis('VRT')">
-          <td class="td-couche couche-c2">C2</td>
-          <td class="td-ticker">VRT</td>
-          <td class="td-société">Vertiv</td>
-          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td>$325</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:70%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">70</span></div></td>
+          <td data-price-ticker="DELL">$423</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:82%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">82</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
-        </tr>
-        <tr onclick="openAnalysis('ETN')">
-          <td class="td-couche couche-c2">C2</td>
-          <td class="td-ticker">ETN</td>
-          <td class="td-société">Eaton</td>
-          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$391</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:64%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">64</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
-        </tr>
-        <tr onclick="openAnalysis('MOD')">
-          <td class="td-couche couche-c2">C2</td>
-          <td class="td-ticker">MOD</td>
-          <td class="td-société">Modine</td>
-          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
-          <td>—</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:59%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">59</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
-        </tr>
-        <!-- C1 -->
-        <tr onclick="openAnalysis('EQIX')">
-          <td class="td-couche couche-c1">C1</td>
-          <td class="td-ticker">EQIX</td>
-          <td class="td-société">Equinix</td>
-          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$1,085</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:68%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">68</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
-        </tr>
-        <tr onclick="openAnalysis('DLR')">
-          <td class="td-couche couche-c1">C1</td>
-          <td class="td-ticker">DLR</td>
-          <td class="td-société">Digital Realty</td>
-          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$192</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:70%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">70</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
-        </tr>
-        <tr onclick="openAnalysis('IRM')">
-          <td class="td-couche couche-c1">C1</td>
-          <td class="td-ticker">IRM</td>
-          <td class="td-société">Iron Mountain</td>
-          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td>$95</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:55%;background:var(--c3)"></div></div><span class="score-num" style="color:var(--c3)">55</span></div></td>
-          <td><span class="decision-badge dec-eviter">🔴 Éviter</span></td>
-        </tr>
-      </tbody>
+        </tr></tbody>
     </table>
     </div>
     </div>
@@ -1144,742 +1070,472 @@ const stockHistory = {
       { icon: '🟡', text: 'Prix -25% du 52W high $555' },
     ]},
     { date: '30 mai 2026', score: 80, price: 427, decision: 'invest', changes: [
-      { icon: '✅', text: 'Prix +3% — volume élevé 47M vs moyenne 31M' },
-      { icon: '✅', text: 'Nasdaq en hausse — momentum sectoriel favorable' },
-      { icon: '✅', text: 'MA50 et MA200 toujours confluentes à $416 — support confirmé' },
+      { icon: '✅', text: 'Prix +3% — volume élevé 47M vs moyenne 31M. Nasdaq en hausse' },
+      { icon: '✅', text: 'MA50 et MA200 confluentes à $416 — support double confirmé' },
+      { icon: '↑', text: 'Score +2 — momentum technique renforcé' },
     ]},
   ],
   GOOGL: [
     { date: '27 mai 2026', score: 79, price: 175, decision: 'invest', changes: [
-      { icon: '✅', text: 'Short interest 0.62% — plus faible de l\'univers' },
+      { icon: '✅', text: 'Short interest 0.62% — plus faible de notre univers' },
       { icon: '✅', text: 'Earnings passés 29 avril — piste libre' },
       { icon: '✅', text: 'Google Cloud +28% YoY' },
     ]},
-    { date: '30 mai 2026', score: 79, price: 175, decision: 'invest', changes: [
-      { icon: '=', text: 'Aucun changement majeur — score stable' },
-      { icon: '✅', text: 'Position maintenue — fondamentaux intacts' },
+    { date: '30 mai 2026', score: 80, price: 390, decision: 'invest', changes: [
+      { icon: '✅', text: 'Prix $390 — +122% depuis 52W low' },
+      { icon: '✅', text: 'Truist relève cible à $480 — AWS hyperscaler momentum' },
+      { icon: '⚠️', text: 'Ingénieur Google arrêté insider trading Polymarket — isolé, pas systémique' },
+      { icon: '↑', text: 'Score +1 — catalyseurs renforcés' },
     ]},
   ],
   AMZN: [
     { date: '27 mai 2026', score: 76, price: 210, decision: 'invest', changes: [
-      { icon: '✅', text: 'AWS #1 cloud mondial. Short interest 0.85%' },
+      { icon: '✅', text: 'AWS dominant. Short interest 0.85%' },
       { icon: '✅', text: 'Earnings passés 29 avril' },
-      { icon: '🟡', text: 'PEG 1.49 — raisonnable' },
     ]},
-    { date: '30 mai 2026', score: 76, price: 210, decision: 'invest', changes: [
-      { icon: '=', text: 'Aucun changement majeur — score stable' },
-      { icon: '✅', text: 'Position maintenue' },
+    { date: '30 mai 2026', score: 72, price: 272, decision: 'veille', changes: [
+      { icon: '🚨', text: 'REVISION : Investir → Veille' },
+      { icon: '⚠️', text: 'Prix $272 — +29% en 1 semaine. Quasi ATH à $278' },
+      { icon: '✅', text: 'AWS fastest growth in 15 quarters. Truist cible $320' },
+      { icon: '⚠️', text: 'Attendre pullback $245-255 avant entree' },
+      { icon: '↓', text: 'Score -4 — distance ATH insuffisante' },
     ]},
   ],
   ORCL: [
     { date: '27 mai 2026', score: 72, price: 190, decision: 'veille', changes: [
       { icon: '⚠️', text: 'Earnings 10 juin — risque binaire' },
-      { icon: '⚠️', text: 'Larry Ellison vend régulièrement' },
       { icon: '✅', text: 'Double bottom validé, PEG 1.03' },
     ]},
-    { date: '30 mai 2026', score: 77, price: 210, decision: 'invest', changes: [
-      { icon: '🚨', text: 'RÉVISION : Veille → Investir' },
-      { icon: '✅', text: 'Contrat gouvernement US $30 milliards annoncé' },
-      { icon: '✅', text: 'Prix +10.5% en 48h — momentum fort' },
-      { icon: '⚠️', text: 'Earnings 10 juin toujours à venir — surveiller' },
+    { date: '30 mai 2026', score: 70, price: 226, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Prix $226 — +19% en 3 jours. Trop chaud pour entrer' },
+      { icon: '✅', text: 'Contrat gouvernement US $30Mrd annoncé' },
+      { icon: '⚠️', text: 'Phillipe Laffont (Coatue) a vendu ORCL — signal négatif' },
+      { icon: '⚠️', text: 'Earnings révisés au Jun 16 (était Jun 10)' },
+      { icon: '↓', text: 'Score -2 — prix trop éloigné zone entree' },
     ]},
   ],
   NVDA: [
     { date: '27 mai 2026', score: 77, price: 212, decision: 'invest', changes: [
       { icon: '✅', text: 'Earnings 20 mai passés — résultats record' },
       { icon: '✅', text: 'PEG 0.50 exceptionnel. ROE 114%' },
-      { icon: '⚠️', text: 'Beta 2.24 — très volatil' },
     ]},
-    { date: '30 mai 2026', score: 77, price: 216, decision: 'invest', changes: [
-      { icon: '✅', text: 'Prix stable +1.9% — consolidation saine' },
-      { icon: '✅', text: 'Volume normal — pas de pression vendeuse' },
-      { icon: '=', text: 'Score inchangé — setup maintenu' },
+    { date: '30 mai 2026', score: 78, price: 216, decision: 'invest', changes: [
+      { icon: '✅', text: 'Prix +1.9% — consolidation saine post-earnings' },
+      { icon: '✅', text: 'PEG reconfirmé à 0.49. Revenue +70.68% YoY' },
+      { icon: '✅', text: 'Volume normalisé — vendeurs absents' },
+      { icon: '↑', text: 'Score +1 — fondamentaux encore plus solides' },
     ]},
   ],
   MU: [
     { date: '27 mai 2026', score: 78, price: 750, decision: 'invest', changes: [
-      { icon: '✅', text: 'PEG 0.06 — le plus bas de l\'univers' },
-      { icon: '✅', text: '12 signaux Buy / 0 Sell' },
-      { icon: '🟡', text: '-8% du sommet' },
+      { icon: '✅', text: 'PEG 0.06. 12 signaux Buy / 0 Sell' },
     ]},
     { date: '29 mai 2026', score: 78, price: 882, decision: 'veille', changes: [
-      { icon: '🚨', text: 'RÉVISION : Investir → Veille' },
+      { icon: '🚨', text: 'REVISION : Investir → Veille' },
       { icon: '⚠️', text: '+25% en 1 journée après UBS cible $1,625' },
-      { icon: '⚠️', text: 'Gap parabolic — attendre consolidation $820-840' },
+      { icon: '⚠️', text: 'Gap parabolic — attendre consolidation' },
     ]},
-    { date: '30 mai 2026', score: 80, price: 969, decision: 'veille', changes: [
-      { icon: '⚠️', text: '+10% supplémentaire — $969. Zone entrée révisée $880-900' },
-      { icon: '✅', text: 'Fondamentaux encore plus solides — demande HBM IA' },
-      { icon: '⚠️', text: 'Earnings 24 juin — ne pas entrer trop proche' },
+    { date: '30 mai 2026', score: 78, price: 969, decision: 'veille', changes: [
+      { icon: '⚠️', text: '+10% supplémentaire. Zone entrée révisée $880-920' },
+      { icon: '✅', text: 'Fondamentaux confirmés — HBM demande record' },
+      { icon: '⚠️', text: 'Earnings Jun 24 — ne pas entrer trop proche' },
     ]},
   ],
   MRVL: [
     { date: '27 mai 2026', score: 63, price: 200, decision: 'veille', changes: [
       { icon: '⚠️', text: 'Earnings ce soir — risque binaire maximum' },
-      { icon: '✅', text: 'PEG 0.14 — très attractif' },
-      { icon: '⚠️', text: 'Quasi à l\'ATH' },
     ]},
     { date: '28 mai 2026', score: 75, price: 200, decision: 'invest', changes: [
-      { icon: '🚨', text: 'RÉVISION : Veille → Investir' },
-      { icon: '✅', text: 'Earnings record Q1 FY27 — guidance relevée FY27/FY28' },
-      { icon: '✅', text: 'Citi $225, Barclays $275, Deutsche Bank $240' },
-      { icon: '✅', text: 'Risque calendrier éliminé' },
+      { icon: '🚨', text: 'REVISION : Veille → Investir' },
+      { icon: '✅', text: 'Earnings record Q1 FY27. Citi $225, Barclays $275' },
     ]},
-    { date: '30 mai 2026', score: 75, price: 205, decision: 'invest', changes: [
-      { icon: '=', text: 'Score stable — position maintenue' },
-      { icon: '✅', text: 'Prix +2.5% — momentum post-earnings solide' },
-    ]},
-  ],
-  AVGO: [
-    { date: '27 mai 2026', score: 58, price: 431, decision: 'veille', changes: [
-      { icon: '🔴', text: 'RSI 79 — suracheté' },
-      { icon: '⚠️', text: 'Earnings 3 juin — risque binaire' },
-      { icon: '✅', text: 'PEG 0.75 — fondamentaux bons' },
-    ]},
-    { date: '30 mai 2026', score: 65, price: 446, decision: 'veille', changes: [
-      { icon: '✅', text: 'RSI redescend légèrement — tension réduite' },
-      { icon: '⚠️', text: 'Earnings 3 juin dans 4 jours — attendre' },
-      { icon: '✅', text: 'Prix +3.5% — momentum secteur semis' },
-    ]},
-  ],
-  CRDO: [
-    { date: '27 mai 2026', score: 60, price: 215, decision: 'veille', changes: [
-      { icon: '🔴', text: 'ATH absolu — 0% de marge' },
-      { icon: '⚠️', text: 'Earnings 1er juin dans 5 jours' },
-      { icon: '✅', text: 'Revenue +200% YoY — fondamentaux exceptionnels' },
-    ]},
-    { date: '30 mai 2026', score: 68, price: 235, decision: 'veille', changes: [
-      { icon: '✅', text: '+9% en 3 jours — momentum pré-earnings fort' },
-      { icon: '⚠️', text: 'Earnings lundi 1er juin — décision urgente' },
-      { icon: '✅', text: 'Score amélioré — catalyseurs sectoriels renforcés' },
-    ]},
-  ],
-  ALAB: [
-    { date: '27 mai 2026', score: 62, price: 200, decision: 'veille', changes: [
-      { icon: '✅', text: 'RSI 47 — neutre parfait' },
-      { icon: '✅', text: '-37% du 52W high — bonne marge' },
-      { icon: '⚠️', text: 'Short interest 8.43% élevé' },
-    ]},
-    { date: '30 mai 2026', score: 62, price: 200, decision: 'veille', changes: [
-      { icon: '=', text: 'Score inchangé — attente confirmée' },
+    { date: '30 mai 2026', score: 76, price: 205, decision: 'invest', changes: [
+      { icon: '✅', text: 'Prix +2.5% — momentum post-earnings confirmé' },
+      { icon: '✅', text: 'ChartMill rating 10/10. Outperforms 97% des stocks' },
+      { icon: '↑', text: 'Score +1 — technique renforcé' },
     ]},
   ],
   DELL: [
     { date: '27 mai 2026', score: 64, price: 318, decision: 'veille', changes: [
       { icon: '⚠️', text: 'Earnings 28 mai demain — risque binaire' },
-      { icon: '✅', text: 'PEG 1.15 — moins cher de l\'univers' },
-      { icon: '🟡', text: 'Attendre résultats' },
     ]},
-    { date: '29 mai 2026', score: 82, price: 318, decision: 'invest', changes: [
-      { icon: '🚨', text: 'RÉVISION : Veille → Investir' },
-      { icon: '✅', text: 'EPS $4.86 vs $2.96 estimé — +64% surprise historique' },
-      { icon: '✅', text: 'Revenue +88% YoY. AI backlog $51.3Mrd' },
-      { icon: '⚠️', text: '+39% en after-hours — attendre consolidation $290-300' },
+    { date: '29 mai 2026', score: 82, price: 423, decision: 'veille', changes: [
+      { icon: '🚨', text: 'Score +18 — earnings historiques' },
+      { icon: '✅', text: 'EPS $4.86 vs $2.96 estimé (+64%). Revenue +88%' },
+      { icon: '⚠️', text: '+33% en 1 semaine — attendre consolidation $385-400' },
     ]},
-    { date: '30 mai 2026', score: 88, price: 423, decision: 'invest', changes: [
-      { icon: '✅', text: 'Prix $423 — momentum exceptionnel confirmé' },
-      { icon: '✅', text: 'Mizuho relève cible à $435' },
-      { icon: '⚠️', text: 'Nouveau 52W high $437 — attendre consolidation $390-400' },
+    { date: '30 mai 2026', score: 82, price: 423, decision: 'veille', changes: [
+      { icon: '=', text: 'Score stable — attendre toujours la consolidation' },
+      { icon: '✅', text: 'Mizuho $435, max analyst $565. Prochains earnings Sep 3' },
     ]},
   ],
-  VRT: [
-    { date: '27 mai 2026', score: 70, price: 325, decision: 'veille', changes: [
-      { icon: '✅', text: 'PEG 0.63 — excellent' },
-      { icon: '⚠️', text: '-14% du sommet — insuffisant' },
-      { icon: '⚠️', text: 'Beta 2.10 — très volatil' },
+  CRDO: [
+    { date: '27 mai 2026', score: 60, price: 215, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings Jun 1 dans 5 jours' },
+      { icon: '✅', text: 'Revenue +200% YoY. PEG 0.40' },
     ]},
-    { date: '30 mai 2026', score: 70, price: 325, decision: 'veille', changes: [
-      { icon: '=', text: 'Score inchangé — attendre pullback $290-310' },
-    ]},
-  ],
-  ETN: [
-    { date: '27 mai 2026', score: 64, price: 391, decision: 'veille', changes: [
-      { icon: '⚠️', text: 'PEG 3.06 — trop élevé pour profil croissance' },
-      { icon: '✅', text: 'Beta 1.16 — stable. Dividende solide' },
-    ]},
-    { date: '30 mai 2026', score: 64, price: 391, decision: 'veille', changes: [
-      { icon: '=', text: 'Score inchangé' },
+    { date: '30 mai 2026', score: 62, price: 235, decision: 'veille', changes: [
+      { icon: '✅', text: '+9% en 3 jours — momentum pré-earnings fort' },
+      { icon: '⚠️', text: 'Earnings ce soir Jun 1 — ne pas entrer avant' },
+      { icon: '↑', text: 'Score +2 — catalyseurs confirmés' },
     ]},
   ],
-  MOD: [
-    { date: '27 mai 2026', score: 59, price: 0, decision: 'veille', changes: [
-      { icon: '⚠️', text: 'Earnings 27 mai — résultats à analyser' },
-      { icon: '✅', text: 'Data center revenue +60% 2026' },
+  AVGO: [
+    { date: '27 mai 2026', score: 58, price: 431, decision: 'veille', changes: [
+      { icon: '🔴', text: 'RSI 79 — suracheté. Earnings Jun 3' },
     ]},
-    { date: '30 mai 2026', score: 59, price: 0, decision: 'veille', changes: [
-      { icon: '=', text: 'En attente résultats earnings — score maintenu' },
-    ]},
-  ],
-  EQIX: [
-    { date: '27 mai 2026', score: 68, price: 1085, decision: 'veille', changes: [
-      { icon: '⚠️', text: 'Insiders ont vendu $25.1M en 3 mois' },
-      { icon: '✅', text: '98.70% détenu par institutionnels' },
-      { icon: '⚠️', text: '-4% du 52W high — trop proche' },
-    ]},
-    { date: '30 mai 2026', score: 68, price: 1085, decision: 'veille', changes: [
-      { icon: '=', text: 'Score inchangé — attendre pullback $950-980' },
-    ]},
-  ],
-  DLR: [
-    { date: '27 mai 2026', score: 70, price: 192, decision: 'veille', changes: [
-      { icon: '✅', text: 'Short interest 0.01% — quasi zéro' },
-      { icon: '✅', text: '309 data centers, 6.3GW en développement' },
-      { icon: '🟡', text: '-8% du 52W high' },
-    ]},
-    { date: '30 mai 2026', score: 70, price: 192, decision: 'veille', changes: [
-      { icon: '=', text: 'Score inchangé' },
-    ]},
-  ],
-  IRM: [
-    { date: '27 mai 2026', score: 55, price: 95, decision: 'eviter', changes: [
-      { icon: '🔴', text: 'PE 240 — très difficile à justifier' },
-      { icon: '🔴', text: 'Dette nette -$18.96Mrd' },
-    ]},
-    { date: '30 mai 2026', score: 55, price: 95, decision: 'eviter', changes: [
-      { icon: '=', text: 'Score inchangé — toujours à éviter' },
-    ]},
-  ],
-  CRWV: [
-    { date: '27 mai 2026', score: 53, price: 105, decision: 'veille', changes: [
-      { icon: '🔴', text: 'Perte nette $740M Q1 — pas encore profitable' },
-      { icon: '✅', text: 'Revenue +112% YoY. Backlog $66Mrd' },
-      { icon: '🔴', text: 'COO et CFO vendent depuis l\'IPO' },
-    ]},
-    { date: '30 mai 2026', score: 53, price: 105, decision: 'veille', changes: [
-      { icon: '=', text: 'Score inchangé — position spéculative maintenue' },
+    { date: '30 mai 2026', score: 65, price: 446, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Nouveau ATH à $446 — +1% au-dessus 52W high' },
+      { icon: '⚠️', text: 'Earnings Jun 3 dans 4 jours — attendre absolument' },
+      { icon: '✅', text: 'MA50 $398 et MA200 $343 très en dessous — tendance haussière confirmée' },
+      { icon: '↑', text: 'Score +7 — MA alignment meilleur que prévu' },
     ]},
   ],
 };
 
+
 // ====== DATA ======
 const stocks = {
   MSFT: {
-    name: 'Microsoft Corporation', price: '$415', couche: 'C4 — Hyperscaler',
-    score: 78, decision: 'invest', profil: 'leader',
-    entry: '$415–420', stop: '$395', target: '$560', rr: '1:6.2',
-    change: '+1.2%', changeDir: 'pos',
+    name: 'Microsoft Corporation', price: '$427', couche: 'C4 — Hyperscaler',
+    score: 80, decision: 'invest', profil: 'leader',
+    entry: '$420–430', stop: '$395', target: '$560', rr: '1:5.0',
+    change: '+3.9%', changeDir: 'pos',
     criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 8, flag: '✅', note: 'RSI 57, MACD Buy, 9 signaux Buy / 3 Sell. MA50 et MA200 confluentes à $416.' },
-      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-25% du 52W high $555. Correction saine sur un stock fondamentalement solide.' },
-      { name: 'Force tendance (ADX)', score: 6, flag: '🟡', note: 'Tendance en reconstruction après correction. Daily haussier.' },
-      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.40. Revenue +16.7% YoY, EPS +23%. Division IA +123% à $37Mrd.' },
-      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Azure IA +123%, Copilot déploiement massif, partenariat OpenAI central.' },
-      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Ownership institutionnel dominant. Smart Money stable et accumulant.' },
-      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.06% — quasi inexistant. Personne ne parie contre MSFT.' },
-      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Derniers earnings 29 avril passés. Prochains juillet — piste libre.' },
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 8, flag: '✅', note: 'RSI 61.9 — neutre/haussier. MACD 3.90 Buy. MA50 $416 et MA200 $416 confluentes — support double béton.' },
+      { name: 'Distance ATH + marge sécurité', score: 6, flag: '🟡', note: '-23% du 52W high $555. Correction saine confirmée. Zone d entrée toujours valide.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance haussière en reconstruction. Daily et weekly positifs. Volume 47M vs moyenne 31M.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.40. Revenue +16.7% YoY. EPS +23%. Division IA +123% à $37Mrd. Earnings juillet.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Azure IA +123%. Copilot déploiement massif. OpenAI partnership central. Next earnings Jul 28.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Ownership institutionnel dominant. Vanguard et BlackRock top holders. Smart Money stable.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.06% — quasi inexistant. Aucune pression vendeuse.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Derniers earnings 29 avril passés. Prochains Jul 28. Piste libre 8 semaines.' },
       { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Quelques ventes normales de dirigeants. Aucun signal alarmant.' },
-      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.09 — proche du marché. Peu sensible aux taux.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.09. Peu sensible aux taux. Resilient aux chocs macro.' },
     ],
-    sources: ['StockAnalysis.com', 'TipRanks', 'Investing.com', 'Yahoo Finance', 'TradingView'],
-    pine: `// MSFT — Alerte entrée optimale
-//@version=5
+    sources: ['Investing.com', 'TipRanks', 'StockAnalysis.com', 'TradingView', 'Robinhood'],
+    pine: `//@version=5
 indicator("MSFT Entry Alert", overlay=true)
-
 ma50 = ta.sma(close, 50)
 ma200 = ta.sma(close, 200)
 rsi = ta.rsi(close, 14)
 [macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 395 and close <= 420
-rsiOk = rsi >= 45 and rsi <= 65
+entryZone = close >= 395 and close <= 432
+rsiOk = rsi >= 45 and rsi <= 70
 macdOk = macdLine > signalLine
 aboveMA = close > ma50 and close > ma200
-
 signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="MSFT — ENTRÉE OPTIMALE",
-  message="MSFT dans la zone d'entrée. RSI neutre + MACD buy + au-dessus MAs.")
+alertcondition(signal, title="MSFT — ENTREE OPTIMALE", message="MSFT zone entree. RSI neutre + MACD buy + au-dessus MAs.")
 plot(ma50, "MA50", color.new(color.blue, 0), 2)
 plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   GOOGL: {
-    name: 'Alphabet Inc.', price: '$175', couche: 'C4 — Hyperscaler',
-    score: 79, decision: 'invest', profil: 'leader',
-    entry: '$170–178', stop: '$155', target: '$220', rr: '1:3.3',
-    change: '+0.8%', changeDir: 'pos',
+    name: 'Alphabet Inc.', price: '$390', couche: 'C4 — Hyperscaler',
+    score: 80, decision: 'invest', profil: 'leader',
+    entry: '$380–395', stop: '$355', target: '$480', rr: '1:3.5',
+    change: '+2.1%', changeDir: 'pos',
     criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière solide sur le daily et le weekly.' },
-      { name: 'Distance ATH + marge sécurité', score: 7, flag: '✅', note: 'Correction modérée depuis les sommets. Bonne marge de sécurité.' },
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière solide. MAs toutes haussières. RSI neutre.' },
+      { name: 'Distance ATH + marge sécurité', score: 6, flag: '🟡', note: '+128% en 52 semaines. Prix actuel $390 proche de zone support.' },
       { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: '+128.87% en 52 semaines. Tendance de fond exceptionnelle.' },
-      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 1.88 — très raisonnable. PE 29 proche de la moyenne historique.' },
-      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Google Cloud +28%, puces TPU, Gemini IA, Search dominance absolue.' },
-      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap ultra institutionnalisé. Vanguard, BlackRock top holders.' },
-      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.62% — le plus faible de tout l\'univers.' },
-      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Prochains juillet — piste libre.' },
-      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Neutre. Aucun signal négatif des dirigeants.' },
-      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.27 — modéré. Résistant aux chocs macro.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 1.88. PE 29.47 proche moyenne historique. Revenue cloud +28% YoY.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Google Cloud +28%. Gemini IA. TPU chips maison. Search dominance absolue.' },
+      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap ultra institutionnalisé. Truist relève cible à $480.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.62% — plus faible de tout notre univers.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Prochains juillet. Piste libre.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Ingénieur Google arrêté pour insider trading sur Polymarket — isolé, pas systémique.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.27. Modéré. ROE 38.88%. ROIC 28.34%.' },
     ],
-    sources: ['Yahoo Finance', 'TipRanks', 'StockAnalysis.com', 'CNBC', 'Barchart'],
-    pine: `// GOOGL — Alerte entrée optimale
-//@version=5
+    sources: ['StockAnalysis.com', 'GuruFocus', 'TipRanks', 'Robinhood', 'FinanceCharts'],
+    pine: `//@version=5
 indicator("GOOGL Entry Alert", overlay=true)
-
 ma50 = ta.sma(close, 50)
 ma200 = ta.sma(close, 200)
 rsi = ta.rsi(close, 14)
 [macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 155 and close <= 178
+entryZone = close >= 355 and close <= 395
 rsiOk = rsi >= 40 and rsi <= 65
 macdOk = macdLine > signalLine
 aboveMA = close > ma200
-
 signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="GOOGL — ENTRÉE OPTIMALE",
-  message="GOOGL dans la zone d\'entrée optimale. Conditions réunies.")
-plot(ma50, "MA50", color.new(color.blue, 0), 2)
-plot(ma200, "MA200", color.new(color.orange, 0), 2)
-bgcolor(signal ? color.new(color.green, 90) : na)`
-  },
-  NVDA: {
-    name: 'NVIDIA Corporation', price: '$212', couche: 'C3 — Semi-conducteurs',
-    score: 77, decision: 'invest', profil: 'leader',
-    entry: '$210–218', stop: '$195', target: '$280', rr: '1:4.5',
-    change: '-1.1%', changeDir: 'neg',
-    criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 53.7 neutre. MA50 à $196, MA200 à $187 — prix au-dessus des deux.' },
-      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-9% du 52W high $236. Limite — mais compensé par les fondamentaux.' },
-      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance de fond structurelle. GPU IA = pilier de l\'infrastructure mondiale.' },
-      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.50 exceptionnel. ROE 114%, ROIC 104%. Les chiffres les plus forts du secteur.' },
-      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'GPU H100/B200 = colonne vertébrale de toute l\'IA mondiale. Monopole de facto.' },
-      { name: 'Flux institutionnels', score: 8, flag: '✅', note: '65%+ détenu par institutionnels. State Street augmentant sa position.' },
-      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.17% — quasi inexistant. Consensus haussier total.' },
-      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings du 20 mai passés — résultats record. Piste libre jusqu\'en août.' },
-      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Jensen Huang conserve ses positions. Aucune vente significative.' },
-      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.24 — très volatil. Risque géopolitique Taiwan à surveiller.' },
-    ],
-    sources: ['Yahoo Finance', 'StockAnalysis.com', 'Finviz', 'TradingView', 'GuruFocus'],
-    pine: `// NVDA — Alerte entrée optimale
-//@version=5
-indicator("NVDA Entry Alert", overlay=true)
-
-ma50 = ta.sma(close, 50)
-ma200 = ta.sma(close, 200)
-rsi = ta.rsi(close, 14)
-[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 195 and close <= 218
-rsiOk = rsi >= 40 and rsi <= 65
-macdOk = macdLine > signalLine
-aboveMA = close > ma50
-
-signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="NVDA — ENTRÉE OPTIMALE",
-  message="NVDA zone d\'entrée optimale. RSI neutre + MACD buy + au-dessus MA50.")
+alertcondition(signal, title="GOOGL — ENTREE OPTIMALE", message="GOOGL zone entree optimale. Conditions reunies.")
 plot(ma50, "MA50", color.new(color.blue, 0), 2)
 plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   AMZN: {
-    name: 'Amazon.com Inc.', price: '$210', couche: 'C4 — Hyperscaler',
-    score: 76, decision: 'invest', profil: 'leader',
-    entry: '$205–212', stop: '$190', target: '$265', rr: '1:3.7',
-    change: '+0.3%', changeDir: 'pos',
+    name: 'Amazon.com Inc.', price: '$272', couche: 'C4 — Hyperscaler',
+    score: 72, decision: 'veille', profil: 'leader',
+    entry: '$245–255', stop: '$225', target: '$320', rr: '1:3.0',
+    change: '+1.2%', changeDir: 'pos',
     criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure solide. MAs haussières, momentum positif sur le daily.' },
-      { name: 'Distance ATH + marge sécurité', score: 6, flag: '🟡', note: 'Correction modérée depuis les sommets. Acceptable.' },
-      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: '+28.83% en 52 semaines. Tendance régulière et moins volatile que les autres.' },
-      { name: 'Momentum fondamental (PEG)', score: 7, flag: '✅', note: 'PEG 1.49. ROE 24%, ROIC 13%. AWS reste #1 cloud mondial.' },
-      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'AWS #1 cloud mondial. $15Mrd investis en Indiana. Puces Trainium maison.' },
-      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap. Vanguard, BlackRock, State Street top holders.' },
-      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.85% — quasi inexistant.' },
-      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Piste libre jusqu\'en juillet.' },
-      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Jeff Bezos vend méthodiquement mais programmatiquement — normal.' },
-      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.47 — modéré. Diversification business (retail + cloud) protège.' },
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'Proche du 52W high $278. RSI en zone haute. Momentum fort mais prudence.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: '-2% du 52W high $278. Quasi au sommet. Trop risqué entrer maintenant.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: '+38% en 52 semaines. Tendance solide et régulière.' },
+      { name: 'Momentum fondamental (PEG)', score: 7, flag: '✅', note: 'AWS hits fastest growth in 15 quarters. Truist relève cible à $320.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'AWS croissance record. Partenariat Anthropic renforcé. Snowflake deal.' },
+      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap. Institutional ownership dominant.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.85% — très faible.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Piste libre jusqu en juillet.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Bezos vend programmatiquement — normal et planifié.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.47. Diversification retail + cloud protège.' },
     ],
-    sources: ['Yahoo Finance', 'CNBC', 'StockAnalysis.com', 'Barchart', 'TipRanks'],
-    pine: `// AMZN — Alerte entrée optimale
-//@version=5
-indicator("AMZN Entry Alert", overlay=true)
-
+    sources: ['Robinhood', 'TipRanks', 'StockAnalysis.com', 'TradingView'],
+    pine: `//@version=5
+indicator("AMZN Pullback Alert", overlay=true)
 ma50 = ta.sma(close, 50)
-ma200 = ta.sma(close, 200)
 rsi = ta.rsi(close, 14)
 [macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 190 and close <= 212
-rsiOk = rsi >= 40 and rsi <= 65
-macdOk = macdLine > signalLine
-aboveMA = close > ma200
-
-signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="AMZN — ENTRÉE OPTIMALE",
-  message="AMZN dans la zone d\'entrée. Conditions réunies.")
-plot(ma50, "MA50", color.new(color.blue, 0), 2)
-plot(ma200, "MA200", color.new(color.orange, 0), 2)
-bgcolor(signal ? color.new(color.green, 90) : na)`
-  },
-  MRVL: {
-    name: 'Marvell Technology Inc.', price: '$200', couche: 'C3 — Semi-conducteurs',
-    score: 75, decision: 'invest', profil: 'challenger',
-    entry: '$195–205', stop: '$170', target: '$260', rr: '1:2.5',
-    change: '+3.0%', changeDir: 'pos',
-    criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 67 — neutre/haussier. MACD 14.08 buy signal. Williams %R oversold.' },
-      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: 'Quasi à l\'ATH. Compensé par les fondamentaux post-earnings.' },
-      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+176% en 52 semaines. Momentum exceptionnel. Tendance très forte.' },
-      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 0.14. Data center +76% YoY. Revenue total $8.2Mrd FY2026.' },
-      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Custom ASICs pour AWS et Microsoft. Data center = 74% du revenue.' },
-      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Goldman Sachs, hedge funds en accumulation post-earnings.' },
-      { name: 'Sentiment (short interest)', score: 7, flag: '🟡', note: 'Short interest 3.24% — modéré.' },
-      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings Q1 FY27 passés le 27 mai — résultats record. Piste libre.' },
-      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre. Quelques ventes programmées normales.' },
-      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.25 — très volatil. À dimensionner en conséquence.' },
-    ],
-    sources: ['StockAnalysis.com', 'TradingKey', 'TipRanks', 'Google Finance', 'MarketBeat'],
-    pine: `// MRVL — Alerte entrée optimale
-//@version=5
-indicator("MRVL Entry Alert", overlay=true)
-
-ma50 = ta.sma(close, 50)
-ma200 = ta.sma(close, 200)
-rsi = ta.rsi(close, 14)
-[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 170 and close <= 205
-rsiOk = rsi >= 40 and rsi <= 70
+entryZone = close >= 225 and close <= 255
+rsiOk = rsi >= 40 and rsi <= 60
 macdOk = macdLine > signalLine
 aboveMA = close > ma50
-
 signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="MRVL — ENTRÉE OPTIMALE",
-  message="MRVL en zone d\'entrée. Post-earnings + conditions réunies.")
-plot(ma50, "MA50", color.new(color.blue, 0), 2)
-plot(ma200, "MA200", color.new(color.orange, 0), 2)
-bgcolor(signal ? color.new(color.green, 90) : na)`
-  },
-  DELL: {
-    name: 'Dell Technologies Inc.', price: '$318', couche: 'C2 — Infrastructure',
-    score: 82, decision: 'invest', profil: 'challenger',
-    entry: '$290–300', stop: '$270', target: '$400', rr: '1:4.0',
-    change: '+39%', changeDir: 'pos',
-    criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Breakout massif post-earnings. Nouveau 52W high à $320.' },
-      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: 'Vient de faire un ATH — attendre consolidation $290-300.' },
-      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+200%+ depuis 52W low. Momentum explosif post-earnings.' },
-      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'EPS $4.86 vs $2.96 estimé (+64% surprise). PEG 1.15. Forward PE 18.8.' },
-      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Revenue +88% YoY. AI Server backlog $51.3Mrd. Guidance $165-169Mrd FY27.' },
-      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Bien couvert institutionnellement. Upgrade massif post-earnings.' },
-      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.56% — modéré.' },
-      { name: 'Calendrier earnings', score: 10, flag: '✅', note: 'Earnings Q1 FY27 passés hier — résultats historiques. Piste libre.' },
-      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Michael Dell conserve sa position majeure.' },
-      { name: 'Corrélation macro', score: 8, flag: '✅', note: 'Beta 1.06 — stable. Dividende versé.' },
-    ],
-    sources: ['Motley Fool', 'MarketBeat', 'TipRanks', 'Investing.com', 'SEC EDGAR'],
-    pine: `// DELL — Alerte consolidation post-earnings
-//@version=5
-indicator("DELL Consolidation Alert", overlay=true)
-
-ma50 = ta.sma(close, 50)
-rsi = ta.rsi(close, 14)
-[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-consolidationZone = close >= 270 and close <= 300
-rsiOk = rsi >= 40 and rsi <= 65
-macdOk = macdLine > signalLine
-
-signal = consolidationZone and rsiOk and macdOk
-
-alertcondition(signal, title="DELL — ZONE CONSOLIDATION",
-  message="DELL en zone de consolidation post-earnings. Entrée possible.")
+alertcondition(signal, title="AMZN — PULLBACK ZONE ENTREE", message="AMZN revenu en zone entree $245-255.")
 plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   ORCL: {
-    name: 'Oracle Corporation', price: '$190', couche: 'C4 — Hyperscaler',
-    score: 72, decision: 'veille', profil: 'leader',
-    entry: '$185–192', stop: '$168', target: '$263', rr: '1:3.3',
-    change: '+0.5%', changeDir: 'pos',
+    name: 'Oracle Corporation', price: '$226', couche: 'C4 — Hyperscaler',
+    score: 70, decision: 'veille', profil: 'leader',
+    entry: '$205–215', stop: '$185', target: '$300', rr: '1:4.0',
+    change: '+6.5%', changeDir: 'pos',
     criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Double bottom validé à $163. Breakout au-dessus de $188 confirmé.' },
-      { name: 'Distance ATH + marge sécurité', score: 7, flag: '✅', note: '-45% du 52W high $345. Meilleure marge de sécurité de tout le C4.' },
-      { name: 'Force tendance (ADX)', score: 6, flag: '🟡', note: 'Tendance haussière naissante. Daily et weekly en reconstruction.' },
-      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.03. OCI revenue +84% YoY. Backlog $553Mrd de contrats signés.' },
-      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Partenaire OpenAI, Meta, Microsoft. OCI = cloud IA en forte demande.' },
-      { name: 'Flux institutionnels', score: 6, flag: '🟡', note: 'Quelques hésitations institutionnelles post-correction majeure.' },
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'MACD Buy. MA50 $189 et MA200 $181 loin en dessous — prix a beaucoup monté.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-35% du 52W high $345. Mais +19% en 3 jours — trop chaud pour entrer maintenant.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance haussière forte. Breakout sur contrat $30Mrd US gouvernement.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.03. OCI revenue +84% YoY. Backlog $553Mrd. Contrat gouvernement $30Mrd.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Partenaire OpenAI, Meta. Contrat gouvernement US $30Mrd. Earnings Jun 16.' },
+      { name: 'Flux institutionnels', score: 6, flag: '🟡', note: 'Phillipe Laffont (Coatue) a vendu ORCL récemment — signal négatif notable.' },
       { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.09% — très faible.' },
-      { name: 'Calendrier earnings', score: 5, flag: '⚠️', note: 'Earnings le 10 juin — dans 12 jours. Risque binaire important.' },
+      { name: 'Calendrier earnings', score: 4, flag: '⚠️', note: 'Earnings Jun 16 — dans 17 jours. Risque binaire important à surveiller.' },
       { name: 'Insider transactions', score: 5, flag: '⚠️', note: 'Larry Ellison vend régulièrement des blocs importants.' },
-      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.54 — plus volatil que le marché. Dette $100Mrd+.' },
+      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.89. Volatil. Dette $100Mrd+. Sensible aux taux.' },
     ],
-    sources: ['StockAnalysis.com', 'Barchart', 'TipRanks', 'Yahoo Finance', 'SEC EDGAR'],
-    pine: `// ORCL — Alerte post-earnings
-//@version=5
-indicator("ORCL Post-Earnings Alert", overlay=true)
-
+    sources: ['TradingView', 'StockAnalysis.com', 'Yahoo Finance', 'Robinhood'],
+    pine: `//@version=5
+indicator("ORCL Pullback Alert", overlay=true)
 ma50 = ta.sma(close, 50)
 ma200 = ta.sma(close, 200)
 rsi = ta.rsi(close, 14)
 [macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 168 and close <= 195
+entryZone = close >= 185 and close <= 215
+rsiOk = rsi >= 40 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMAs = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMAs
+alertcondition(signal, title="ORCL — PULLBACK ZONE ENTREE", message="ORCL revenu en zone entree $205-215. Pre-earnings Jun 16.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  NVDA: {
+    name: 'NVIDIA Corporation', price: '$216', couche: 'C3 — Semi-conducteurs',
+    score: 78, decision: 'invest', profil: 'leader',
+    entry: '$210–220', stop: '$195', target: '$280', rr: '1:4.0',
+    change: '+1.6%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI neutre. MA50 $192 et MA200 $187 — prix bien au-dessus des deux. Volume normalisé.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-9% du 52W high $236. Limite — compensé par fondamentaux exceptionnels.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: '+61% en 52 semaines. Tendance de fond solide. Consolidation saine post-earnings.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.49. ROE 114%. ROIC 104%. Revenue +70.68% YoY. EPS +109.24%.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'GPU H100/B200 = colonne vertébrale de toute IA mondiale. Monopole de fait.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: '65%+ institutionnels. Short interest 1.17% — très faible.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.17% — quasi inexistant. Consensus haussier total.' },
+      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings May 20 passés — record. Prochains août. 10 semaines de piste libre.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Jensen Huang conserve ses positions. Signal confiance.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.24 — très volatil. Risque géopolitique Taiwan toujours présent.' },
+    ],
+    sources: ['StockAnalysis.com', 'Yahoo Finance', 'Robinhood', 'TradingView'],
+    pine: `//@version=5
+indicator("NVDA Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 195 and close <= 220
 rsiOk = rsi >= 40 and rsi <= 65
 macdOk = macdLine > signalLine
-aboveMAs = close > ma50 and close > ma200
-
-signal = entryZone and rsiOk and macdOk and aboveMAs
-
-alertcondition(signal, title="ORCL — ENTRÉE POST-EARNINGS",
-  message="ORCL : conditions réunies après earnings du 10 juin.")
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="NVDA — ENTREE OPTIMALE", message="NVDA zone entree. RSI neutre + MACD buy + au-dessus MA50.")
 plot(ma50, "MA50", color.new(color.blue, 0), 2)
 plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   MU: {
-    name: 'Micron Technology Inc.', price: '$882', couche: 'C3 — Semi-conducteurs',
+    name: 'Micron Technology Inc.', price: '$969', couche: 'C3 — Semi-conducteurs',
     score: 78, decision: 'veille', profil: 'challenger',
-    entry: '$820–840', stop: '$780', target: '$1,000+', rr: '1:3.5',
-    change: '+25%', changeDir: 'pos',
+    entry: '$880–920', stop: '$820', target: '$1200', rr: '1:3.5',
+    change: '+4.9%', changeDir: 'pos',
     criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: '12 signaux Buy / 0 Sell. RSI 65. MA50 à $519 — prix largement au-dessus.' },
-      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: '+8% AU-DESSUS de l\'ancien ATH après gap de +25% en 1 journée.' },
-      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: 'ADX 34 — tendance très forte. +$1,000 Mrd market cap franchi.' },
-      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.06 — le plus bas de tout l\'univers. Forward PE seulement 8.' },
-      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Mémoire HBM pour GPU IA. Demande mondiale > offre jusqu\'en 2027+.' },
-      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'David Tepper et billionaires en accumulation. UBS cible $1,625.' },
-      { name: 'Sentiment (short interest)', score: 6, flag: '🟡', note: 'Short interest 3.31% — légèrement plus élevé.' },
-      { name: 'Calendrier earnings', score: 5, flag: '⚠️', note: 'Earnings le 24 juin — dans 26 jours. Risque modéré.' },
-      { name: 'Insider transactions', score: 7, flag: '✅', note: 'CEO Mehrotra investit dans l\'expansion US. Confiant.' },
-      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 1.92 — volatil. Sensible aux cycles mémoire.' },
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'MACD Buy $43.82. MA50 $774 et MA200 $637 — prix très au-dessus. RSI élevé post-gap.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: '+18% au-dessus de l ancien ATH. Gap parabolic non consolidé. Ne pas chaser.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: 'ADX 34. Tendance exceptionnelle. $1,000Mrd market cap franchi.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.06 — le plus bas de tout notre univers. Forward PE 8. Bradé malgré la hausse.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'HBM mémoire IA = goulot mondial. Demande > offre jusqu en 2027+. UBS cible $1,625.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'David Tepper et billionaires en accumulation. Signal fort.' },
+      { name: 'Sentiment (short interest)', score: 6, flag: '🟡', note: 'Short interest 3.31% — légèrement plus élevé. Sceptiques sur la durabilité.' },
+      { name: 'Calendrier earnings', score: 4, flag: '⚠️', note: 'Earnings Jun 24 — dans 25 jours. Ne pas entrer trop proche.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'CEO Mehrotra investit dans expansion US. Confiant.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 1.92. Sensible aux cycles mémoire et macro.' },
     ],
-    sources: ['StockAnalysis.com', 'CNBC', 'TipRanks', 'Barchart', 'UBS Research'],
-    pine: `// MU — Alerte pullback zone d'entrée
-//@version=5
+    sources: ['Investing.com', 'StockAnalysis.com', 'CNBC', 'TipRanks'],
+    pine: `//@version=5
 indicator("MU Pullback Alert", overlay=true)
-
 ma50 = ta.sma(close, 50)
 rsi = ta.rsi(close, 14)
 [macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-pullbackZone = close >= 780 and close <= 840
+pullbackZone = close >= 820 and close <= 920
 rsiOk = rsi >= 40 and rsi <= 65
 macdOk = macdLine > signalLine
 aboveMA = close > ma50
-
 signal = pullbackZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="MU — PULLBACK ZONE ENTRÉE",
-  message="MU est revenu en zone d\'entrée $780-840. RSI normalisé.")
+alertcondition(signal, title="MU — PULLBACK ZONE ENTREE", message="MU revenu en zone entree $880-920. RSI normalise.")
 plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
-  CRDO: {
-    name: 'Credo Technology Group', price: '$215', couche: 'C3 — Semi-conducteurs',
-    score: 60, decision: 'veille', profil: 'specu',
-    entry: '$180–200', stop: '$155', target: '$300', rr: '1:4.0',
-    change: '—', changeDir: 'pos',
+  MRVL: {
+    name: 'Marvell Technology Inc.', price: '$205', couche: 'C3 — Semi-conducteurs',
+    score: 76, decision: 'invest', profil: 'challenger',
+    entry: '$198–210', stop: '$175', target: '$270', rr: '1:2.8',
+    change: '+0.1%', changeDir: 'pos',
     criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 4, flag: '⚠️', note: 'ATH absolu atteint le 22 mai à $218. Prix quasi au sommet.' },
-      { name: 'Distance ATH + marge sécurité', score: 2, flag: '🔴', note: '0% du sommet. Aucune marge de sécurité actuellement.' },
-      { name: 'Force tendance (ADX)', score: 10, flag: '✅', note: '+263% en 52 semaines. Le momentum le plus fort de tout l\'univers.' },
-      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.40. ROIC 60%. Revenue +200% YoY. EPS beat +17%.' },
-      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Câbles AEC = composant indispensable dans chaque rack IA. TAM $10Mrd+.' },
-      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Forte accumulation institutionnelle sur les derniers trimestres.' },
-      { name: 'Sentiment (short interest)', score: 5, flag: '⚠️', note: 'Short interest 5.14% — élevé pour un spéculatif.' },
-      { name: 'Calendrier earnings', score: 3, flag: '🔴', note: 'Earnings le 1er juin — dans 3 jours. Risque binaire maximum.' },
-      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre. Aucun signal fort dans un sens ou l\'autre.' },
-      { name: 'Corrélation macro', score: 3, flag: '🔴', note: 'Beta 3.80 — extrêmement volatil. Peut corriger -30% du jour au lendemain.' },
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI 65.87 neutre/haussier. MACD Buy $2.31. MA50 $191 et MA200 $170 — Strong Buy 10/10 ChartMill.' },
+      { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: 'Quasi ATH. Mais earnings passés — risque calendrier éliminé.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+176% en 52 semaines. Outperforms 97% de tous les stocks.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 0.14. Data center revenue +76% YoY. Custom ASICs AWS et Microsoft.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Data center = 74% du revenue. Partnership NVIDIA renforcé. Citi $225, Barclays $275.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Goldman Sachs, hedge funds en accumulation post-earnings.' },
+      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.24% — modéré.' },
+      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings Q1 FY27 passés May 27 — résultats record. Piste libre jusqu en août.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre. Quelques ventes programmées normales.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.25 — très volatil. Dimensionner en conséquence.' },
     ],
-    sources: ['StockAnalysis.com', 'TipRanks', 'Yahoo Finance', 'Barchart'],
-    pine: `// CRDO — Alerte post-earnings
-//@version=5
-indicator("CRDO Post-Earnings Alert", overlay=true)
-
-ma50 = ta.sma(close, 50)
-rsi = ta.rsi(close, 14)
-[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 155 and close <= 200
-rsiOk = rsi >= 35 and rsi <= 65
-macdOk = macdLine > signalLine
-aboveMA = close > ma50
-
-signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="CRDO — ENTRÉE POST-EARNINGS",
-  message="CRDO après earnings du 1er juin. Zone d\'entrée atteinte.")
-plot(ma50, "MA50", color.new(color.blue, 0), 2)
-bgcolor(signal ? color.new(color.green, 90) : na)`
-  },
-  AVGO: {
-    name: 'Broadcom Inc.', price: '$431', couche: 'C3 — Semi-conducteurs',
-    score: 58, decision: 'veille', profil: 'leader',
-    entry: '$380–400', stop: '$350', target: '$500', rr: '1:2.5',
-    change: '+0.5%', changeDir: 'pos',
-    criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 3, flag: '🔴', note: 'RSI 79 — zone de danger suracheté. MACD Sell signal.' },
-      { name: 'Distance ATH + marge sécurité', score: 3, flag: '🔴', note: '-5% du 52W high $442. Quasi au sommet.' },
-      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance haussière forte mais extended. +81% en 1 an.' },
-      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 0.75. Custom AI chips +140%. Networking IA dominant.' },
-      { name: 'Catalyseurs sectoriels', score: 8, flag: '✅', note: 'XPU custom pour Google, Meta, Apple. Segment IA en hypercroissance.' },
-      { name: 'Flux institutionnels', score: 6, flag: '🟡', note: 'Stanley Druckenmiller acheteur — signal positif notable.' },
-      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.08% — très faible.' },
-      { name: 'Calendrier earnings', score: 3, flag: '🔴', note: 'Earnings le 3 juin — dans 5 jours. Risque binaire majeur.' },
-      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
-      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.44 — modéré.' },
-    ],
-    sources: ['Robinhood', 'TipRanks', 'StockAnalysis.com', 'CNN Markets'],
-    pine: `// AVGO — Alerte post-earnings + pullback
-//@version=5
-indicator("AVGO Post-Earnings Alert", overlay=true)
-
-ma50 = ta.sma(close, 50)
-rsi = ta.rsi(close, 14)
-[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 350 and close <= 400
-rsiOk = rsi >= 40 and rsi <= 60
-macdOk = macdLine > signalLine
-aboveMA = close > ma50
-
-signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="AVGO — ENTRÉE POST-EARNINGS",
-  message="AVGO : RSI normalisé post-earnings. Zone d\'entrée atteinte.")
-plot(ma50, "MA50", color.new(color.blue, 0), 2)
-bgcolor(signal ? color.new(color.green, 90) : na)`
-  },
-  VRT: {
-    name: 'Vertiv Holdings', price: '$325', couche: 'C2 — Infrastructure',
-    score: 70, decision: 'veille', profil: 'challenger',
-    entry: '$290–310', stop: '$270', target: '$387', rr: '1:2.8',
-    change: '+0.2%', changeDir: 'pos',
-    criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 5, flag: '🟡', note: 'Proche ATH. MACD court terme faible. MA50 à $256.' },
-      { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: '-14% du 52W high $379. Insuffisant pour notre profil.' },
-      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: 'Tendance structurelle très forte. +254% en 52 semaines.' },
-      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 0.63 — excellent. Earnings +83% YoY.' },
-      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Liquid cooling = besoin absolu des GPU clusters IA. TD Cowen cible $387.' },
-      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Momentum fort, institutionnels encore bien positionnés.' },
-      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.09% — modéré.' },
-      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Earnings 22 avril passés. Prochains juillet.' },
-      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Quelques prises de profits normales.' },
-      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.10 — très volatil. Amplification des mouvements x2.' },
-    ],
-    sources: ['StockAnalysis.com', 'TipRanks', 'TD Cowen Research', 'Barchart'],
-    pine: `// VRT — Alerte pullback zone d'entrée
-//@version=5
-indicator("VRT Pullback Alert", overlay=true)
-
-ma50 = ta.sma(close, 50)
-rsi = ta.rsi(close, 14)
-[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-pullbackZone = close >= 270 and close <= 310
-rsiOk = rsi >= 35 and rsi <= 60
-macdOk = macdLine > signalLine
-aboveMA = close > ma50
-
-signal = pullbackZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="VRT — PULLBACK ZONE ENTRÉE",
-  message="VRT revenu en zone d\'entrée $270-310. Setup favorable.")
-plot(ma50, "MA50", color.new(color.blue, 0), 2)
-bgcolor(signal ? color.new(color.green, 90) : na)`
-  },
-  ALAB: {
-    name: 'Astera Labs Inc.', price: '$200', couche: 'C3 — Semi-conducteurs',
-    score: 62, decision: 'veille', profil: 'specu',
-    entry: '$185–205', stop: '$160', target: '$280', rr: '1:3.0',
-    change: '—', changeDir: 'pos',
-    criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 47 — neutre parfait. Ni suracheté ni survendu.' },
-      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-37% du 52W high $315. Bonne marge parmi les spéculatifs.' },
-      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: '+182% en 52 semaines. Momentum fort.' },
-      { name: 'Momentum fondamental (PEG)', score: 7, flag: '✅', note: 'Revenue +93% YoY. Gross margin 75.7%. PEG 2.34.' },
-      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Scorpio switch PCIe Gen6. Acquisition aiXscale Photonics. Morgan Stanley top pick.' },
-      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'ProShare Advisors en accumulation. Morgan Stanley recommande.' },
-      { name: 'Sentiment (short interest)', score: 4, flag: '⚠️', note: 'Short interest 8.43% — élevé. Beaucoup de sceptiques.' },
-      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Earnings passés le 5 mai. Prochains août — piste libre.' },
-      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
-      { name: 'Corrélation macro', score: 4, flag: '⚠️', note: 'Beta 3.36 — très volatil. Petite cap sensible.' },
-    ],
-    sources: ['StockAnalysis.com', 'Seeking Alpha', 'Morgan Stanley Research', 'Barchart'],
-    pine: `// ALAB — Alerte zone d'entrée
-//@version=5
-indicator("ALAB Entry Alert", overlay=true)
-
-ma50 = ta.sma(close, 50)
-rsi = ta.rsi(close, 14)
-[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-entryZone = close >= 160 and close <= 205
-rsiOk = rsi >= 35 and rsi <= 60
-macdOk = macdLine > signalLine
-aboveMA = close > ma50
-
-signal = entryZone and rsiOk and macdOk and aboveMA
-
-alertcondition(signal, title="ALAB — ENTRÉE ZONE OPTIMALE",
-  message="ALAB dans la zone d\'entrée. RSI neutre + MACD buy.")
-plot(ma50, "MA50", color.new(color.blue, 0), 2)
-bgcolor(signal ? color.new(color.green, 90) : na)`
-  },
-  ETN: {
-    name: 'Eaton Corporation', price: '$391', couche: 'C2 — Infrastructure',
-    score: 64, decision: 'veille', profil: 'leader',
-    entry: '$360–380', stop: '$335', target: '$450', rr: '1:2.3',
-    change: '+0.3%', changeDir: 'pos',
-    criteria: [
-      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Rating 10/10 ChartMill. MAs haussières confirmées.' },
-      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-10% du 52W high $435. Limite acceptable.' },
-      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance de fond confirmée. Stable.' },
-      { name: 'Momentum fondamental (PEG)', score: 4, flag: '⚠️', note: 'PEG 3.06 — surévalué par rapport à sa croissance. Point faible.' },
-      { name: 'Catalyseurs sectoriels', score: 7, flag: '✅', note: 'Data center power + aerospace. Acquisition Boyd Thermal.' },
-      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Bien tenu par les institutionnels.' },
-      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 2.28% — faible.' },
-      { name: 'Calendrier earnings', score: 6, flag: '🟡', note: 'Earnings passés 5 mai.' },
-      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
-      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.16 — relativement stable. Dividende solide.' },
-    ],
-    sources: ['StockAnalysis.com', 'ChartMill', 'Yahoo Finance', 'MarketBeat'],
-    pine: `// ETN — Alerte pullback zone d'entrée
-//@version=5
-indicator("ETN Pullback Alert", overlay=true)
-
+    sources: ['Investing.com', 'ChartMill', 'TipRanks', 'TradingView'],
+    pine: `//@version=5
+indicator("MRVL Entry Alert", overlay=true)
 ma50 = ta.sma(close, 50)
 ma200 = ta.sma(close, 200)
 rsi = ta.rsi(close, 14)
 [macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
-
-pullbackZone = close >= 335 and close <= 380
-rsiOk = rsi >= 35 and rsi <= 55
+entryZone = close >= 175 and close <= 210
+rsiOk = rsi >= 40 and rsi <= 70
 macdOk = macdLine > signalLine
-aboveMAs = close > ma200
-
-signal = pullbackZone and rsiOk and macdOk and aboveMAs
-
-alertcondition(signal, title="ETN — PULLBACK ZONE ENTRÉE",
-  message="ETN revenu en zone d\'entrée. RSI normalisé.")
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="MRVL — ENTREE OPTIMALE", message="MRVL en zone entree. Post-earnings solides.")
 plot(ma50, "MA50", color.new(color.blue, 0), 2)
 plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
-  EQIX: { name: 'Equinix Inc.', price: '$1,085', couche: 'C1 — REITs', score: 68, decision: 'veille', profil: 'leader', entry: '$950–980', stop: '$900', target: '$1,250', rr: '1:3.5', change: '+0.2%', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Proche ATH.'},{name:'Distance ATH',score:4,flag:'⚠️',note:'-4% du 52W high $1,128.'},{name:'Force tendance',score:7,flag:'✅',note:'Tendance haussière confirmée.'},{name:'PEG/Fondamentaux',score:7,flag:'✅',note:'Revenue +6.67% YoY. 86 trimestres consécutifs de croissance.'},{name:'Catalyseurs',score:9,flag:'✅',note:'Demande IA forte. Q1 record. Guidance relevée.'},{name:'Institutionnels',score:9,flag:'✅',note:'98.70% détenu par institutionnels.'},{name:'Short interest',score:8,flag:'✅',note:'1.84% — très faible.'},{name:'Calendrier',score:8,flag:'✅',note:'Earnings 29 avril passés.'},{name:'Insiders',score:4,flag:'⚠️',note:'$25.1M vendus par insiders en 3 mois.'},{name:'Macro',score:7,flag:'✅',note:'Beta 1.00 — stable.'}], sources:['StockAnalysis.com','TipRanks','Barchart'], pine:`//@version=5\nindicator("EQIX Pullback Alert", overlay=true)\nma50 = ta.sma(close, 50)\nrsi = ta.rsi(close, 14)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\npullbackZone = close >= 900 and close <= 980\nrsiOk = rsi >= 35 and rsi <= 55\nmacdOk = macdLine > signalLine\nsignal = pullbackZone and rsiOk and macdOk\nalertcondition(signal, title="EQIX — PULLBACK", message="EQIX en zone d'entrée $950-980.")\nplot(ma50, "MA50", color.new(color.blue,0), 2)\nbgcolor(signal ? color.new(color.green, 90) : na)` },
-  DLR: { name: 'Digital Realty Trust', price: '$192', couche: 'C1 — REITs', score: 70, decision: 'veille', profil: 'leader', entry: '$178–185', stop: '$165', target: '$218', rr: '1:2.5', change: '+0.1%', changeDir: 'pos', criteria: [{name:'Setup technique',score:6,flag:'🟡',note:'MAs haussières.'},{name:'Distance ATH',score:6,flag:'🟡',note:'-8% du 52W high $208.'},{name:'Force tendance',score:6,flag:'🟡',note:'Tendance stable.'},{name:'PEG/Fondamentaux',score:6,flag:'🟡',note:'Revenue +11.88%.'},{name:'Catalyseurs',score:8,flag:'✅',note:'309 DCs, 6.3GW en développement.'},{name:'Institutionnels',score:8,flag:'✅',note:'Acheteurs en Q1.'},{name:'Short interest',score:10,flag:'✅',note:'0.01% — quasi zéro.'},{name:'Calendrier',score:7,flag:'✅',note:'Earnings 23 avril passés.'},{name:'Insiders',score:6,flag:'🟡',note:'Neutre.'},{name:'Macro',score:7,flag:'✅',note:'Beta 1.09 — stable.'}], sources:['StockAnalysis.com','Yahoo Finance','Barchart'], pine:`//@version=5\nindicator("DLR Entry Alert", overlay=true)\nma50 = ta.sma(close, 50)\nrsi = ta.rsi(close, 14)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\nentryZone = close >= 165 and close <= 185\nrsiOk = rsi >= 35 and rsi <= 60\nmacdOk = macdLine > signalLine\naboveMA = close > ma50\nsignal = entryZone and rsiOk and macdOk and aboveMA\nalertcondition(signal, title="DLR — ENTRÉE", message="DLR en zone d'entrée $165-185.")\nplot(ma50, "MA50", color.new(color.blue,0), 2)\nbgcolor(signal ? color.new(color.green, 90) : na)` },
-  IRM: { name: 'Iron Mountain Inc.', price: '$95', couche: 'C1 — REITs', score: 55, decision: 'eviter', profil: 'leader', entry: '—', stop: '—', target: '—', rr: '—', change: '—', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Neutre.'},{name:'Distance ATH',score:6,flag:'🟡',note:'Moyenne.'},{name:'Force tendance',score:5,flag:'🟡',note:'Mixte.'},{name:'PEG/Fondamentaux',score:2,flag:'🔴',note:'PE 240. Net income $144M sur $6.9Mrd revenue. Très faible rentabilité.'},{name:'Catalyseurs',score:7,flag:'✅',note:'Data center en transition.'},{name:'Institutionnels',score:5,flag:'🟡',note:'Neutre.'},{name:'Short interest',score:7,flag:'✅',note:'2.75%.'},{name:'Calendrier',score:7,flag:'✅',note:'Earnings 30 avril passés.'},{name:'Insiders',score:5,flag:'🟡',note:'Neutre.'},{name:'Macro',score:6,flag:'🟡',note:'Beta 1.15. Dette nette -$18.96Mrd.'}], sources:['StockAnalysis.com','Yahoo Finance'], pine:'' },
-  CRWV: { name: 'CoreWeave Inc.', price: '$105', couche: 'C4 — Hyperscaler', score: 53, decision: 'veille', profil: 'specu', entry: '$95–105', stop: '$80', target: '$180', rr: '1:6.0', change: '—', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Daily neutre, weekly Strong Buy.'},{name:'Distance ATH',score:7,flag:'✅',note:'-44% du 52W high $187.'},{name:'Force tendance',score:7,flag:'✅',note:'+197% en 52 semaines.'},{name:'PEG/Fondamentaux',score:3,flag:'🔴',note:'Perte nette $740M en Q1. Pas encore profitable.'},{name:'Catalyseurs',score:10,flag:'✅',note:'Revenue +112% YoY. Backlog $66Mrd. Guidance $12-13Mrd 2026.'},{name:'Institutionnels',score:5,flag:'🟡',note:'Récent IPO en phase de découverte.'},{name:'Short interest',score:4,flag:'⚠️',note:'Élevé — scepticisme sur la profitabilité.'},{name:'Calendrier',score:6,flag:'🟡',note:'Earnings passés. Prochains août.'},{name:'Insiders',score:3,flag:'🔴',note:'COO et CFO vendent depuis l\'IPO.'},{name:'Macro',score:3,flag:'🔴',note:'Très volatil. Dépendant NVDA. Dette massive.'}], sources:['StockAnalysis.com','TipRanks'], pine:`//@version=5\nindicator("CRWV Entry Alert", overlay=true)\nma50 = ta.sma(close, 50)\nrsi = ta.rsi(close, 14)\n[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)\nentryZone = close >= 80 and close <= 105\nrsiOk = rsi >= 35 and rsi <= 60\nmacdOk = macdLine > signalLine\nsignal = entryZone and rsiOk and macdOk\nalertcondition(signal, title="CRWV — ENTRÉE", message="CRWV en zone d'entrée $80-105.")\nplot(ma50, "MA50", color.new(color.blue,0), 2)\nbgcolor(signal ? color.new(color.green, 90) : na)` },
-  MOD: { name: 'Modine Manufacturing', price: '—', couche: 'C2 — Infrastructure', score: 59, decision: 'veille', profil: 'specu', entry: 'Post-earnings', stop: '—', target: '—', rr: '—', change: '—', changeDir: 'pos', criteria: [{name:'Setup technique',score:5,flag:'🟡',note:'Neutre.'},{name:'Distance ATH',score:6,flag:'🟡',note:'Correction récente post-ATH.'},{name:'Force tendance',score:8,flag:'✅',note:'+179% en 52 semaines.'},{name:'PEG/Fondamentaux',score:6,flag:'🟡',note:'PEG 1.71. Forward PE 37.5.'},{name:'Catalyseurs',score:10,flag:'✅',note:'Data center revenue +60% 2026. Order book 5 ans. Spin-off en cours.'},{name:'Institutionnels',score:5,flag:'🟡',note:'Small cap — moins couvert.'},{name:'Short interest',score:4,flag:'⚠️',note:'6.59% — élevé.'},{name:'Calendrier',score:3,flag:'🔴',note:'Earnings 27 mai — résultats à analyser.'},{name:'Insiders',score:6,flag:'🟡',note:'Neutre.'},{name:'Macro',score:6,flag:'🟡',note:'Beta 1.66 — modéré.'}], sources:['StockAnalysis.com','MarketBeat'], pine:'' },
+  DELL: {
+    name: 'Dell Technologies Inc.', price: '$423', couche: 'C2 — Infrastructure',
+    score: 82, decision: 'veille', profil: 'challenger',
+    entry: '$385–400', stop: '$355', target: '$565', rr: '1:5.5',
+    change: '+1.2%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'Nouveau 52W high $437. RSI en zone haute post-gap. Consolidation nécessaire.' },
+      { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: 'Prix $423 — +33% en 1 semaine. Trop chaud pour entrer. Attendre $385-400.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+178% en 52 semaines. Next earnings Sep 3 — longue piste libre.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.39. EPS $4.86 vs $2.96 estimé (+64%). Revenue $43.8Mrd (+88%).' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'AI server backlog $51.3Mrd. Guidance $165-169Mrd FY27. Mizuho cible $435.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Upgrades massifs post-earnings. Max cible analyst $565.' },
+      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.30% — modéré.' },
+      { name: 'Calendrier earnings', score: 10, flag: '✅', note: 'Earnings May 28 passés — historiques. Prochains Sep 3. Piste libre 3 mois.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Michael Dell conserve sa position majeure.' },
+      { name: 'Corrélation macro', score: 8, flag: '✅', note: 'Beta 1.06 — stable. Dividende versé.' },
+    ],
+    sources: ['TradingView', 'StockAnalysis.com', 'Robinhood', 'Mizuho Research'],
+    pine: `//@version=5
+indicator("DELL Consolidation Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+consolidationZone = close >= 355 and close <= 400
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+signal = consolidationZone and rsiOk and macdOk
+alertcondition(signal, title="DELL — ZONE CONSOLIDATION", message="DELL en zone consolidation $385-400. Entree possible.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  CRDO: {
+    name: 'Credo Technology Group', price: '$235', couche: 'C3 — Semi-conducteurs',
+    score: 62, decision: 'veille', profil: 'specu',
+    entry: '$200–220', stop: '$175', target: '$320', rr: '1:4.0',
+    change: '+6.0%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 4, flag: '⚠️', note: 'Quasi ATH. Momentum pré-earnings fort. RSI en zone haute.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '🔴', note: 'Proche ATH. Earnings ce soir Jun 1. Ne pas entrer avant les résultats.' },
+      { name: 'Force tendance (ADX)', score: 10, flag: '✅', note: '+263% en 52 semaines. Momentum le plus fort de tout notre univers.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.40. ROIC 60%. Revenue +200% YoY. ROE 27.54%.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Cables AEC indispensables dans chaque rack IA. TAM $10Mrd+.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Forte accumulation institutionnelle confirmée.' },
+      { name: 'Sentiment (short interest)', score: 5, flag: '⚠️', note: 'Short interest 5.14% — élevé pour un spéculatif.' },
+      { name: 'Calendrier earnings', score: 2, flag: '🔴', note: 'Earnings Jun 1 ce soir — risque binaire maximum. Attendre les résultats.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 3.17 — très volatil. Peut corriger -30% sur mauvais earnings.' },
+    ],
+    sources: ['StockAnalysis.com', 'TipRanks', 'Yahoo Finance'],
+    pine: `//@version=5
+indicator("CRDO Post-Earnings Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 175 and close <= 220
+rsiOk = rsi >= 35 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="CRDO — ENTREE POST-EARNINGS", message="CRDO apres earnings Jun 1. Zone entree atteinte.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  AVGO: {
+    name: 'Broadcom Inc.', price: '$446', couche: 'C3 — Semi-conducteurs',
+    score: 65, decision: 'veille', profil: 'leader',
+    entry: '$400–420', stop: '$370', target: '$550', rr: '1:3.5',
+    change: '+4.8%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 5, flag: '🟡', note: 'RSI 79.10 — suracheté. MACD 19.59 Sell. Tension technique élevée.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '🔴', note: '+1% au-dessus du 52W high. Nouveau ATH. Ne pas entrer maintenant.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: 'Tendance haussière forte. MA50 $398 et MA200 $343 — prix très au-dessus.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 0.75. Custom AI chips +140%. Networking IA dominant.' },
+      { name: 'Catalyseurs sectoriels', score: 8, flag: '✅', note: 'XPU custom Google, Meta, Apple. Segment IA hypercroissance. Earnings Jun 3.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Stanley Druckenmiller acheteur — signal positif notable.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.08% — très faible.' },
+      { name: 'Calendrier earnings', score: 2, flag: '🔴', note: 'Earnings Jun 3 — dans 4 jours. Risque binaire. Attendre absolument.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
+      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.44 — modéré.' },
+    ],
+    sources: ['TipRanks', 'Tickeron', 'Investing.com', 'TradingView'],
+    pine: `//@version=5
+indicator("AVGO Post-Earnings Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 370 and close <= 420
+rsiOk = rsi >= 40 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="AVGO — ENTREE POST-EARNINGS", message="AVGO: RSI normalise post-earnings. Zone entree atteinte.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
 };
 
 // ====== VEILLE DATA ======
 const veilleData = [
-  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Post-earnings <span class="cond-date">10 juin 2026</span>. Si résultats positifs → score 80+ → investir. Entrée visée : <span class="cond-price">$185–192</span>. Stop : $168.' },
-  { ticker: 'MU', name: 'Micron', reserve: '900€', prio: 'haute', condition: 'Pullback vers <span class="cond-price">$820–840</span> après gap +25%. Attendre RSI < 60 + consolidation. Stop : $780.' },
-  { ticker: 'CRDO', name: 'Credo Tech', reserve: '500€', prio: 'haute', condition: 'Post-earnings <span class="cond-date">1er juin 2026</span>. Si beat → entrée sur consolidation <span class="cond-price">$180–200</span>. Stop : $155.' },
-  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'moyenne', condition: 'Consolidation post-earnings attendue. Zone : <span class="cond-price">$290–300</span>. Stop : $270. Résultats Q1 FY27 historiques.' },
-  { ticker: 'AVGO', name: 'Broadcom', reserve: '—', prio: 'moyenne', condition: 'Post-earnings <span class="cond-date">3 juin 2026</span>. RSI doit redescendre sous 60. Zone : <span class="cond-price">$380–400</span>. Stop : $350.' },
-  { ticker: 'VRT', name: 'Vertiv', reserve: '—', prio: 'moyenne', condition: 'Pullback vers <span class="cond-price">$290–310</span> (support MA50). RSI doit descendre sous 55. Stop : $270.' },
-  { ticker: 'ALAB', name: 'Astera Labs', reserve: '—', prio: 'moyenne', condition: 'Zone d\'entrée <span class="cond-price">$185–205</span>. RSI actuellement neutre à 47 — le meilleur setup parmi les spéculatifs.' },
-  { ticker: 'EQIX', name: 'Equinix', reserve: '—', prio: 'basse', condition: 'Pullback vers <span class="cond-price">$950–980</span>. Attendre aussi normalisation des ventes insiders.' },
-  { ticker: 'DLR', name: 'Digital Realty', reserve: '—', prio: 'basse', condition: 'Zone entrée <span class="cond-price">$178–185</span>. Short interest 0.01% — personne ne shorte. Profil défensif.' },
-  { ticker: 'ETN', name: 'Eaton', reserve: '—', prio: 'basse', condition: 'Pullback <span class="cond-price">$360–380</span>. PEG 3.06 trop élevé pour croissance — plutôt profil défensif/dividende.' },
-  { ticker: 'CRWV', name: 'CoreWeave', reserve: '—', prio: 'basse', condition: 'Zone <span class="cond-price">$95–105</span>. Spéculatif pur — attendre profitabilité avant position significative.' },
+  { ticker: 'AMZN', name: 'Amazon', reserve: '1,500€', prio: 'haute', condition: 'Pullback vers <span class="cond-price">$245–255</span>. Prix quasi ATH à $278. RSI doit redescendre sous 60. Truist cible $320.' },
+  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Pullback vers <span class="cond-price">$205–215</span> après +19% en 3 jours. Earnings <span class="cond-date">Jun 16</span> — attendre après.' },
+  { ticker: 'MU', name: 'Micron', reserve: '1,000€', prio: 'haute', condition: 'Pullback vers <span class="cond-price">$880–920</span>. Gap +25% non consolidé. Earnings Jun 24 — ne pas entrer trop proche.' },
+  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'moyenne', condition: 'Consolidation post-earnings vers <span class="cond-price">$385–400</span>. +33% en 1 semaine — attendre RSI sous 65.' },
+  { ticker: 'CRDO', name: 'Credo Tech', reserve: '500€', prio: 'moyenne', condition: 'Attendre résultats earnings <span class="cond-date">Jun 1 ce soir</span>. Si beat → entrée consolidation <span class="cond-price">$200–220</span>.' },
+  { ticker: 'AVGO', name: 'Broadcom', reserve: '500€', prio: 'moyenne', condition: 'Attendre earnings <span class="cond-date">Jun 3</span>. RSI 79 suracheté. Zone entrée <span class="cond-price">$400–420</span> post-résultats.' },
+  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'basse', condition: 'Univers Énergie. Pullback vers <span class="cond-price">$65–70</span>. Sensible aux taux — surveiller la Fed.' },
 ];
 
 // ====== FUNCTIONS ======
@@ -2418,9 +2074,9 @@ function switchUniverse(universe) {
     Object.assign(window.stocksActive, stocks);
     window.veilleActive = veilleData;
     document.querySelector('.page-title .accent').textContent = 'Data Center';
-    document.querySelector('.page-sub').textContent = 'ETF Perso · 18 stocks · 4 couches · Mis à jour 29 mai 2026';
+    document.querySelector('.page-sub').textContent = 'ETF Perso · 10 stocks · 3 couches · Mis à jour 29 mai 2026';
     document.querySelector('#page-dashboard .table-header-bar h3').textContent = 'UNIVERS COMPLET';
-    document.querySelector('#page-dashboard .table-count').textContent = '18 stocks';
+    document.querySelector('#page-dashboard .table-count').textContent = '10 stocks';
   } else {
     // Switch to energy universe
     Object.assign(window.stocksActive, energyStocks);
