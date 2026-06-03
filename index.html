@@ -1,634 +1,2392 @@
-import { useState, useEffect } from "react";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DATA CENTER HQ — Portefeuille</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Clash+Display:wght@400;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090f;
+  --bg2: #0d1117;
+  --bg3: #131922;
+  --border: rgba(255,255,255,0.06);
+  --text: #e2e8f4;
+  --dim: #5a6480;
+  --c1: #00e5a0;
+  --c2: #6c63ff;
+  --c3: #ff5f57;
+  --c4: #ffc94a;
+  --c-leader: #4a9eff;
+  --c-challenger: #a78bfa;
+  --c-specu: #fb923c;
+}
 
-// ============================================================
-// SOURCE UNIQUE DE VÉRITÉ — modifier ici = mis à jour partout
-// ============================================================
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(7,9,15,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  height: 56px;
+  gap: 4px;
+}
+
+.nav-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--c1);
+  text-transform: uppercase;
+  margin-right: 32px;
+  white-space: nowrap;
+}
+
+.nav-logo span { color: var(--dim); }
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.nav-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-btn.active { color: var(--c1); background: rgba(0,229,160,0.08); border: 1px solid rgba(0,229,160,0.2); }
+
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-date {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+
+.nav-capital {
+  font-size: 11px;
+  color: var(--c4);
+  background: rgba(255,201,74,0.08);
+  border: 1px solid rgba(255,201,74,0.2);
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+/* PAGES */
+.page { display: none; padding: 80px 32px 60px; max-width: 1200px; margin: 0 auto; }
+.page.active { display: block; animation: fadeIn 0.4s ease; }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.page-title .accent { color: var(--c1); }
+.page-sub { font-size: 11px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+
+/* LEGEND */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+/* DASHBOARD STATS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  transition: all 0.2s;
+}
+
+.stat-card:hover { border-color: rgba(0,229,160,0.2); }
+.stat-label { font-size: 9px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.stat-value { font-family: 'Clash Display', sans-serif; font-size: 26px; font-weight: 700; }
+.stat-sub { font-size: 10px; color: var(--dim); margin-top: 4px; }
+.stat-green { color: var(--c1); }
+.stat-yellow { color: var(--c4); }
+.stat-red { color: var(--c3); }
+.stat-blue { color: var(--c-leader); }
+
+/* MAIN TABLE */
+.table-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.table-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+.table-header-bar h3 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.table-count {
+  font-size: 10px;
+  color: var(--dim);
+  background: var(--bg);
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 12px 16px;
+  text-align: left;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+tbody tr:last-child { border-bottom: none; }
+
+td {
+  padding: 14px 16px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.td-couche {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+
+.td-ticker {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.td-société { color: var(--dim); font-size: 11px; }
+
+.profil-badge {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.profil-leader { background: rgba(74,158,255,0.1); color: var(--c-leader); border: 1px solid rgba(74,158,255,0.2); }
+.profil-challenger { background: rgba(167,139,250,0.1); color: var(--c-challenger); border: 1px solid rgba(167,139,250,0.2); }
+.profil-specu { background: rgba(251,146,60,0.1); color: var(--c-specu); border: 1px solid rgba(251,146,60,0.2); }
+
+.score-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-track {
+  width: 60px; height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+.score-num {
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 28px;
+}
+
+.decision-badge {
+  font-size: 10px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dec-invest { background: rgba(0,229,160,0.1); color: var(--c1); border: 1px solid rgba(0,229,160,0.25); }
+.dec-veille { background: rgba(255,201,74,0.1); color: var(--c4); border: 1px solid rgba(255,201,74,0.25); }
+.dec-eviter { background: rgba(255,95,87,0.1); color: var(--c3); border: 1px solid rgba(255,95,87,0.25); }
+
+.couche-c4 { color: var(--c4); }
+.couche-c3 { color: var(--c3); }
+.couche-c2 { color: var(--c2); }
+.couche-c1 { color: var(--c1); }
+
+/* ANALYSE PAGE */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  min-height: 600px;
+}
+
+.stock-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stock-sidebar-btn {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stock-sidebar-btn:hover { border-color: rgba(255,255,255,0.12); }
+.stock-sidebar-btn.active { border-color: var(--c1); background: rgba(0,229,160,0.05); }
+
+.ssb-ticker {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ssb-name { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+.ssb-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+/* REPORT CARD */
+.report-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.report-header {
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.report-ticker {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.report-company { font-size: 14px; color: var(--dim); margin-top: 6px; }
+.report-price { font-family: 'Clash Display', sans-serif; font-size: 36px; font-weight: 700; }
+.report-change { font-size: 12px; margin-top: 4px; }
+.report-change.pos { color: var(--c1); }
+.report-change.neg { color: var(--c3); }
+
+.report-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.report-body { padding: 24px 32px; }
+
+/* SCORE SECTION */
+.score-section {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.score-section-title {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 16px;
+}
+
+.score-rows { display: flex; flex-direction: column; gap: 10px; }
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-row-label { font-size: 11px; color: var(--dim); width: 200px; flex-shrink: 0; }
+
+.score-row-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-row-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.score-row-num { font-size: 12px; font-weight: 500; width: 32px; text-align: right; }
+.score-row-flag { font-size: 11px; width: 20px; }
+
+.score-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.score-total-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); }
+.score-total-num { font-family: 'Clash Display', sans-serif; font-size: 32px; font-weight: 700; }
+
+/* TRADE PLAN */
+.trade-plan {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tp-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.tp-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+.tp-value { font-family: 'Clash Display', sans-serif; font-size: 22px; font-weight: 700; }
+.tp-entry { color: var(--c-leader); }
+.tp-stop { color: var(--c3); }
+.tp-target { color: var(--c1); }
+.tp-sub { font-size: 10px; color: var(--dim); margin-top: 4px; }
+
+/* RR BADGE */
+.rr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+}
+
+.rr-label { font-size: 11px; color: var(--dim); letter-spacing: 1px; }
+.rr-value { font-family: 'Clash Display', sans-serif; font-size: 24px; font-weight: 700; color: var(--c1); }
+.rr-verdict { font-size: 11px; }
+
+/* CRITERIA DETAIL */
+.criteria-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.crit-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.crit-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.crit-name { font-size: 10px; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; }
+.crit-score { font-size: 13px; font-weight: 500; }
+.crit-text { font-size: 11px; color: #8a94a8; line-height: 1.5; }
+
+/* SOURCE BOX */
+.source-box {
+  background: rgba(0,229,160,0.03);
+  border: 1px solid rgba(0,229,160,0.1);
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.source-box-title { font-size: 9px; letter-spacing: 2px; color: var(--c1); text-transform: uppercase; margin-bottom: 8px; }
+.source-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.source-tag {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(0,229,160,0.06);
+  color: var(--dim);
+  border: 1px solid rgba(0,229,160,0.1);
+}
+
+/* VEILLE PAGE */
+.veille-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.veille-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.veille-card:hover { border-color: rgba(255,201,74,0.2); }
+.veille-card.haute { border-left: 3px solid var(--c3); }
+.veille-card.moyenne { border-left: 3px solid var(--c4); }
+.veille-card.basse { border-left: 3px solid var(--dim); }
+
+.veille-ticker { font-family: 'Clash Display', sans-serif; font-size: 28px; font-weight: 700; }
+.veille-name { font-size: 11px; color: var(--dim); margin-top: 2px; }
+.veille-condition { font-size: 12px; line-height: 1.6; }
+.veille-condition strong { color: var(--text); }
+.veille-condition .cond-date { color: var(--c4); }
+.veille-condition .cond-price { color: var(--c-leader); }
+
+.veille-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+.veille-reserve {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c4);
+}
+
+.veille-reserve-label { font-size: 9px; color: var(--dim); letter-spacing: 1px; }
+
+.priorité-badge {
+  font-size: 9px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.prio-haute { background: rgba(255,95,87,0.1); color: var(--c3); border: 1px solid rgba(255,95,87,0.2); }
+.prio-moyenne { background: rgba(255,201,74,0.1); color: var(--c4); border: 1px solid rgba(255,201,74,0.2); }
+.prio-basse { background: rgba(90,100,128,0.1); color: var(--dim); border: 1px solid rgba(90,100,128,0.2); }
+
+/* PINE SECTION */
+.pine-section {
+  margin-top: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pine-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.pine-header-label { font-size: 10px; color: var(--dim); letter-spacing: 1px; }
+.pine-toggle { font-size: 10px; color: var(--c1); }
+
+.pine-code {
+  display: none;
+  background: #0a0f1a;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.pine-code.open { display: block; }
+
+.pine-code pre {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #8ab4f8;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.pine-code .kw { color: #ff79c6; }
+.pine-code .fn { color: #50fa7b; }
+.pine-code .str { color: #f1fa8c; }
+.pine-code .num { color: #bd93f9; }
+.pine-code .com { color: #6272a4; }
+
+.copy-btn {
+  background: rgba(0,229,160,0.1);
+  border: 1px solid rgba(0,229,160,0.2);
+  color: var(--c1);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover { background: rgba(0,229,160,0.2); }
+
+/* ALLOCATION SECTION */
+.alloc-section {
+  margin-top: 32px;
+  background: var(--bg2);
+  border: 1px solid rgba(255,201,74,0.15);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.alloc-title { font-family: 'Clash Display', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.alloc-title span { color: var(--c4); }
+
+.alloc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+
+.alloc-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+
+.alloc-ticker { font-family: 'Clash Display', sans-serif; font-size: 18px; font-weight: 700; }
+.alloc-amount { font-size: 18px; font-weight: 500; color: var(--c4); margin-top: 4px; }
+.alloc-pct { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 0 12px; gap: 2px; }
+  nav .nav-btn { font-size: 10px; padding: 5px 10px; }
+  .nav-capital { font-size: 10px; padding: 3px 8px; }
+  .page { padding: 68px 12px 40px; }
+  .analysis-grid { grid-template-columns: 1fr; }
+  .trade-plan { grid-template-columns: 1fr; }
+  .criteria-grid { grid-template-columns: 1fr; }
+  .veille-card { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  
+  /* Hide less important columns on mobile */
+  table thead th:nth-child(3),
+  table tbody td:nth-child(3) { display: none; }
+  
+  /* Make table scrollable horizontally */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  
+  /* Tighten table cells */
+  td, th { padding: 10px 8px; font-size: 11px; }
+  .td-ticker { font-size: 14px; }
+  .score-track { width: 40px; }
+  .decision-badge { font-size: 9px; padding: 3px 8px; }
+  .profil-badge { font-size: 9px; padding: 2px 6px; }
+  
+  /* Stats grid 2 columns on mobile */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-value { font-size: 20px; }
+  
+  /* Accordion header on mobile */
+  .acc-header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+  
+  /* Page title smaller */
+  .page-title { font-size: 24px; }
+}
+
+.universe-accordion {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.acc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: var(--bg3);
+}
+
+.acc-header:hover { background: rgba(255,255,255,0.03); }
+
+.acc-body {
+  display: block;
+}
+
+.active-universe {
+  color: var(--c1) !important;
+  background: rgba(0,229,160,0.08) !important;
+  border: 1px solid rgba(0,229,160,0.2) !important;
+}
+.universe-btn { border: 1px solid transparent; }
+.universe-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DC<span>/</span>HQ</div>
+  <button class="nav-btn active" onclick="showPage('dashboard')">Dashboard</button>
+  <button class="nav-btn" onclick="showPage('analyse')">Analyses</button>
+  <button class="nav-btn" onclick="showPage('veille')">Veille</button>
+  <button class="nav-btn" onclick="showPage('allocation')">Allocation</button>
+  <div class="nav-right">
+    <span class="nav-date" id="navDate"></span>
+    <span class="nav-capital">13,000 €</span>
+  </div>
+</nav>
+
+<!-- =================== DASHBOARD =================== -->
+<div class="page active" id="page-dashboard">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Data Center <span class="accent">Universe</span></div>
+      <div class="page-sub">ETF Perso · 10 stocks · 3 couches · Mis à jour 3 juin 2026</div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-leader)"></div>🏛️ Leader</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-challenger)"></div>⚡ Challenger</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-specu)"></div>🚀 Spéculatif</div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Investir maintenant</div>
+      <div class="stat-value stat-green">3</div>
+      <div class="stat-sub">stocks prêts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">En veille</div>
+      <div class="stat-value stat-yellow">7</div>
+      <div class="stat-sub">à surveiller</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">À éviter</div>
+      <div class="stat-value stat-red">0</div>
+      <div class="stat-sub">supprimés</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Capital déployé</div>
+      <div class="stat-value stat-blue" id="dash-stat-deploye">—</div>
+      <div class="stat-sub" id="dash-stat-deploye-pct">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Réserve</div>
+      <div class="stat-value stat-yellow" id="dash-stat-reserve">—</div>
+      <div class="stat-sub" id="dash-stat-reserve-pct">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Objectif</div>
+      <div class="stat-value" style="color:var(--c-specu)">x2</div>
+      <div class="stat-sub">horizon 2 ans</div>
+    </div>
+  </div>
+
+  <!-- UNIVERS IA -->
+  <div class="universe-accordion" id="acc-ia">
+    <div class="acc-header" onclick="toggleAccordion('ia')">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:16px">🤖</span>
+        <div>
+          <div style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700">Univers IA & Data Center</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">10 STOCKS · 3 COUCHES</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="decision-badge dec-invest">3 🟢 Investir</span>
+        <span class="decision-badge dec-veille">7 ⏳ Veille</span>
+        <span id="acc-ia-arrow" style="color:var(--c1);font-size:14px;transition:transform 0.3s">▼</span>
+      </div>
+    </div>
+    <div class="acc-body" id="acc-ia-body">
+    <div class="table-wrap" style="border-radius:0 0 12px 12px;border-top:none;margin-bottom:0">
+    <table>
+      <thead>
+        <tr>
+          <th>Couche</th>
+          <th>Ticker</th>
+          <th>Société</th>
+          <th>Profil</th>
+          <th>Prix</th>
+          <th>Score</th>
+          <th>Décision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- C4 -->
+        <tr onclick="openAnalysis('MSFT')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">MSFT</td>
+          <td class="td-société">Microsoft</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="MSFT">$438</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">80</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('GOOGL')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">GOOGL</td>
+          <td class="td-société">Alphabet</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="GOOGL">$366</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">78</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('AMZN')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">AMZN</td>
+          <td class="td-société">Amazon</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="AMZN">$267</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:72%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">72</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('ORCL')">
+          <td class="td-couche couche-c4">C4</td>
+          <td class="td-ticker">ORCL</td>
+          <td class="td-société">Oracle</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="ORCL">$239</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:73%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">73</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <!-- C3 -->
+        <tr onclick="openAnalysis('NVDA')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">NVDA</td>
+          <td class="td-société">Nvidia</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="NVDA">$222</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">78</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('MU')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">MU</td>
+          <td class="td-société">Micron</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td data-price-ticker="MU">$1,064</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">80</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('MRVL')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">MRVL</td>
+          <td class="td-société">Marvell</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td data-price-ticker="MRVL">$291</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:88%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">88</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
+        </tr>
+        <tr onclick="openAnalysis('AVGO')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">AVGO</td>
+          <td class="td-société">Broadcom</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="AVGO">$477</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:72%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">72</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <tr onclick="openAnalysis('CRDO')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">CRDO</td>
+          <td class="td-société">Credo Tech</td>
+          <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
+          <td data-price-ticker="CRDO">$229</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:62%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">62</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+        <!-- C2 -->
+        <tr onclick="openAnalysis('DELL')">
+          <td class="td-couche couche-c2">C2</td>
+          <td class="td-ticker">DELL</td>
+          <td class="td-société">Dell Tech</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td data-price-ticker="DELL">$423</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:82%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">82</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr></tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+
+  <!-- UNIVERS ÉNERGIE -->
+  <div class="universe-accordion" id="acc-energy" style="margin-top:12px">
+    <div class="acc-header" onclick="toggleAccordion('energy')">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:16px">⚡</span>
+        <div>
+          <div style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700">Univers Énergie</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">1 STOCK · EN CONSTRUCTION</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="decision-badge dec-veille">1 ⏳ Veille</span>
+        <span id="acc-energy-arrow" style="color:var(--c4);font-size:14px;transition:transform 0.3s">▶</span>
+      </div>
+    </div>
+    <div class="acc-body" id="acc-energy-body" style="display:none">
+    <div class="table-wrap" style="border-radius:0 0 12px 12px;border-top:none;margin-bottom:0">
+    <table>
+      <thead>
+        <tr>
+          <th>Couche</th>
+          <th>Ticker</th>
+          <th>Société</th>
+          <th>Profil</th>
+          <th>Prix</th>
+          <th>Score</th>
+          <th>Décision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr onclick="openAnalysis('NEE')">
+          <td class="td-couche couche-c1">C1</td>
+          <td class="td-ticker">NEE</td>
+          <td class="td-société">NextEra Energy</td>
+          <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
+          <td data-price-ticker="NEE">$--</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:74%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">74</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =================== ANALYSES =================== -->
+<div class="page" id="page-analyse">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Rapports <span class="accent">Citadel</span></div>
+      <div class="page-sub">Analyse technique complète · 10 critères · Score /100</div>
+    </div>
+  </div>
+
+  <div class="analysis-grid">
+    <div class="stock-sidebar" id="stockSidebar"></div>
+    <div id="reportContainer">
+      <div style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--dim);font-size:12px;letter-spacing:2px;text-transform:uppercase;">
+        ← Sélectionne un stock
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== VEILLE =================== -->
+<div class="page" id="page-veille">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Stocks en <span class="accent">Veille</span></div>
+      <div class="page-sub">TradingView Pine Script · Conditions d'entrée · Réserve allouée</div>
+    </div>
+  </div>
+
+  <div class="veille-grid" id="veilleGrid"></div>
+</div>
+
+<!-- =================== ALLOCATION =================== -->
+<div class="page" id="page-allocation">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Mon <span class="accent">Allocation</span></div>
+      <div class="page-sub">Capital 13,000€ · Objectif x2 en 2 ans · Revolut</div>
+    </div>
+  </div>
+
+  <div class="stats-grid" id="alloc-stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Capital total</div>
+      <div class="stat-value" style="color:var(--text)" id="stat-capital-total">13,000€</div>
+      <div class="stat-sub">100%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Déployé maintenant</div>
+      <div class="stat-value stat-green" id="stat-deploye">—</div>
+      <div class="stat-sub" id="stat-deploye-pct">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Réserve veille</div>
+      <div class="stat-value stat-yellow" id="stat-reserve">—</div>
+      <div class="stat-sub" id="stat-reserve-pct">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Objectif 2 ans</div>
+      <div class="stat-value" style="color:var(--c-specu)">26,000€</div>
+      <div class="stat-sub">scénario base</div>
+    </div>
+  </div>
+
+  <div id="alloc-deploy-wrap" class="table-wrap" style="margin-bottom:20px">
+    <div class="table-header-bar">
+      <h3 id="alloc-deploy-title">DÉPLOIEMENT IMMÉDIAT</h3>
+      <span class="table-count" id="alloc-deploy-count"></span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Ticker</th><th>Société</th><th>Couche</th><th>Montant</th><th>%</th><th>Entrée</th><th>Stop</th><th>Cible</th><th>R/R</th></tr>
+      </thead>
+      <tbody id="alloc-deploy-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="alloc-reserve-wrap" class="table-wrap">
+    <div class="table-header-bar">
+      <h3 id="alloc-reserve-title">RÉSERVE VEILLE</h3>
+      <span class="table-count" id="alloc-reserve-count"></span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Ticker</th><th>Société</th><th>Réservé</th><th>Condition d'entrée</th><th>Priorité</th></tr>
+      </thead>
+      <tbody id="alloc-reserve-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+
+// ====== HISTORIQUE DES UPDATES ======
+const stockHistory = {
+  MSFT: [
+    { date: '27 mai 2026', score: 78, price: 415, decision: 'invest', changes: [
+      { icon: '✅', text: 'Earnings Q3 FY2026 passés — EPS $4.27 vs $4.05 estimé' },
+      { icon: '✅', text: 'Division IA +123% à $37Mrd' },
+    ]},
+    { date: '30 mai 2026', score: 80, price: 427, decision: 'invest', changes: [
+      { icon: '✅', text: 'Build Conference — nouvelles alliances IA' },
+      { icon: '✅', text: 'MA50 et MA200 confluentes à $416 — support confirmé' },
+    ]},
+    { date: '3 juin 2026', score: 81, price: 438, decision: 'invest', changes: [
+      { icon: '⚠️', text: 'Correction -2.7% suite au selloff sectoriel post-AVGO earnings' },
+      { icon: '✅', text: 'NVDA-MSFT partenariat unifié agentic AI annoncé au Computex' },
+      { icon: '✅', text: 'Score +1 — fondamentaux renforcés. Zone entrée $430-445' },
+    ]},
+  ],
+  GOOGL: [
+    { date: '27 mai 2026', score: 79, price: 390, decision: 'invest', changes: [
+      { icon: '✅', text: 'Short interest 0.62% — le plus faible de notre univers' },
+      { icon: '✅', text: 'Google Cloud +28% YoY' },
+    ]},
+    { date: '30 mai 2026', score: 80, price: 390, decision: 'invest', changes: [
+      { icon: '✅', text: 'Truist relève cible à $480' },
+      { icon: '✅', text: 'Score +1 — catalyseurs renforcés' },
+    ]},
+    { date: '3 juin 2026', score: 78, price: 366, decision: 'veille', changes: [
+      { icon: '🚨', text: 'REVISION : Investir → Veille' },
+      { icon: '⚠️', text: 'Correction -3.9% — selloff sectoriel post-AVGO earnings' },
+      { icon: '⚠️', text: 'Prix $366 — plus dans notre zone entrée $380-395' },
+      { icon: '✅', text: 'Opportunité : attendre stabilisation vers $360-375' },
+    ]},
+  ],
+  AMZN: [
+    { date: '27 mai 2026', score: 76, price: 272, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Prix quasi ATH. Trop chaud pour entrer' },
+    ]},
+    { date: '30 mai 2026', score: 72, price: 272, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Prix $272 — +29% en 1 semaine. Quasi ATH' },
+    ]},
+    { date: '3 juin 2026', score: 71, price: 267, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Correction -1.8% — selloff sectoriel' },
+      { icon: '✅', text: 'AWS growth record — fondamentaux intacts' },
+      { icon: '=', text: 'Score -1 — distance ATH reste insuffisante' },
+    ]},
+  ],
+  ORCL: [
+    { date: '27 mai 2026', score: 72, price: 190, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings 10 juin — risque binaire' },
+    ]},
+    { date: '30 mai 2026', score: 70, price: 226, decision: 'veille', changes: [
+      { icon: '✅', text: 'Contrat gouvernement US $30Mrd annoncé' },
+      { icon: '⚠️', text: '+19% en 3 jours — trop chaud' },
+    ]},
+    { date: '3 juin 2026', score: 73, price: 239, decision: 'veille', changes: [
+      { icon: '✅', text: '+5.7% supplémentaire — partenariat Bloom Energy fuel-cell' },
+      { icon: '✅', text: 'OpenAI + Oracle data center Michigan confirmé' },
+      { icon: '⚠️', text: 'Earnings Jun 16 dans 13 jours — attendre absolument' },
+      { icon: '↑', text: 'Score +3 — catalyseurs renforcés' },
+    ]},
+  ],
+  NVDA: [
+    { date: '27 mai 2026', score: 77, price: 212, decision: 'invest', changes: [
+      { icon: '✅', text: 'Earnings passés. PEG 0.49. ROE 114%' },
+    ]},
+    { date: '30 mai 2026', score: 78, price: 216, decision: 'invest', changes: [
+      { icon: '✅', text: 'Consolidation saine post-earnings' },
+    ]},
+    { date: '3 juin 2026', score: 79, price: 222, decision: 'invest', changes: [
+      { icon: '✅', text: 'Partenariat NVDA-MSFT agentic AI annoncé au Computex' },
+      { icon: '✅', text: 'Jensen Huang déclare MRVL "next trillion dollar company"' },
+      { icon: '=', text: 'Score stable — position maintenue' },
+    ]},
+  ],
+  MU: [
+    { date: '27 mai 2026', score: 78, price: 750, decision: 'invest', changes: [
+      { icon: '✅', text: 'PEG 0.06. 12 signaux Buy / 0 Sell' },
+    ]},
+    { date: '29 mai 2026', score: 78, price: 882, decision: 'veille', changes: [
+      { icon: '🚨', text: 'Gap +25% après UBS cible $1,625' },
+    ]},
+    { date: '30 mai 2026', score: 78, price: 969, decision: 'veille', changes: [
+      { icon: '⚠️', text: '+10% supplémentaire. Zone entrée révisée $880-920' },
+    ]},
+    { date: '3 juin 2026', score: 80, price: 1064, decision: 'veille', changes: [
+      { icon: '✅', text: '+9.6% — $1,064. JPMorgan dit que les bottlenecks IA poussent vers $1,400' },
+      { icon: '✅', text: 'Micron a franchi les $1,000Mrd market cap' },
+      { icon: '⚠️', text: 'Zone entrée révisée $980-1050. Earnings Jun 24 dans 21 jours' },
+      { icon: '↑', text: 'Score +2 — momentum fondamental exceptionnel' },
+    ]},
+  ],
+  MRVL: [
+    { date: '27 mai 2026', score: 63, price: 200, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings ce soir — risque binaire maximum' },
+    ]},
+    { date: '28 mai 2026', score: 75, price: 200, decision: 'invest', changes: [
+      { icon: '🚨', text: 'REVISION : Veille → Investir. Earnings record Q1 FY27' },
+    ]},
+    { date: '30 mai 2026', score: 76, price: 205, decision: 'invest', changes: [
+      { icon: '✅', text: 'Score stable. Momentum post-earnings confirmé' },
+    ]},
+    { date: '3 juin 2026', score: 88, price: 291, decision: 'invest', changes: [
+      { icon: '🔥', text: 'CATALYST MAJEUR : Jensen Huang déclare MRVL "next trillion dollar company" au Computex' },
+      { icon: '🚀', text: '+42% en quelques jours — de $205 à $291' },
+      { icon: '✅', text: 'Stifel cible $321 (street-high). Nouveau 52W high $333.50' },
+      { icon: '✅', text: 'NVDA NVLink Fusion partnership — positionnement IA data center confirmé' },
+      { icon: '↑', text: 'Score +12 — révision majeure haussière' },
+    ]},
+  ],
+  DELL: [
+    { date: '27 mai 2026', score: 64, price: 318, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings 28 mai demain' },
+    ]},
+    { date: '29 mai 2026', score: 82, price: 423, decision: 'veille', changes: [
+      { icon: '🚨', text: 'Earnings historiques. EPS $4.86 vs $2.96 estimé' },
+    ]},
+    { date: '30 mai 2026', score: 82, price: 423, decision: 'veille', changes: [
+      { icon: '✅', text: 'Mizuho cible $435. Prochains earnings Sep 3' },
+    ]},
+    { date: '3 juin 2026', score: 85, price: 423, decision: 'veille', changes: [
+      { icon: '✅', text: 'ATH absolu $469.47 atteint le 1er juin' },
+      { icon: '⚠️', text: 'Correction depuis l\'ATH — consolidation en cours $407-442' },
+      { icon: '✅', text: 'Pentagon deal $9.7Mrd confirmé. Market cap $276Mrd' },
+      { icon: '↑', text: 'Score +3 — fondamentaux renforcés. Zone entrée $395-420' },
+    ]},
+  ],
+  CRDO: [
+    { date: '27 mai 2026', score: 60, price: 215, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings Jun 1 dans 5 jours' },
+    ]},
+    { date: '30 mai 2026', score: 62, price: 235, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings ce soir Jun 1 — ne pas entrer avant' },
+    ]},
+    { date: '3 juin 2026', score: 63, price: 229, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings : EPS +10% beat mais revenue -0.8% miss' },
+      { icon: '⚠️', text: '-15.6% after-hours puis légère reprise à $229' },
+      { icon: '⚠️', text: '123 ventes insiders depuis mars — signal négatif' },
+      { icon: '=', text: 'Score +1 légèrement. Toujours en veille — attendre stabilisation' },
+    ]},
+  ],
+  AVGO: [
+    { date: '27 mai 2026', score: 58, price: 431, decision: 'veille', changes: [
+      { icon: '🔴', text: 'RSI 79 suracheté. Earnings Jun 3' },
+    ]},
+    { date: '30 mai 2026', score: 65, price: 446, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Earnings Jun 3 dans 4 jours — attendre' },
+    ]},
+    { date: '3 juin 2026', score: 72, price: 477, decision: 'veille', changes: [
+      { icon: '✅', text: 'Earnings Q2 : EPS $2.44 vs $2.40 estimé. Revenue +48% YoY' },
+      { icon: '✅', text: 'Guidance Q3 $29.4Mrd vs $28.53Mrd attendu — beat fort' },
+      { icon: '✅', text: 'AI revenue $10.8Mrd. AI order book $73Mrd' },
+      { icon: '⚠️', text: 'Réaction -7% AH puis rebond à $477 — sell the news classique' },
+      { icon: '↑', text: 'Score +5 — earnings passés, risque calendrier éliminé' },
+    ]},
+  ],
+};
+// ====== PRIX & CONFIG CENTRALISÉS ======
 const PORTFOLIO = {
   capital_total: 13000,
+  capital_deploye: 6000,
+  capital_reserve: 7000,
 };
 
 const STOCK_CONFIG = {
-  MSFT: { entry_low: 430, entry_high: 445, stop: 410, target: 560, reserve: 2500, decision: "invest" },
-  GOOGL: { entry_low: 360, entry_high: 375, stop: 335, target: 480, reserve: 2000, decision: "veille" },
-  AMZN: { entry_low: 255, entry_high: 270, stop: 235, target: 340, reserve: 1000, decision: "veille" },
-  ORCL: { entry_low: 225, entry_high: 245, stop: 205, target: 320, reserve: 1200, decision: "veille" },
-  NVDA: { entry_low: 215, entry_high: 228, stop: 198, target: 290, reserve: 2000, decision: "invest" },
-  MU: { entry_low: 980, entry_high: 1050, stop: 900, target: 1400, reserve: 1000, decision: "veille" },
-  MRVL: { entry_low: 270, entry_high: 295, stop: 240, target: 400, reserve: 1500, decision: "invest" },
-  DELL: { entry_low: 395, entry_high: 420, stop: 365, target: 565, reserve: 900, decision: "veille" },
-  CRDO: { entry_low: 210, entry_high: 230, stop: 185, target: 340, reserve: 0, decision: "veille" },
-  AVGO: { entry_low: 440, entry_high: 465, stop: 410, target: 600, reserve: 500, decision: "veille" },
+  MSFT: { entry_low: 430, entry_high: 445, stop: 410, target: 560, reserve: 2500 },
+  GOOGL: { entry_low: 360, entry_high: 375, stop: 335, target: 480, reserve: 2000 },
+  AMZN: { entry_low: 255, entry_high: 270, stop: 235, target: 340, reserve: 1000 },
+  ORCL: { entry_low: 225, entry_high: 245, stop: 205, target: 320, reserve: 1200 },
+  NVDA: { entry_low: 215, entry_high: 228, stop: 198, target: 290, reserve: 2000 },
+  MU:   { entry_low: 980, entry_high: 1050, stop: 900, target: 1400, reserve: 1000 },
+  MRVL: { entry_low: 270, entry_high: 295, stop: 240, target: 400, reserve: 1500 },
+  DELL: { entry_low: 395, entry_high: 420, stop: 365, target: 565, reserve: 900 },
+  CRDO: { entry_low: 210, entry_high: 230, stop: 185, target: 340, reserve: 0 },
+  AVGO: { entry_low: 440, entry_high: 465, stop: 410, target: 600, reserve: 500 },
 };
 
-const fmtEntry = (t) => { const c = STOCK_CONFIG[t]; return c ? `$${c.entry_low}–${c.entry_high}` : "—"; };
-const fmtStop = (t) => { const c = STOCK_CONFIG[t]; return c ? `$${c.stop}` : "—"; };
-const fmtTarget = (t) => { const c = STOCK_CONFIG[t]; return c ? `$${c.target}` : "—"; };
-const fmtRR = (t) => {
-  const c = STOCK_CONFIG[t]; if (!c) return "—";
-  const entry = (c.entry_low + c.entry_high) / 2;
-  return `1:${((c.target - entry) / (entry - c.stop)).toFixed(1)}`;
+function fmtEntry(t) {
+  var c = STOCK_CONFIG[t];
+  return c ? '$' + c.entry_low + '–' + c.entry_high : '—';
+}
+function fmtStop(t) {
+  var c = STOCK_CONFIG[t];
+  return c ? '$' + c.stop : '—';
+}
+function fmtTarget(t) {
+  var c = STOCK_CONFIG[t];
+  return c ? '$' + c.target : '—';
+}
+function fmtRR(t) {
+  var c = STOCK_CONFIG[t];
+  if (!c) return '—';
+  var entry = (c.entry_low + c.entry_high) / 2;
+  var risk = entry - c.stop;
+  var reward = c.target - entry;
+  return '1:' + (reward / risk).toFixed(1);
+}
+function fmtReserve(t) {
+  var c = STOCK_CONFIG[t];
+  return c && c.reserve > 0 ? c.reserve.toLocaleString('fr-FR') + '€' : '—';
+}
+
+// ====== DATA ======
+const stocks = {
+  MSFT: {
+    name: 'Microsoft Corporation', price: '$438', couche: 'C4 — Hyperscaler',
+    score: 81, decision: 'invest', profil: 'leader',
+    entry: fmtEntry('MSFT'), stop: fmtStop('MSFT'), target: fmtTarget('MSFT'), rr: fmtRR('MSFT'),
+    change: '-2.7%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 8, flag: '✅', note: 'RSI 61.9 — neutre/haussier. MACD 3.90 Buy. MA50 $416 et MA200 $416 confluentes — support double béton.' },
+      { name: 'Distance ATH + marge sécurité', score: 6, flag: '🟡', note: '-23% du 52W high $555. Correction saine confirmée. Zone d entrée toujours valide.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance haussière en reconstruction. Daily et weekly positifs. Volume 47M vs moyenne 31M.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.40. Revenue +16.7% YoY. EPS +23%. Division IA +123% à $37Mrd. Earnings juillet.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Azure IA +123%. Copilot déploiement massif. OpenAI partnership central. Next earnings Jul 28.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Ownership institutionnel dominant. Vanguard et BlackRock top holders. Smart Money stable.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.06% — quasi inexistant. Aucune pression vendeuse.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Derniers earnings 29 avril passés. Prochains Jul 28. Piste libre 8 semaines.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Quelques ventes normales de dirigeants. Aucun signal alarmant.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.09. Peu sensible aux taux. Resilient aux chocs macro.' },
+    ],
+    sources: ['Investing.com', 'TipRanks', 'StockAnalysis.com', 'TradingView', 'Robinhood'],
+    pine: `//@version=5
+indicator("MSFT Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 395 and close <= 432
+rsiOk = rsi >= 45 and rsi <= 70
+macdOk = macdLine > signalLine
+aboveMA = close > ma50 and close > ma200
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="MSFT — ENTREE OPTIMALE", message="MSFT zone entree. RSI neutre + MACD buy + au-dessus MAs.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  GOOGL: {
+    name: 'Alphabet Inc.', price: '$366', couche: 'C4 — Hyperscaler',
+    score: 78, decision: 'veille', profil: 'leader',
+    entry: fmtEntry('GOOGL'), stop: fmtStop('GOOGL'), target: fmtTarget('GOOGL'), rr: fmtRR('GOOGL'),
+    change: '-3.9%', changeDir: 'neg',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière solide. MAs toutes haussières. RSI neutre.' },
+      { name: 'Distance ATH + marge sécurité', score: 6, flag: '🟡', note: '+128% en 52 semaines. Prix actuel $390 proche de zone support.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: '+128.87% en 52 semaines. Tendance de fond exceptionnelle.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 1.88. PE 29.47 proche moyenne historique. Revenue cloud +28% YoY.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Google Cloud +28%. Gemini IA. TPU chips maison. Search dominance absolue.' },
+      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap ultra institutionnalisé. Truist relève cible à $480.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.62% — plus faible de tout notre univers.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Prochains juillet. Piste libre.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Ingénieur Google arrêté pour insider trading sur Polymarket — isolé, pas systémique.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.27. Modéré. ROE 38.88%. ROIC 28.34%.' },
+    ],
+    sources: ['StockAnalysis.com', 'GuruFocus', 'TipRanks', 'Robinhood', 'FinanceCharts'],
+    pine: `//@version=5
+indicator("GOOGL Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 355 and close <= 395
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma200
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="GOOGL — ENTREE OPTIMALE", message="GOOGL zone entree optimale. Conditions reunies.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  AMZN: {
+    name: 'Amazon.com Inc.', price: '$267', couche: 'C4 — Hyperscaler',
+    score: 71, decision: 'veille', profil: 'leader',
+    entry: fmtEntry('AMZN'), stop: fmtStop('AMZN'), target: fmtTarget('AMZN'), rr: fmtRR('AMZN'),
+    change: '+1.2%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'Proche du 52W high $278. RSI en zone haute. Momentum fort mais prudence.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: '-2% du 52W high $278. Quasi au sommet. Trop risqué entrer maintenant.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: '+38% en 52 semaines. Tendance solide et régulière.' },
+      { name: 'Momentum fondamental (PEG)', score: 7, flag: '✅', note: 'AWS hits fastest growth in 15 quarters. Truist relève cible à $320.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'AWS croissance record. Partenariat Anthropic renforcé. Snowflake deal.' },
+      { name: 'Flux institutionnels', score: 9, flag: '✅', note: 'Mega cap. Institutional ownership dominant.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.85% — très faible.' },
+      { name: 'Calendrier earnings', score: 8, flag: '✅', note: 'Earnings passés 29 avril. Piste libre jusqu en juillet.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Bezos vend programmatiquement — normal et planifié.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 1.47. Diversification retail + cloud protège.' },
+    ],
+    sources: ['Robinhood', 'TipRanks', 'StockAnalysis.com', 'TradingView'],
+    pine: `//@version=5
+indicator("AMZN Pullback Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 225 and close <= 255
+rsiOk = rsi >= 40 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="AMZN — PULLBACK ZONE ENTREE", message="AMZN revenu en zone entree $245-255.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  ORCL: {
+    name: 'Oracle Corporation', price: '$239', couche: 'C4 — Hyperscaler',
+    score: 73, decision: 'veille', profil: 'leader',
+    entry: fmtEntry('ORCL'), stop: fmtStop('ORCL'), target: fmtTarget('ORCL'), rr: fmtRR('ORCL'),
+    change: '+6.5%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'MACD Buy. MA50 $189 et MA200 $181 loin en dessous — prix a beaucoup monté.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-35% du 52W high $345. Mais +19% en 3 jours — trop chaud pour entrer maintenant.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: 'Tendance haussière forte. Breakout sur contrat $30Mrd US gouvernement.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.03. OCI revenue +84% YoY. Backlog $553Mrd. Contrat gouvernement $30Mrd.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: 'Partenaire OpenAI, Meta. Contrat gouvernement US $30Mrd. Earnings Jun 16.' },
+      { name: 'Flux institutionnels', score: 6, flag: '🟡', note: 'Phillipe Laffont (Coatue) a vendu ORCL récemment — signal négatif notable.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.09% — très faible.' },
+      { name: 'Calendrier earnings', score: 4, flag: '⚠️', note: 'Earnings Jun 16 — dans 17 jours. Risque binaire important à surveiller.' },
+      { name: 'Insider transactions', score: 5, flag: '⚠️', note: 'Larry Ellison vend régulièrement des blocs importants.' },
+      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.89. Volatil. Dette $100Mrd+. Sensible aux taux.' },
+    ],
+    sources: ['TradingView', 'StockAnalysis.com', 'Yahoo Finance', 'Robinhood'],
+    pine: `//@version=5
+indicator("ORCL Pullback Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 185 and close <= 215
+rsiOk = rsi >= 40 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMAs = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMAs
+alertcondition(signal, title="ORCL — PULLBACK ZONE ENTREE", message="ORCL revenu en zone entree $205-215. Pre-earnings Jun 16.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  NVDA: {
+    name: 'NVIDIA Corporation', price: '$222', couche: 'C3 — Semi-conducteurs',
+    score: 78, decision: 'invest', profil: 'leader',
+    entry: fmtEntry('NVDA'), stop: fmtStop('NVDA'), target: fmtTarget('NVDA'), rr: '1:4.0',
+    change: '+0.1%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI neutre. MA50 $192 et MA200 $187 — prix bien au-dessus des deux. Volume normalisé.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-9% du 52W high $236. Limite — compensé par fondamentaux exceptionnels.' },
+      { name: 'Force tendance (ADX)', score: 7, flag: '✅', note: '+61% en 52 semaines. Tendance de fond solide. Consolidation saine post-earnings.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.49. ROE 114%. ROIC 104%. Revenue +70.68% YoY. EPS +109.24%.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'GPU H100/B200 = colonne vertébrale de toute IA mondiale. Monopole de fait.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: '65%+ institutionnels. Short interest 1.17% — très faible.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 1.17% — quasi inexistant. Consensus haussier total.' },
+      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings May 20 passés — record. Prochains août. 10 semaines de piste libre.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Jensen Huang conserve ses positions. Signal confiance.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.24 — très volatil. Risque géopolitique Taiwan toujours présent.' },
+    ],
+    sources: ['StockAnalysis.com', 'Yahoo Finance', 'Robinhood', 'TradingView'],
+    pine: `//@version=5
+indicator("NVDA Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 195 and close <= 220
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="NVDA — ENTREE OPTIMALE", message="NVDA zone entree. RSI neutre + MACD buy + au-dessus MA50.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  MU: {
+    name: 'Micron Technology Inc.', price: '$1,064', couche: 'C3 — Semi-conducteurs',
+    score: 80, decision: 'veille', profil: 'challenger',
+    entry: fmtEntry('MU'), stop: fmtStop('MU'), target: fmtTarget('MU'), rr: fmtRR('MU'),
+    change: '+4.9%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'MACD Buy $43.82. MA50 $774 et MA200 $637 — prix très au-dessus. RSI élevé post-gap.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '⚠️', note: '+18% au-dessus de l ancien ATH. Gap parabolic non consolidé. Ne pas chaser.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: 'ADX 34. Tendance exceptionnelle. $1,000Mrd market cap franchi.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.06 — le plus bas de tout notre univers. Forward PE 8. Bradé malgré la hausse.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'HBM mémoire IA = goulot mondial. Demande > offre jusqu en 2027+. UBS cible $1,625.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'David Tepper et billionaires en accumulation. Signal fort.' },
+      { name: 'Sentiment (short interest)', score: 6, flag: '🟡', note: 'Short interest 3.31% — légèrement plus élevé. Sceptiques sur la durabilité.' },
+      { name: 'Calendrier earnings', score: 4, flag: '⚠️', note: 'Earnings Jun 24 — dans 25 jours. Ne pas entrer trop proche.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'CEO Mehrotra investit dans expansion US. Confiant.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 1.92. Sensible aux cycles mémoire et macro.' },
+    ],
+    sources: ['Investing.com', 'StockAnalysis.com', 'CNBC', 'TipRanks'],
+    pine: `//@version=5
+indicator("MU Pullback Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+pullbackZone = close >= 820 and close <= 920
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = pullbackZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="MU — PULLBACK ZONE ENTREE", message="MU revenu en zone entree $880-920. RSI normalise.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  MRVL: {
+    name: 'Marvell Technology Inc.', price: '$291', couche: 'C3 — Semi-conducteurs',
+    score: 88, decision: 'invest', profil: 'challenger',
+    entry: fmtEntry('MRVL'), stop: fmtStop('MRVL'), target: fmtTarget('MRVL'), rr: fmtRR('MRVL'),
+    change: '+42%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI 65.87 neutre/haussier. MACD Buy $2.31. MA50 $191 et MA200 $170 — Strong Buy 10/10 ChartMill.' },
+      { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: 'Quasi ATH. Mais earnings passés — risque calendrier éliminé.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+176% en 52 semaines. Outperforms 97% de tous les stocks.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 0.14. Data center revenue +76% YoY. Custom ASICs AWS et Microsoft.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Data center = 74% du revenue. Partnership NVIDIA renforcé. Citi $225, Barclays $275.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Goldman Sachs, hedge funds en accumulation post-earnings.' },
+      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.24% — modéré.' },
+      { name: 'Calendrier earnings', score: 9, flag: '✅', note: 'Earnings Q1 FY27 passés May 27 — résultats record. Piste libre jusqu en août.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre. Quelques ventes programmées normales.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 2.25 — très volatil. Dimensionner en conséquence.' },
+    ],
+    sources: ['Investing.com', 'ChartMill', 'TipRanks', 'TradingView'],
+    pine: `//@version=5
+indicator("MRVL Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 175 and close <= 210
+rsiOk = rsi >= 40 and rsi <= 70
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="MRVL — ENTREE OPTIMALE", message="MRVL en zone entree. Post-earnings solides.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  DELL: {
+    name: 'Dell Technologies Inc.', price: '$423', couche: 'C2 — Infrastructure',
+    score: 85, decision: 'veille', profil: 'challenger',
+    entry: fmtEntry('DELL'), stop: fmtStop('DELL'), target: fmtTarget('DELL'), rr: fmtRR('DELL'),
+    change: '=', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'Nouveau 52W high $437. RSI en zone haute post-gap. Consolidation nécessaire.' },
+      { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: 'Prix $423 — +33% en 1 semaine. Trop chaud pour entrer. Attendre $385-400.' },
+      { name: 'Force tendance (ADX)', score: 9, flag: '✅', note: '+178% en 52 semaines. Next earnings Sep 3 — longue piste libre.' },
+      { name: 'Momentum fondamental (PEG)', score: 9, flag: '✅', note: 'PEG 1.39. EPS $4.86 vs $2.96 estimé (+64%). Revenue $43.8Mrd (+88%).' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'AI server backlog $51.3Mrd. Guidance $165-169Mrd FY27. Mizuho cible $435.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Upgrades massifs post-earnings. Max cible analyst $565.' },
+      { name: 'Sentiment (short interest)', score: 7, flag: '✅', note: 'Short interest 3.30% — modéré.' },
+      { name: 'Calendrier earnings', score: 10, flag: '✅', note: 'Earnings May 28 passés — historiques. Prochains Sep 3. Piste libre 3 mois.' },
+      { name: 'Insider transactions', score: 7, flag: '✅', note: 'Michael Dell conserve sa position majeure.' },
+      { name: 'Corrélation macro', score: 8, flag: '✅', note: 'Beta 1.06 — stable. Dividende versé.' },
+    ],
+    sources: ['TradingView', 'StockAnalysis.com', 'Robinhood', 'Mizuho Research'],
+    pine: `//@version=5
+indicator("DELL Consolidation Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+consolidationZone = close >= 355 and close <= 400
+rsiOk = rsi >= 40 and rsi <= 65
+macdOk = macdLine > signalLine
+signal = consolidationZone and rsiOk and macdOk
+alertcondition(signal, title="DELL — ZONE CONSOLIDATION", message="DELL en zone consolidation $385-400. Entree possible.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  CRDO: {
+    name: 'Credo Technology Group', price: '$229', couche: 'C3 — Semi-conducteurs',
+    score: 63, decision: 'veille', profil: 'specu',
+    entry: fmtEntry('CRDO'), stop: '$175', target: fmtTarget('CRDO'), rr: '1:4.0',
+    change: '+6.0%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 4, flag: '⚠️', note: 'Quasi ATH. Momentum pré-earnings fort. RSI en zone haute.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '🔴', note: 'Proche ATH. Earnings ce soir Jun 1. Ne pas entrer avant les résultats.' },
+      { name: 'Force tendance (ADX)', score: 10, flag: '✅', note: '+263% en 52 semaines. Momentum le plus fort de tout notre univers.' },
+      { name: 'Momentum fondamental (PEG)', score: 10, flag: '✅', note: 'PEG 0.40. ROIC 60%. Revenue +200% YoY. ROE 27.54%.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Cables AEC indispensables dans chaque rack IA. TAM $10Mrd+.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Forte accumulation institutionnelle confirmée.' },
+      { name: 'Sentiment (short interest)', score: 5, flag: '⚠️', note: 'Short interest 5.14% — élevé pour un spéculatif.' },
+      { name: 'Calendrier earnings', score: 2, flag: '🔴', note: 'Earnings Jun 1 ce soir — risque binaire maximum. Attendre les résultats.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 3.17 — très volatil. Peut corriger -30% sur mauvais earnings.' },
+    ],
+    sources: ['StockAnalysis.com', 'TipRanks', 'Yahoo Finance'],
+    pine: `//@version=5
+indicator("CRDO Post-Earnings Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 175 and close <= 220
+rsiOk = rsi >= 35 and rsi <= 65
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="CRDO — ENTREE POST-EARNINGS", message="CRDO apres earnings Jun 1. Zone entree atteinte.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
+  AVGO: {
+    name: 'Broadcom Inc.', price: '$477', couche: 'C3 — Semi-conducteurs',
+    score: 72, decision: 'veille', profil: 'leader',
+    entry: fmtEntry('AVGO'), stop: fmtStop('AVGO'), target: fmtTarget('AVGO'), rr: '1:3.5',
+    change: '-6.8%', changeDir: 'neg',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 5, flag: '🟡', note: 'RSI 79.10 — suracheté. MACD 19.59 Sell. Tension technique élevée.' },
+      { name: 'Distance ATH + marge sécurité', score: 3, flag: '🔴', note: '+1% au-dessus du 52W high. Nouveau ATH. Ne pas entrer maintenant.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: 'Tendance haussière forte. MA50 $398 et MA200 $343 — prix très au-dessus.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 0.75. Custom AI chips +140%. Networking IA dominant.' },
+      { name: 'Catalyseurs sectoriels', score: 8, flag: '✅', note: 'XPU custom Google, Meta, Apple. Segment IA hypercroissance. Earnings Jun 3.' },
+      { name: 'Flux institutionnels', score: 7, flag: '✅', note: 'Stanley Druckenmiller acheteur — signal positif notable.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.08% — très faible.' },
+      { name: 'Calendrier earnings', score: 2, flag: '🔴', note: 'Earnings Jun 3 — dans 4 jours. Risque binaire. Attendre absolument.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre.' },
+      { name: 'Corrélation macro', score: 6, flag: '🟡', note: 'Beta 1.44 — modéré.' },
+    ],
+    sources: ['TipRanks', 'Tickeron', 'Investing.com', 'TradingView'],
+    pine: `//@version=5
+indicator("AVGO Post-Earnings Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 370 and close <= 420
+rsiOk = rsi >= 40 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma50
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="AVGO — ENTREE POST-EARNINGS", message="AVGO: RSI normalise post-earnings. Zone entree atteinte.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  },
 };
 
-const STOCKS = {
-  MSFT: { name: "Microsoft", couche: "C4", profil: "leader", score: 81, price: "$438", change: "-2.7%", changeDir: "neg" },
-  GOOGL: { name: "Alphabet", couche: "C4", profil: "leader", score: 78, price: "$366", change: "-3.9%", changeDir: "neg" },
-  AMZN: { name: "Amazon", couche: "C4", profil: "leader", score: 71, price: "$267", change: "-1.8%", changeDir: "neg" },
-  ORCL: { name: "Oracle", couche: "C4", profil: "leader", score: 73, price: "$239", change: "+5.7%", changeDir: "pos" },
-  NVDA: { name: "Nvidia", couche: "C3", profil: "leader", score: 79, price: "$222", change: "+0.1%", changeDir: "pos" },
-  MU: { name: "Micron", couche: "C3", profil: "challenger", score: 80, price: "$1,064", change: "+9.6%", changeDir: "pos" },
-  MRVL: { name: "Marvell", couche: "C3", profil: "challenger", score: 88, price: "$291", change: "+42%", changeDir: "pos" },
-  AVGO: { name: "Broadcom", couche: "C3", profil: "leader", score: 72, price: "$477", change: "-6.8%", changeDir: "neg" },
-  CRDO: { name: "Credo Tech", couche: "C3", profil: "specu", score: 63, price: "$229", change: "+1.3%", changeDir: "pos" },
-  DELL: { name: "Dell Tech", couche: "C2", profil: "challenger", score: 85, price: "$423", change: "=", changeDir: "pos" },
-};
-
-const HISTORY = {
-  MSFT: [
-    { date: "27 mai", score: 78, price: 415, decision: "invest", changes: ["✅ Earnings passés, EPS +5% beat", "✅ Division IA +123%"] },
-    { date: "30 mai", score: 80, price: 427, decision: "invest", changes: ["✅ Build Conference catalyseur", "✅ MA50+MA200 confluentes $416"] },
-    { date: "3 juin", score: 81, price: 438, decision: "invest", changes: ["⚠️ Correction -2.7% selloff sectoriel", "✅ NVDA-MSFT partenariat agentic AI Computex"] },
-  ],
-  MRVL: [
-    { date: "27 mai", score: 63, price: 200, decision: "veille", changes: ["⚠️ Earnings ce soir — risque binaire"] },
-    { date: "28 mai", score: 75, price: 200, decision: "invest", changes: ["🚨 REVISION Veille→Investir", "✅ Earnings record Q1 FY27, Citi $225"] },
-    { date: "30 mai", score: 76, price: 205, decision: "invest", changes: ["✅ Momentum confirmé, ChartMill 10/10"] },
-    { date: "3 juin", score: 88, price: 291, decision: "invest", changes: ["🔥 Jensen Huang: 'next trillion dollar company'", "🚀 +42% en quelques jours", "✅ Stifel cible $321 street-high"] },
-  ],
-  NVDA: [
-    { date: "27 mai", score: 77, price: 212, decision: "invest", changes: ["✅ Earnings passés, PEG 0.49, ROE 114%"] },
-    { date: "30 mai", score: 78, price: 216, decision: "invest", changes: ["✅ Consolidation saine"] },
-    { date: "3 juin", score: 79, price: 222, decision: "invest", changes: ["✅ Partenariat NVDA-MSFT agentic AI Computex"] },
-  ],
-  GOOGL: [
-    { date: "27 mai", score: 79, price: 390, decision: "invest", changes: ["✅ Short interest 0.62%, Google Cloud +28%"] },
-    { date: "30 mai", score: 80, price: 390, decision: "invest", changes: ["✅ Truist cible $480"] },
-    { date: "3 juin", score: 78, price: 366, decision: "veille", changes: ["🚨 REVISION Investir→Veille", "⚠️ Correction -3.9%, hors zone $380-395"] },
-  ],
-  AVGO: [
-    { date: "27 mai", score: 58, price: 431, decision: "veille", changes: ["🔴 RSI 79 suracheté, Earnings Jun 3"] },
-    { date: "30 mai", score: 65, price: 446, decision: "veille", changes: ["⚠️ Earnings Jun 3 dans 4 jours"] },
-    { date: "3 juin", score: 72, price: 477, decision: "veille", changes: ["✅ EPS $2.44 beat, Revenue +48% YoY", "✅ Guidance Q3 $29.4B beat fort", "⚠️ -7% AH sell-the-news puis rebond $477"] },
-  ],
-  AMZN: [
-    { date: "27 mai", score: 76, price: 272, decision: "veille", changes: ["⚠️ Prix quasi ATH, trop chaud"] },
-    { date: "3 juin", score: 71, price: 267, decision: "veille", changes: ["⚠️ Correction -1.8%, AWS record growth intact"] },
-  ],
-  ORCL: [
-    { date: "27 mai", score: 72, price: 190, decision: "veille", changes: ["⚠️ Earnings Jun 16, risque binaire"] },
-    { date: "30 mai", score: 70, price: 226, decision: "veille", changes: ["✅ Contrat US Gov $30Mrd", "⚠️ +19% en 3 jours, trop chaud"] },
-    { date: "3 juin", score: 73, price: 239, decision: "veille", changes: ["✅ Bloom Energy fuel-cell partnership", "⚠️ Earnings Jun 16 dans 13 jours"] },
-  ],
-  MU: [
-    { date: "27 mai", score: 78, price: 750, decision: "invest", changes: ["✅ PEG 0.06, 12 signaux Buy/0 Sell"] },
-    { date: "29 mai", score: 78, price: 882, decision: "veille", changes: ["🚨 Gap +25% UBS cible $1625"] },
-    { date: "3 juin", score: 80, price: 1064, decision: "veille", changes: ["✅ +9.6%, $1T market cap franchi", "⚠️ Earnings Jun 24 dans 21 jours"] },
-  ],
-  DELL: [
-    { date: "27 mai", score: 64, price: 318, decision: "veille", changes: ["⚠️ Earnings 28 mai"] },
-    { date: "29 mai", score: 82, price: 423, decision: "veille", changes: ["🚨 Earnings historiques EPS +64% surprise", "⚠️ +33% en 1 semaine, attendre consolidation"] },
-    { date: "3 juin", score: 85, price: 423, decision: "veille", changes: ["✅ ATH $469, Pentagon deal $9.7Mrd", "⚠️ Consolidation en cours $395-420"] },
-  ],
-  CRDO: [
-    { date: "27 mai", score: 60, price: 215, decision: "veille", changes: ["⚠️ Earnings Jun 1"] },
-    { date: "3 juin", score: 63, price: 229, decision: "veille", changes: ["⚠️ EPS beat +10% mais revenue miss -0.8%", "⚠️ -15.6% AH, 123 ventes insiders"] },
-  ],
-};
-
-const VEILLE_DATA = [
-  { ticker: "GOOGL", reserve: "2,000€", prio: "haute", condition: "Correction -3.9% → $366. Attendre stabilisation $360–375. Truist cible $480." },
-  { ticker: "ORCL", reserve: "1,200€", prio: "haute", condition: "Earnings Jun 16 dans 13 jours — attendre. Zone $225–245. Contrat US Gov $30Mrd." },
-  { ticker: "AMZN", reserve: "1,000€", prio: "haute", condition: "Zone entree $255–270. AWS record growth. Truist cible $340." },
-  { ticker: "MU", reserve: "1,000€", prio: "moyenne", condition: "Pullback $980–1050. Earnings Jun 24 dans 21 jours." },
-  { ticker: "DELL", reserve: "900€", prio: "moyenne", condition: "Consolidation depuis ATH $469. Zone $395–420. Earnings Sep 3." },
-  { ticker: "AVGO", reserve: "500€", prio: "moyenne", condition: "Earnings passes. Stabilisation post sell-the-news. Zone $440–465. AI order book $73Mrd." },
-  { ticker: "CRDO", reserve: "—", prio: "basse", condition: "Post-earnings deception -15.6% AH. 123 ventes insiders. Attendre stabilisation $210–230." },
+// ====== VEILLE DATA ======
+const veilleData = [
+  { ticker: 'GOOGL', name: 'Alphabet', reserve: '2,000€', prio: 'haute', condition: 'Correction -3.9% → prix $366. Attendre stabilisation <span class="cond-price">$360–375</span>. RSI doit se normaliser sous 55. Truist cible $480.' },
+  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Earnings <span class="cond-date">Jun 16</span> dans 13 jours — attendre absolument. Zone <span class="cond-price">$225–245</span>. Contrat gouvernement $30Mrd.' },
+  { ticker: 'AMZN', name: 'Amazon', reserve: '1,000€', prio: 'haute', condition: 'Correction legere a $267. Zone entree <span class="cond-price">$255–270</span>. AWS record growth. Truist cible $340.' },
+  { ticker: 'MU', name: 'Micron', reserve: '1,000€', prio: 'moyenne', condition: 'Prix $1,064 — trop haut. Pullback vers <span class="cond-price">$980–1050</span>. Earnings <span class="cond-date">Jun 24</span> dans 21 jours.' },
+  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'moyenne', condition: 'Consolidation depuis ATH $469 → $423. Zone <span class="cond-price">$395–420</span>. Pentagon deal $9.7Mrd. Earnings Sep 3.' },
+  { ticker: 'AVGO', name: 'Broadcom', reserve: '500€', prio: 'moyenne', condition: 'Earnings passés ✅. Stabilisation post sell-the-news. Zone <span class="cond-price">$440–465</span>. AI order book $73Mrd.' },
+  { ticker: 'CRDO', name: 'Credo Tech', reserve: '—', prio: 'basse', condition: 'Post-earnings déception -15.6% AH. 123 ventes insiders. Attendre stabilisation <span class="cond-price">$210–230</span> + confirmation.' },
+  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'basse', condition: 'Univers Énergie. Pullback vers <span class="cond-price">$65–70</span>. Sensible aux taux — surveiller la Fed.' },
 ];
 
-const DEPLOY_STOCKS = [
-  { ticker: "MSFT", name: "Microsoft", couche: "C4", montant: 2500 },
-  { ticker: "NVDA", name: "Nvidia", couche: "C3", montant: 2000 },
-  { ticker: "MRVL", name: "Marvell", couche: "C3", montant: 1500 },
+// ====== FUNCTIONS ======
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function getScoreColor(s) {
+  if (s >= 75) return 'var(--c1)';
+  if (s >= 60) return 'var(--c4)';
+  return 'var(--c3)';
+}
+
+function getDecisionBadge(d) {
+  if (d === 'invest') return '<span class="decision-badge dec-invest">🟢 Investir</span>';
+  if (d === 'veille') return '<span class="decision-badge dec-veille">⏳ Veille</span>';
+  return '<span class="decision-badge dec-eviter">🔴 Éviter</span>';
+}
+
+function getProfilBadge(p) {
+  if (p === 'leader') return '<span class="profil-badge profil-leader">🏛️ Leader</span>';
+  if (p === 'challenger') return '<span class="profil-badge profil-challenger">⚡ Challenger</span>';
+  return '<span class="profil-badge profil-specu">🚀 Spéculatif</span>';
+}
+
+// Build sidebar
+function buildSidebar() {
+  const sb = document.getElementById('stockSidebar');
+  sb.innerHTML = '';
+  Object.entries(stocks).forEach(([ticker, data]) => {
+    const btn = document.createElement('button');
+    btn.className = 'stock-sidebar-btn';
+    btn.id = 'sbtn-' + ticker;
+    btn.onclick = () => showReport(ticker);
+    const sc = getScoreColor(data.score);
+    btn.innerHTML = `
+      <div>
+        <div class="ssb-ticker">${ticker}</div>
+        <div class="ssb-name">${data.name.split(' ').slice(0,2).join(' ')}</div>
+      </div>
+      <div class="ssb-right">
+        ${getDecisionBadge(data.decision)}
+        <span style="font-size:12px;font-weight:600;color:${sc}">${data.score}</span>
+      </div>`;
+    sb.appendChild(btn);
+  });
+}
+
+function buildHistorySection(ticker) {
+  const history = stockHistory[ticker];
+  if (!history || history.length < 2) return '';
+
+  const latest = history[history.length - 1];
+  const previous = history[history.length - 2];
+  const scoreDiff = latest.score - previous.score;
+  const priceDiff = (latest.price && previous.price && previous.price > 0)
+    ? ((latest.price - previous.price) / previous.price * 100).toFixed(1)
+    : null;
+  const scoreColor = scoreDiff > 0 ? 'var(--c1)' : scoreDiff < 0 ? 'var(--c3)' : 'var(--dim)';
+  const scoreArrow = scoreDiff > 0 ? '↑' : scoreDiff < 0 ? '↓' : '=';
+  const scoreDiffText = scoreDiff !== 0 ? (scoreDiff > 0 ? '+' : '') + scoreDiff : '=';
+
+  const decBadgeHTML = function(dec) {
+    if (dec === 'invest') return '<span class="decision-badge dec-invest" style="font-size:9px;padding:2px 8px">🟢 Investir</span>';
+    if (dec === 'veille') return '<span class="decision-badge dec-veille" style="font-size:9px;padding:2px 8px">⏳ Veille</span>';
+    return '<span class="decision-badge dec-eviter" style="font-size:9px;padding:2px 8px">🔴 Éviter</span>';
+  };
+
+  let timelineHTML = '';
+  const reversed = [...history].reverse();
+  reversed.forEach(function(h, i) {
+    const isLatest = i === 0;
+    const prevH = i < reversed.length - 1 ? reversed[i + 1] : null;
+    const sd = prevH ? h.score - prevH.score : 0;
+    const sdColor = sd > 0 ? 'var(--c1)' : sd < 0 ? 'var(--c3)' : 'var(--dim)';
+    const sdSpan = sd !== 0 ? '<span style="color:' + sdColor + ';font-size:11px;margin-left:6px">' + (sd > 0 ? '+' : '') + sd + '</span>' : '';
+    const dotColor = isLatest ? 'var(--c1)' : 'var(--dim)';
+    const cardBorder = isLatest ? 'border-color:rgba(0,229,160,0.15)' : '';
+    const latestBadge = isLatest ? '<span style="font-size:9px;color:var(--c1);background:rgba(0,229,160,0.08);padding:2px 8px;border-radius:10px;border:1px solid rgba(0,229,160,0.15)">DERNIÈRE ANALYSE</span>' : '';
+    const priceSpan = h.price ? '<span style="font-size:13px;color:var(--dim)">$' + h.price.toLocaleString() + '</span>' : '';
+    const connectorLine = !isLatest ? '<div style="width:2px;flex:1;background:rgba(255,255,255,0.05);margin-top:4px"></div>' : '';
+
+    let changesHTML = '';
+    h.changes.forEach(function(c) {
+      changesHTML += '<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:4px">'
+        + '<span style="font-size:12px;flex-shrink:0">' + c.icon + '</span>'
+        + '<span style="font-size:11px;color:#8a94a8;line-height:1.5">' + c.text + '</span>'
+        + '</div>';
+    });
+
+    timelineHTML += '<div style="display:flex;gap:16px;margin-bottom:' + (isLatest ? '0' : '16px') + '">'
+      + '<div style="display:flex;flex-direction:column;align-items:center">'
+      + '<div style="width:10px;height:10px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;margin-top:4px"></div>'
+      + connectorLine
+      + '</div>'
+      + '<div style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;' + cardBorder + '">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + '<span style="font-family:monospace;font-size:10px;color:var(--dim);letter-spacing:1px">' + h.date + '</span>'
+      + latestBadge
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + decBadgeHTML(h.decision)
+      + '<span style="font-family:sans-serif;font-size:18px;font-weight:700;color:' + getScoreColor(h.score) + '">' + h.score + sdSpan + '</span>'
+      + priceSpan
+      + '</div>'
+      + '</div>'
+      + '<div>' + changesHTML + '</div>'
+      + '</div>'
+      + '</div>';
+  });
+
+  const priceDiffHTML = priceDiff
+    ? '<span style="font-size:11px;color:' + (parseFloat(priceDiff) >= 0 ? 'var(--c1)' : 'var(--c3)') + '">Prix ' + (parseFloat(priceDiff) >= 0 ? '+' : '') + priceDiff + '%</span>'
+    : '';
+
+  return '<div style="margin-top:20px">'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">'
+    + '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)">📈 Historique des analyses</div>'
+    + '<div style="display:flex;gap:12px;align-items:center">'
+    + priceDiffHTML
+    + '<span style="font-size:11px;color:' + scoreColor + '">' + scoreArrow + ' Score ' + scoreDiffText + '</span>'
+    + '</div>'
+    + '</div>'
+    + '<div>' + timelineHTML + '</div>'
+    + '</div>';
+}
+
+function showReport(ticker) {
+  // Override entry/stop/target/rr from STOCK_CONFIG if available
+  if (stocks[ticker] && STOCK_CONFIG[ticker]) {
+    stocks[ticker].entry = fmtEntry(ticker);
+    stocks[ticker].stop = fmtStop(ticker);
+    stocks[ticker].target = fmtTarget(ticker);
+    stocks[ticker].rr = fmtRR(ticker);
+  }
+
+  document.querySelectorAll('.stock-sidebar-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('sbtn-' + ticker);
+  if (btn) btn.classList.add('active');
+
+  const d = stocks[ticker];
+  if (!d) return;
+  const sc = getScoreColor(d.score);
+
+  const criteriaHTML = d.criteria.map(c => {
+    const cc = getScoreColor(c.score);
+    return `<div class="crit-card">
+      <div class="crit-header">
+        <span class="crit-name">${c.name}</span>
+        <span class="crit-score" style="color:${cc}">${c.flag} ${c.score}/10</span>
+      </div>
+      <div class="crit-text">${c.note}</div>
+    </div>`;
+  }).join('');
+
+  const scoreRowsHTML = d.criteria.map(c => {
+    const cc = getScoreColor(c.score);
+    return `<div class="score-row">
+      <span class="score-row-label">${c.name}</span>
+      <div class="score-row-track"><div class="score-row-fill" style="width:${c.score*10}%;background:${cc}"></div></div>
+      <span class="score-row-num" style="color:${cc}">${c.score}</span>
+      <span class="score-row-flag">${c.flag}</span>
+    </div>`;
+  }).join('');
+
+  const sourcesHTML = d.sources.map(s => `<span class="source-tag">${s}</span>`).join('');
+
+  const pineHTML = d.pine ? `
+    <div class="pine-section">
+      <div class="pine-header" onclick="togglePine('pine-${ticker}')">
+        <span class="pine-header-label">📡 CODE PINE SCRIPT — TradingView Alert</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="copy-btn" onclick="copyPine('${ticker}',event)">COPIER</button>
+          <span class="pine-toggle" id="pine-toggle-${ticker}">▼ VOIR</span>
+        </div>
+      </div>
+      <div class="pine-code" id="pine-${ticker}">
+        <pre>${d.pine.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+      </div>
+    </div>` : '';
+
+  document.getElementById('reportContainer').innerHTML = `
+    <div class="report-card">
+      <div class="report-header">
+        <div>
+          <div class="report-ticker">${ticker}</div>
+          <div class="report-company">${d.name}</div>
+          <div class="report-meta">
+            <span class="td-couche" style="font-size:11px;color:var(--dim)">${d.couche}</span>
+            ${getProfilBadge(d.profil)}
+            ${getDecisionBadge(d.decision)}
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="report-price">${d.price}</div>
+          <div class="report-change ${d.changeDir}">${d.change}</div>
+          <div style="margin-top:12px;font-family:sans-serif;font-size:42px;font-weight:700;color:${sc}">${d.score}<span style="font-size:16px;color:var(--dim)">/100</span></div>
+        </div>
+      </div>
+      <div class="report-body">
+        <div class="score-section">
+          <div class="score-section-title">Scoring détaillé — 10 critères</div>
+          <div class="score-rows">${scoreRowsHTML}</div>
+          <div class="score-total-row">
+            <span class="score-total-label">Score final pondéré</span>
+            <span class="score-total-num" style="color:${sc}">${d.score}/100</span>
+          </div>
+        </div>
+        ${d.entry !== '—' ? `
+        <div class="trade-plan">
+          <div class="tp-card">
+            <div class="tp-label">Entrée idéale</div>
+            <div class="tp-value tp-entry">${d.entry}</div>
+            <div class="tp-sub">Zone d'achat</div>
+          </div>
+          <div class="tp-card">
+            <div class="tp-label">Stop-Loss</div>
+            <div class="tp-value tp-stop">${d.stop}</div>
+            <div class="tp-sub">Sortie si invalidé</div>
+          </div>
+          <div class="tp-card">
+            <div class="tp-label">Cible</div>
+            <div class="tp-value tp-target">${d.target}</div>
+            <div class="tp-sub">Objectif 12-24 mois</div>
+          </div>
+        </div>
+        <div class="rr-row">
+          <span class="rr-label">RISK / REWARD RATIO</span>
+          <span class="rr-value">${d.rr}</span>
+          <span class="rr-verdict" style="color:var(--dim)">${d.rr !== '—' && parseFloat(d.rr.split(':')[1]) >= 3 ? '🔥 Excellent' : '✅ Acceptable'}</span>
+        </div>` : ''}
+        <div class="criteria-grid">${criteriaHTML}</div>
+        <div class="source-box">
+          <div class="source-box-title">Sources utilisées</div>
+          <div class="source-tags">${sourcesHTML}</div>
+        </div>
+        ${pineHTML}
+        ${buildHistorySection(ticker)}
+      </div>
+    </div>`;
+}
+
+function togglePine(id) {
+  const el = document.getElementById(id);
+  const toggle = document.getElementById(id.replace('pine-','pine-toggle-'));
+  if (el.classList.contains('open')) {
+    el.classList.remove('open');
+    toggle.textContent = '▼ VOIR';
+  } else {
+    el.classList.add('open');
+    toggle.textContent = '▲ CACHER';
+  }
+}
+
+function copyPine(ticker, e) {
+  e.stopPropagation();
+  const d = stocks[ticker];
+  navigator.clipboard.writeText(d.pine).then(() => {
+    const btn = e.target;
+    btn.textContent = 'COPIÉ ✓';
+    setTimeout(() => btn.textContent = 'COPIER', 2000);
+  });
+}
+
+function openAnalysis(ticker) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-analyse').classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn')[1].classList.add('active');
+  setTimeout(() => showReport(ticker), 50);
+}
+
+// Build veille
+function buildVeille() {
+  const grid = document.getElementById('veilleGrid');
+  veilleData.forEach(v => {
+    const d = stocks[v.ticker];
+    const sc = getScoreColor(d ? d.score : 60);
+    const prioClass = v.prio === 'haute' ? 'haute' : v.prio === 'moyenne' ? 'moyenne' : 'basse';
+    const prioBadge = v.prio === 'haute'
+      ? '<span class="priorité-badge prio-haute">🔴 Haute priorité</span>'
+      : v.prio === 'moyenne'
+      ? '<span class="priorité-badge prio-moyenne">🟡 Priorité moyenne</span>'
+      : '<span class="priorité-badge prio-basse">⬛ Basse priorité</span>';
+
+    const pineHTML = d && d.pine ? `
+      <div class="pine-section" style="margin-top:12px">
+        <div class="pine-header" onclick="togglePine('vpine-${v.ticker}')">
+          <span class="pine-header-label">📡 PINE SCRIPT ALERT — TradingView</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="copy-btn" onclick="copyPine('${v.ticker}',event)">COPIER</button>
+            <span class="pine-toggle" id="pine-toggle-vpine-${v.ticker}">▼ VOIR</span>
+          </div>
+        </div>
+        <div class="pine-code" id="vpine-${v.ticker}">
+          <pre>${d.pine.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+        </div>
+      </div>` : '';
+
+    const card = document.createElement('div');
+    card.className = `veille-card ${prioClass}`;
+    card.innerHTML = `
+      <div>
+        <div class="veille-ticker" style="cursor:pointer" onclick="openAnalysis('${v.ticker}')">${v.ticker}</div>
+        <div class="veille-name">${v.name}</div>
+        <div style="margin-top:8px">${prioBadge}</div>
+      </div>
+      <div>
+        <div class="veille-condition">${v.condition}</div>
+        ${pineHTML}
+      </div>
+      <div class="veille-right">
+        ${v.reserve !== '—' ? `<div><div class="veille-reserve">${v.reserve}</div><div class="veille-reserve-label">Réservé</div></div>` : '<div style="color:var(--dim);font-size:11px">Non alloué</div>'}
+        <div style="font-family:sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// Date
+function updateDate() {
+  const now = new Date();
+  document.getElementById('navDate').textContent = now.toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ====== LIVE PRICES ======
+let allTickers = Object.keys(stocks);
+let livePrices = {};
+
+async function fetchPrices() {
+  const indicator = document.getElementById('priceStatus');
+  if (indicator) {
+    indicator.textContent = '⟳ Chargement...';
+    indicator.style.color = 'var(--c4)';
+  }
+
+  const FINNHUB_KEY = 'd8csu7hr01qt0j1i9d3gd8csu7hr01qt0j1i9d40';
+
+  try {
+    // Fetch all tickers in parallel via Finnhub
+    const results = await Promise.allSettled(
+      allTickers.map(ticker =>
+        fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`)
+          .then(r => r.json())
+          .then(d => ({ ticker, c: d.c, pc: d.pc, dp: d.dp }))
+      )
+    );
+
+    let quotes = results
+      .filter(r => r.status === 'fulfilled' && r.value.c > 0)
+      .map(r => r.value);
+
+    if (!quotes.length) throw new Error('no data');
+
+    // Normalize to same format as before
+    quotes = quotes.map(q => ({
+      symbol: q.ticker,
+      regularMarketPrice: q.c,
+      regularMarketChangePercent: q.dp,
+      regularMarketChange: q.c - q.pc,
+    }));
+
+    const fakeData = { quoteResponse: { result: quotes } };
+    const allQuotes = fakeData.quoteResponse.result;
+    // reuse existing processing below
+    allQuotes.forEach(q => {
+
+      const ticker = q.symbol;
+      const price = q.regularMarketPrice;
+      const changePct = q.regularMarketChangePercent;
+      const changeAbs = q.regularMarketChange;
+
+      if (!price) return;
+
+      livePrices[ticker] = {
+        price,
+        changePct,
+        changeAbs,
+        display: price >= 1000
+          ? `$${price.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0})}`
+          : `$${price.toFixed(2)}`,
+        changeDisplay: `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`,
+        dir: changePct >= 0 ? 'pos' : 'neg'
+      };
+
+      // Update stocks object
+      if (stocks[ticker]) {
+        stocks[ticker].price = livePrices[ticker].display;
+        stocks[ticker].change = livePrices[ticker].changeDisplay;
+        stocks[ticker].changeDir = livePrices[ticker].dir;
+      }
+    });
+
+    // Refresh UI
+    updateAllPricesInUI();
+
+    if (indicator) {
+      indicator.textContent = `✓ Live · ${new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})}`;
+      indicator.style.color = 'var(--c1)';
+    }
+
+  } catch (err) {
+    console.warn('Price fetch failed:', err);
+    if (indicator) {
+      indicator.textContent = '⚠ Prix statiques';
+      indicator.style.color = 'var(--c3)';
+    }
+  }
+}
+
+function updateAllPricesInUI() {
+  // Update dashboard table prices
+  allTickers.forEach(ticker => {
+    const lp = livePrices[ticker];
+    if (!lp) return;
+
+    // Update price cells in dashboard table
+    const cells = document.querySelectorAll(`[data-price-ticker="${ticker}"]`);
+    cells.forEach(cell => {
+      cell.textContent = lp.display;
+      cell.style.color = lp.dir === 'pos' ? 'var(--c1)' : 'var(--c3)';
+    });
+
+    const changeCells = document.querySelectorAll(`[data-change-ticker="${ticker}"]`);
+    changeCells.forEach(cell => {
+      cell.textContent = lp.changeDisplay;
+      cell.className = `report-change ${lp.dir}`;
+    });
+  });
+
+  // Rebuild sidebar to reflect updated prices
+  buildSidebar();
+
+  // If a report is open, refresh it
+  const activeBtn = document.querySelector('.stock-sidebar-btn.active');
+  if (activeBtn) {
+    const ticker = activeBtn.id.replace('sbtn-', '');
+    showReport(ticker);
+    document.getElementById('sbtn-' + ticker)?.classList.add('active');
+  }
+}
+
+// Auto-refresh every 60 seconds
+function startPriceRefresh() {
+  fetchPrices();
+  setInterval(fetchPrices, 60000);
+}
+
+// Add price status to nav
+function addPriceStatus() {
+  const navRight = document.querySelector('.nav-right');
+  const span = document.createElement('span');
+  span.id = 'priceStatus';
+  span.style.cssText = 'font-size:10px;color:var(--dim);letter-spacing:1px;cursor:pointer';
+  span.title = 'Cliquer pour rafraîchir';
+  span.textContent = '⟳ Chargement...';
+  span.onclick = fetchPrices;
+  navRight.insertBefore(span, navRight.firstChild);
+}
+
+// Patch dashboard table to add data attributes for live price updates
+function patchTablePrices() {
+  const rows = document.querySelectorAll('tbody tr');
+  rows.forEach(row => {
+    const tickerCell = row.querySelector('.td-ticker');
+    if (!tickerCell) return;
+    const ticker = tickerCell.textContent.trim();
+    const cells = row.querySelectorAll('td');
+    // Price is the 5th td (index 4)
+    if (cells[4]) {
+      cells[4].setAttribute('data-price-ticker', ticker);
+    }
+  });
+}
+
+// ====== ENERGY UNIVERSE ======
+const energyStocks = {
+  NEE: {
+    name: 'NextEra Energy Inc.', price: '$--', couche: 'C1 — Utilities / Renouvelable',
+    score: 74, decision: 'veille', profil: 'leader',
+    entry: '$65–70', stop: '$58', target: '$95', rr: '1:3.5',
+    change: '--', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière en reconstruction. MA200 support clé.' },
+      { name: 'Distance ATH + marge sécurité', score: 7, flag: '✅', note: '-30% du 52W high $97. Bonne marge de sécurité.' },
+      { name: 'Force tendance (ADX)', score: 6, flag: '🟡', note: 'Tendance de fond solide mais lente — secteur utilities.' },
+      { name: 'Momentum fondamental (PEG)', score: 8, flag: '✅', note: 'PEG 2.1. Croissance dividende +10% par an depuis 20 ans. EPS +8% YoY.' },
+      { name: 'Catalyseurs sectoriels', score: 9, flag: '✅', note: '#1 mondial éolien + solaire. Demande électricité IA data centers = catalyseur massif.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Vanguard, BlackRock top holders. 85%+ institutionnels.' },
+      { name: 'Sentiment (short interest)', score: 8, flag: '✅', note: 'Short interest 1.2% — très faible.' },
+      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Earnings passés avril. Prochains juillet.' },
+      { name: 'Insider transactions', score: 7, flag: '🟡', note: 'Neutre. Management stable.' },
+      { name: 'Corrélation macro', score: 7, flag: '✅', note: 'Beta 0.57 — défensif. Sensible aux taux mais dividende protège.' },
+    ],
+    sources: ['StockAnalysis.com', 'Yahoo Finance', 'TipRanks', 'Barchart'],
+    pine: `//@version=5
+indicator("NEE Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 58 and close <= 70
+rsiOk = rsi >= 35 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma200
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="NEE — ENTRÉE OPTIMALE",
+  message="NEE dans la zone d\'entrée. RSI neutre + MACD buy + au-dessus MA200.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`
+  }
+};
+
+const energyVeille = [
+  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'moyenne', condition: 'Pullback vers <span class="cond-price">$65–70</span>. RSI doit descendre sous 55. Sensible aux taux — surveiller la Fed.' },
 ];
 
-// ============================================================
-// COMPUTED VALUES — auto-calculés depuis STOCK_CONFIG
-// ============================================================
-const totalDeploy = DEPLOY_STOCKS.reduce((s, x) => s + x.montant, 0);
-const totalReserve = VEILLE_DATA.reduce((s, x) => {
-  const n = parseInt(x.reserve.replace(/[^0-9]/g, ""));
-  return s + (isNaN(n) ? 0 : n);
-}, 0);
+let currentUniverse = 'ai';
 
-// ============================================================
-// STYLES
-// ============================================================
-const css = {
-  bg: "#07090f", bg2: "#0d1117", bg3: "#131922",
-  border: "rgba(255,255,255,0.06)",
-  c1: "#00e5a0", c2: "#6c63ff", c3: "#ff5f57", c4: "#ffc94a",
-  leader: "#4a9eff", challenger: "#a78bfa", specu: "#fb923c",
-  text: "#e2e8f4", dim: "#5a6480",
-};
+function toggleAccordion(id) {
+  const body = document.getElementById('acc-' + id + '-body');
+  const arrow = document.getElementById('acc-' + id + '-arrow');
+  if (!body || !arrow) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  arrow.textContent = isOpen ? '▶' : '▼';
+  arrow.style.color = isOpen ? 'var(--dim)' : (id === 'ia' ? 'var(--c1)' : 'var(--c4)');
+}
 
-const scoreColor = (s) => s >= 75 ? css.c1 : s >= 60 ? css.c4 : css.c3;
-const couche_color = (c) => ({ C4: css.c4, C3: css.c3, C2: css.c2, C1: css.c1 }[c] || css.dim);
-const profil_badge = (p) => ({
-  leader: { bg: "rgba(74,158,255,0.12)", color: css.leader, label: "🏛️ Leader" },
-  challenger: { bg: "rgba(167,139,250,0.12)", color: css.challenger, label: "⚡ Challenger" },
-  specu: { bg: "rgba(251,146,60,0.12)", color: css.specu, label: "🚀 Spéculatif" },
-}[p] || { bg: "transparent", color: css.dim, label: p });
+function switchUniverse(universe) {
+  currentUniverse = universe;
 
-const decision_badge = (d) => ({
-  invest: { bg: "rgba(0,229,160,0.1)", color: css.c1, border: "rgba(0,229,160,0.25)", label: "🟢 Investir" },
-  veille: { bg: "rgba(255,201,74,0.1)", color: css.c4, border: "rgba(255,201,74,0.25)", label: "⏳ Veille" },
-  eviter: { bg: "rgba(255,95,87,0.1)", color: css.c3, border: "rgba(255,95,87,0.25)", label: "🔴 Éviter" },
-}[d] || {});
+  // Update universe buttons
+  document.querySelectorAll('.universe-btn').forEach(b => b.classList.remove('active-universe'));
+  document.getElementById('univ-' + universe).classList.add('active-universe');
 
-// ============================================================
-// COMPONENTS
-// ============================================================
-const Badge = ({ type, label, style = {} }) => {
-  const b = type === "decision" ? decision_badge(label) : profil_badge(label);
-  return (
-    <span style={{
-      fontSize: 10, padding: "3px 10px", borderRadius: 4, fontWeight: 600,
-      background: b.bg, color: b.color, border: `1px solid ${b.border || b.color}40`,
-      whiteSpace: "nowrap", ...style
-    }}>
-      {b.label || label}
-    </span>
-  );
-};
+  if (universe === 'ai') {
+    // Restore AI universe
+    Object.assign(window.stocksActive, stocks);
+    window.veilleActive = veilleData;
+    document.querySelector('.page-title .accent').textContent = 'Data Center';
+    document.querySelector('.page-sub').textContent = 'ETF Perso · 10 stocks · 3 couches · Mis à jour 3 juin 2026';
+    document.querySelector('#page-dashboard .table-header-bar h3').textContent = 'UNIVERS COMPLET';
+    document.querySelector('#page-dashboard .table-count').textContent = '10 stocks';
+  } else {
+    // Switch to energy universe
+    Object.assign(window.stocksActive, energyStocks);
+    window.veilleActive = energyVeille;
+    document.querySelector('.page-title .accent').textContent = 'Énergie';
+    document.querySelector('.page-sub').textContent = 'Univers Énergie · 1 stock · En construction ⚡';
+    document.querySelector('#page-dashboard .table-header-bar h3').textContent = 'UNIVERS ÉNERGIE';
+    document.querySelector('#page-dashboard .table-count').textContent = '1 stock';
+  }
 
-const ScoreBar = ({ score }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-    <div style={{ width: 50, height: 4, background: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" }}>
-      <div style={{ width: `${score}%`, height: "100%", background: scoreColor(score), borderRadius: 2 }} />
-    </div>
-    <span style={{ fontSize: 13, fontWeight: 600, color: scoreColor(score), minWidth: 24 }}>{score}</span>
-  </div>
-);
+  // Refresh all pages
+  rebuildDashboardTable();
+  rebuildSidebarAndVeille();
+  allTickers = Object.keys(window.stocksActive);
+  fetchPrices();
+}
 
-const StatCard = ({ label, value, sub, color = css.text }) => (
-  <div style={{
-    background: css.bg2, border: `1px solid ${css.border}`, borderRadius: 10,
-    padding: "16px 20px", flex: 1, minWidth: 130,
-  }}>
-    <div style={{ fontSize: 9, color: css.dim, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>{label}</div>
-    <div style={{ fontFamily: "monospace", fontSize: 22, fontWeight: 700, color }}>{value}</div>
-    <div style={{ fontSize: 10, color: css.dim, marginTop: 4 }}>{sub}</div>
-  </div>
-);
+function rebuildDashboardTable() {
+  const tbody = document.querySelector('#page-dashboard tbody');
+  tbody.innerHTML = '';
+  Object.entries(window.stocksActive).forEach(([ticker, data]) => {
+    const sc = getScoreColor(data.score);
+    const couche = data.couche.split(' — ')[0];
+    const coucheColor = couche === 'C4' ? 'couche-c4' : couche === 'C3' ? 'couche-c3' : couche === 'C2' ? 'couche-c2' : 'couche-c1';
+    const tr = document.createElement('tr');
+    tr.onclick = () => openAnalysis(ticker);
+    tr.innerHTML = `
+      <td class="td-couche ${coucheColor}">${couche}</td>
+      <td class="td-ticker">${ticker}</td>
+      <td class="td-société">${data.name.split(' ').slice(0,2).join(' ')}</td>
+      <td>${getProfilBadge(data.profil)}</td>
+      <td data-price-ticker="${ticker}">${data.price}</td>
+      <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:${data.score}%;background:${sc}"></div></div><span class="score-num" style="color:${sc}">${data.score}</span></div></td>
+      <td>${getDecisionBadge(data.decision)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
 
-// ============================================================
-// PAGES
-// ============================================================
-const Dashboard = ({ onSelectStock }) => {
-  const investCount = Object.values(STOCK_CONFIG).filter(c => c.decision === "invest").length;
-  const veilleCount = Object.values(STOCK_CONFIG).filter(c => c.decision === "veille").length;
-  const deployPct = Math.round(totalDeploy / PORTFOLIO.capital_total * 100);
-  const reservePct = Math.round(totalReserve / PORTFOLIO.capital_total * 100);
-
-  return (
-    <div>
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontFamily: "monospace", fontSize: 32, fontWeight: 800, letterSpacing: -1, color: css.text }}>
-          Data Center <span style={{ color: css.c1 }}>Universe</span>
-        </h1>
-        <div style={{ fontSize: 11, color: css.dim, letterSpacing: 2, textTransform: "uppercase", marginTop: 6 }}>
-          ETF Perso · {Object.keys(STOCKS).length} stocks · 3 couches · Mis à jour 3 juin 2026
-        </div>
+function rebuildSidebarAndVeille() {
+  // Rebuild sidebar
+  const sb = document.getElementById('stockSidebar');
+  sb.innerHTML = '';
+  Object.entries(window.stocksActive).forEach(([ticker, data]) => {
+    const btn = document.createElement('button');
+    btn.className = 'stock-sidebar-btn';
+    btn.id = 'sbtn-' + ticker;
+    btn.onclick = () => showReport(ticker);
+    const sc = getScoreColor(data.score);
+    btn.innerHTML = `
+      <div>
+        <div class="ssb-ticker">${ticker}</div>
+        <div class="ssb-name">${data.name.split(' ').slice(0,2).join(' ')}</div>
       </div>
+      <div class="ssb-right">
+        ${getDecisionBadge(data.decision)}
+        <span style="font-size:12px;font-weight:600;color:${sc}">${data.score}</span>
+      </div>`;
+    sb.appendChild(btn);
+  });
 
-      {/* Stats */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 28 }}>
-        <StatCard label="Investir maintenant" value={investCount} sub="stocks prêts" color={css.c1} />
-        <StatCard label="En veille" value={veilleCount} sub="à surveiller" color={css.c4} />
-        <StatCard label="Capital déployé" value={`${totalDeploy.toLocaleString("fr-FR")}€`} sub={`${deployPct}% du capital`} color={css.leader} />
-        <StatCard label="Réserve" value={`${totalReserve.toLocaleString("fr-FR")}€`} sub={`${reservePct}% en attente`} color={css.c4} />
-        <StatCard label="Objectif" value="x2" sub="horizon 2 ans" color={css.specu} />
-      </div>
-
-      {/* Table */}
-      <div style={{ background: css.bg2, border: `1px solid ${css.border}`, borderRadius: 12, overflow: "hidden" }}>
-        <div style={{ background: css.bg3, padding: "14px 20px", borderBottom: `1px solid ${css.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "monospace", fontWeight: 700, fontSize: 13 }}>🤖 Univers IA & Data Center</span>
-          <div style={{ display: "flex", gap: 8 }}>
-            <Badge type="decision" label="invest" style={{ fontSize: 9 }} />
-            <Badge type="decision" label="veille" style={{ fontSize: 9 }} />
+  // Rebuild veille
+  const grid = document.getElementById('veilleGrid');
+  grid.innerHTML = '';
+  window.veilleActive.forEach(v => {
+    const d = window.stocksActive[v.ticker];
+    const sc = getScoreColor(d ? d.score : 60);
+    const prioClass = v.prio === 'haute' ? 'haute' : v.prio === 'moyenne' ? 'moyenne' : 'basse';
+    const prioBadge = v.prio === 'haute'
+      ? '<span class="priorité-badge prio-haute">🔴 Haute priorité</span>'
+      : v.prio === 'moyenne'
+      ? '<span class="priorité-badge prio-moyenne">🟡 Priorité moyenne</span>'
+      : '<span class="priorité-badge prio-basse">⬛ Basse priorité</span>';
+    const pineHTML = d && d.pine ? `
+      <div class="pine-section" style="margin-top:12px">
+        <div class="pine-header" onclick="togglePine('vpine-${v.ticker}')">
+          <span class="pine-header-label">📡 PINE SCRIPT ALERT — TradingView</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="copy-btn" onclick="copyPineText(\`${d.pine.replace(/`/g,'\`')}\`,event)">COPIER</button>
+            <span class="pine-toggle" id="pine-toggle-vpine-${v.ticker}">▼ VOIR</span>
           </div>
         </div>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: css.bg3 }}>
-                {["Couche", "Ticker", "Société", "Profil", "Prix", "Score", "Décision"].map(h => (
-                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 9, color: css.dim, letterSpacing: 2, textTransform: "uppercase", borderBottom: `1px solid ${css.border}` }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(STOCKS).map(([ticker, s], i) => {
-                const cfg = STOCK_CONFIG[ticker];
-                return (
-                  <tr key={ticker} onClick={() => onSelectStock(ticker)}
-                    style={{ borderBottom: `1px solid ${css.border}`, cursor: "pointer", transition: "background 0.15s" }}
-                    onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
-                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                    <td style={{ padding: "12px 14px", fontSize: 10, color: couche_color(s.couche), letterSpacing: 1 }}>{s.couche}</td>
-                    <td style={{ padding: "12px 14px", fontFamily: "monospace", fontSize: 15, fontWeight: 800, color: css.text }}>{ticker}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 11, color: css.dim }}>{s.name}</td>
-                    <td style={{ padding: "12px 14px" }}><Badge label={s.profil} /></td>
-                    <td style={{ padding: "12px 14px", fontSize: 12, color: s.changeDir === "pos" ? css.c1 : css.c3 }}>{s.price}</td>
-                    <td style={{ padding: "12px 14px" }}><ScoreBar score={s.score} /></td>
-                    <td style={{ padding: "12px 14px" }}><Badge type="decision" label={cfg?.decision || "veille"} /></td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div class="pine-code" id="vpine-${v.ticker}">
+          <pre>${d.pine.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
         </div>
+      </div>` : '';
+    const card = document.createElement('div');
+    card.className = `veille-card ${prioClass}`;
+    card.innerHTML = `
+      <div>
+        <div class="veille-ticker" style="cursor:pointer" onclick="openAnalysis('${v.ticker}')">${v.ticker}</div>
+        <div class="veille-name">${v.name}</div>
+        <div style="margin-top:8px">${prioBadge}</div>
       </div>
-
-      {/* Energie Universe */}
-      <div style={{ marginTop: 12, background: css.bg2, border: `1px solid ${css.border}`, borderRadius: 12, padding: "16px 20px", opacity: 0.6 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 16 }}>⚡</span>
-          <div>
-            <div style={{ fontFamily: "monospace", fontWeight: 700, fontSize: 14 }}>Univers Énergie</div>
-            <div style={{ fontSize: 10, color: css.dim, marginTop: 2 }}>1 stock · En construction · NEE en veille</div>
-          </div>
-          <Badge type="decision" label="veille" style={{ marginLeft: "auto", fontSize: 9 }} />
-        </div>
+      <div>
+        <div class="veille-condition">${v.condition}</div>
+        ${pineHTML}
       </div>
-    </div>
-  );
-};
+      <div class="veille-right">
+        ${v.reserve !== '—' ? `<div><div class="veille-reserve">${v.reserve}</div><div class="veille-reserve-label">Réservé</div></div>` : '<div style="color:var(--dim);font-size:11px">Non alloué</div>'}
+        <div style="font-family:sans-serif;font-size:22px;font-weight:700;color:${sc}">${d ? d.score : '?'}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
 
-// ============================================================
-const Analyses = ({ selectedTicker, onSelectTicker }) => {
-  const ticker = selectedTicker || "MSFT";
-  const s = STOCKS[ticker];
-  const cfg = STOCK_CONFIG[ticker];
-  const hist = HISTORY[ticker] || [];
+  // Show first stock report
+  const firstTicker = Object.keys(window.stocksActive)[0];
+  showReport(firstTicker);
+  document.getElementById('sbtn-' + firstTicker)?.classList.add('active');
+}
 
-  return (
-    <div style={{ display: "flex", gap: 16 }}>
-      {/* Sidebar */}
-      <div style={{ width: 200, flexShrink: 0, display: "flex", flexDirection: "column", gap: 4 }}>
-        {Object.entries(STOCKS).map(([t, st]) => {
-          const c = STOCK_CONFIG[t];
-          const active = t === ticker;
-          return (
-            <button key={t} onClick={() => onSelectTicker(t)} style={{
-              background: active ? "rgba(0,229,160,0.06)" : css.bg2,
-              border: `1px solid ${active ? css.c1 : css.border}`,
-              borderRadius: 8, padding: "10px 14px", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              transition: "all 0.15s", textAlign: "left",
-            }}>
-              <div>
-                <div style={{ fontFamily: "monospace", fontSize: 15, fontWeight: 800, color: css.text }}>{t}</div>
-                <div style={{ fontSize: 9, color: css.dim, marginTop: 2 }}>{st.name}</div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: scoreColor(st.score) }}>{st.score}</span>
-                <Badge type="decision" label={c?.decision} style={{ fontSize: 8, padding: "2px 6px" }} />
-              </div>
-            </button>
-          );
-        })}
-      </div>
+// Init active stocks
+window.stocksActive = {...stocks};
+window.veilleActive = veilleData;
 
-      {/* Report */}
-      <div style={{ flex: 1, background: css.bg2, border: `1px solid ${css.border}`, borderRadius: 12, overflow: "hidden" }}>
-        {/* Header */}
-        <div style={{ background: css.bg3, padding: "24px 28px", borderBottom: `1px solid ${css.border}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div>
-            <div style={{ fontFamily: "monospace", fontSize: 44, fontWeight: 800, letterSpacing: -2, color: css.text }}>{ticker}</div>
-            <div style={{ fontSize: 13, color: css.dim, marginTop: 4 }}>{s?.name}</div>
-            <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-              <span style={{ fontSize: 10, color: couche_color(s?.couche) }}>{s?.couche}</span>
-              <Badge label={s?.profil} style={{ fontSize: 9 }} />
-              <Badge type="decision" label={cfg?.decision} style={{ fontSize: 9 }} />
-            </div>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ fontFamily: "monospace", fontSize: 32, fontWeight: 700, color: css.text }}>{s?.price}</div>
-            <div style={{ fontSize: 12, marginTop: 4, color: s?.changeDir === "pos" ? css.c1 : css.c3 }}>{s?.change}</div>
-            <div style={{ fontFamily: "monospace", fontSize: 36, fontWeight: 700, color: scoreColor(s?.score), marginTop: 8 }}>
-              {s?.score}<span style={{ fontSize: 14, color: css.dim }}>/100</span>
-            </div>
-          </div>
-        </div>
+// INIT
+buildSidebar();
+buildVeille();
+updateDate();
+addPriceStatus();
+patchTablePrices();
+startPriceRefresh();
+buildAllocation();
 
-        <div style={{ padding: "24px 28px" }}>
-          {/* Trade Plan */}
-          {cfg && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 20 }}>
-              {[
-                { label: "Entrée idéale", value: fmtEntry(ticker), color: css.leader },
-                { label: "Stop-Loss", value: fmtStop(ticker), color: css.c3 },
-                { label: "Cible", value: fmtTarget(ticker), color: css.c1 },
-              ].map(({ label, value, color }) => (
-                <div key={label} style={{ background: css.bg3, border: `1px solid ${css.border}`, borderRadius: 8, padding: "14px", textAlign: "center" }}>
-                  <div style={{ fontSize: 9, color: css.dim, letterSpacing: 2, textTransform: "uppercase", marginBottom: 6 }}>{label}</div>
-                  <div style={{ fontFamily: "monospace", fontSize: 18, fontWeight: 700, color }}>{value}</div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* R/R */}
-          {cfg && (
-            <div style={{ background: css.bg3, border: `1px solid ${css.border}`, borderRadius: 8, padding: "12px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <span style={{ fontSize: 11, color: css.dim, letterSpacing: 1 }}>RISK / REWARD</span>
-              <span style={{ fontFamily: "monospace", fontSize: 22, fontWeight: 700, color: css.c1 }}>{fmtRR(ticker)}</span>
-              <span style={{ fontSize: 11, color: css.dim }}>
-                {parseFloat(fmtRR(ticker).split(":")[1]) >= 3 ? "🔥 Excellent" : "✅ Acceptable"}
-              </span>
-            </div>
-          )}
-
-          {/* Règle ATH */}
-          <div style={{ background: "rgba(0,229,160,0.03)", border: `1px solid rgba(0,229,160,0.1)`, borderRadius: 8, padding: "14px 18px", marginBottom: 20 }}>
-            <div style={{ fontSize: 9, color: css.c1, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Règle d'entrée ATH</div>
-            <div style={{ fontSize: 11, color: css.dim, lineHeight: 1.6 }}>
-              {cfg?.decision === "invest"
-                ? `Exception appliquée — fondamentaux justifient l'entrée malgré la proximité du sommet. R/R favorable.`
-                : `Attendre zone d'entrée ${fmtEntry(ticker)} avant d'investir.`}
-            </div>
-          </div>
-
-          {/* Historique */}
-          {hist.length > 0 && (
-            <div>
-              <div style={{ fontSize: 10, color: css.dim, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14, display: "flex", justifyContent: "space-between" }}>
-                <span>📈 Historique des analyses</span>
-                {hist.length >= 2 && (
-                  <span style={{ color: hist[hist.length-1].score >= hist[0].score ? css.c1 : css.c3 }}>
-                    Score {hist[hist.length-1].score >= hist[0].score ? "↑" : "↓"} {hist[hist.length-1].score - hist[0].score > 0 ? "+" : ""}{hist[hist.length-1].score - hist[0].score}
-                  </span>
-                )}
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {[...hist].reverse().map((h, i) => (
-                  <div key={i} style={{ display: "flex", gap: 14 }}>
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                      <div style={{ width: 10, height: 10, borderRadius: "50%", background: i === 0 ? css.c1 : css.dim, flexShrink: 0, marginTop: 4 }} />
-                      {i < hist.length - 1 && <div style={{ width: 2, flex: 1, background: "rgba(255,255,255,0.04)", marginTop: 4 }} />}
-                    </div>
-                    <div style={{
-                      flex: 1, background: css.bg, border: `1px solid ${i === 0 ? "rgba(0,229,160,0.15)" : css.border}`,
-                      borderRadius: 8, padding: "12px 14px",
-                    }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                          <span style={{ fontSize: 10, color: css.dim, fontFamily: "monospace" }}>{h.date}</span>
-                          {i === 0 && <span style={{ fontSize: 9, color: css.c1, background: "rgba(0,229,160,0.08)", padding: "2px 8px", borderRadius: 10 }}>DERNIÈRE</span>}
-                        </div>
-                        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                          <Badge type="decision" label={h.decision} style={{ fontSize: 8, padding: "2px 6px" }} />
-                          <span style={{ fontFamily: "monospace", fontSize: 16, fontWeight: 700, color: scoreColor(h.score) }}>{h.score}</span>
-                          <span style={{ fontSize: 11, color: css.dim }}>${h.price.toLocaleString()}</span>
-                        </div>
-                      </div>
-                      {h.changes.map((c, j) => (
-                        <div key={j} style={{ fontSize: 11, color: "#8a94a8", lineHeight: 1.6 }}>{c}</div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ============================================================
-const Veille = () => {
-  const prio_style = {
-    haute: { bg: "rgba(255,95,87,0.1)", color: css.c3, border: "rgba(255,95,87,0.2)", label: "🔴 Haute" },
-    moyenne: { bg: "rgba(255,201,74,0.1)", color: css.c4, border: "rgba(255,201,74,0.2)", label: "🟡 Moyenne" },
-    basse: { bg: "rgba(90,100,128,0.1)", color: css.dim, border: "rgba(90,100,128,0.2)", label: "⬛ Basse" },
-  };
-
-  return (
-    <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontFamily: "monospace", fontSize: 28, fontWeight: 800, color: css.text }}>
-          Stocks en <span style={{ color: css.c4 }}>Veille</span>
-        </h2>
-        <div style={{ fontSize: 11, color: css.dim, letterSpacing: 2, textTransform: "uppercase", marginTop: 6 }}>
-          Conditions d'entrée · Réserve allouée · Pine Script TradingView
-        </div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {VEILLE_DATA.map(v => {
-          const s = STOCKS[v.ticker];
-          const cfg = STOCK_CONFIG[v.ticker];
-          const p = prio_style[v.prio];
-          return (
-            <div key={v.ticker} style={{
-              background: css.bg2, border: `1px solid ${css.border}`,
-              borderLeft: `3px solid ${p.color}`, borderRadius: "0 10px 10px 0",
-              padding: "18px 22px", display: "grid", gridTemplateColumns: "140px 1fr auto", gap: 18, alignItems: "start",
-            }}>
-              <div>
-                <div style={{ fontFamily: "monospace", fontSize: 24, fontWeight: 800, color: css.text }}>{v.ticker}</div>
-                <div style={{ fontSize: 11, color: css.dim, marginTop: 2 }}>{s?.name}</div>
-                <span style={{ display: "inline-block", marginTop: 8, fontSize: 9, padding: "3px 10px", borderRadius: 4, background: p.bg, color: p.color, border: `1px solid ${p.border}` }}>{p.label}</span>
-              </div>
-              <div>
-                <div style={{ fontSize: 12, color: css.text, lineHeight: 1.7 }}>{v.condition}</div>
-                <div style={{ marginTop: 10, display: "flex", gap: 16, fontSize: 11 }}>
-                  <span style={{ color: css.leader }}>Entrée : {fmtEntry(v.ticker)}</span>
-                  <span style={{ color: css.c3 }}>Stop : {fmtStop(v.ticker)}</span>
-                  <span style={{ color: css.c1 }}>Cible : {fmtTarget(v.ticker)}</span>
-                  <span style={{ color: css.dim }}>R/R : {fmtRR(v.ticker)}</span>
-                </div>
-              </div>
-              <div style={{ textAlign: "right" }}>
-                {v.reserve !== "—" && (
-                  <div>
-                    <div style={{ fontFamily: "monospace", fontSize: 18, fontWeight: 700, color: css.c4 }}>{v.reserve}</div>
-                    <div style={{ fontSize: 9, color: css.dim, letterSpacing: 1 }}>RÉSERVÉ</div>
-                  </div>
-                )}
-                <div style={{ marginTop: 8, fontFamily: "monospace", fontSize: 20, fontWeight: 700, color: scoreColor(s?.score || 60) }}>
-                  {s?.score || "?"}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-// ============================================================
-const Allocation = () => {
-  const deployPct = Math.round(totalDeploy / PORTFOLIO.capital_total * 100);
-  const reservePct = Math.round(totalReserve / PORTFOLIO.capital_total * 100);
-
-  return (
-    <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontFamily: "monospace", fontSize: 28, fontWeight: 800, color: css.text }}>
-          Mon <span style={{ color: css.c4 }}>Allocation</span>
-        </h2>
-        <div style={{ fontSize: 11, color: css.dim, letterSpacing: 2, textTransform: "uppercase", marginTop: 6 }}>
-          Capital 13,000€ · Objectif x2 en 2 ans · Revolut
-        </div>
-      </div>
-
-      {/* Stats — 100% dynamiques */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 24 }}>
-        <StatCard label="Capital total" value={`${PORTFOLIO.capital_total.toLocaleString("fr-FR")}€`} sub="100%" />
-        <StatCard label="Déployé maintenant" value={`${totalDeploy.toLocaleString("fr-FR")}€`} sub={`${deployPct}% du capital`} color={css.c1} />
-        <StatCard label="Réserve veille" value={`${totalReserve.toLocaleString("fr-FR")}€`} sub={`${reservePct}% en attente`} color={css.c4} />
-        <StatCard label="Objectif 2 ans" value="26,000€" sub="scénario base" color={css.specu} />
-      </div>
-
-      {/* Deploy table */}
-      <div style={{ background: css.bg2, border: `1px solid ${css.border}`, borderRadius: 12, overflow: "hidden", marginBottom: 16 }}>
-        <div style={{ background: css.bg3, padding: "14px 20px", borderBottom: `1px solid ${css.border}`, display: "flex", justifyContent: "space-between" }}>
-          <span style={{ fontFamily: "monospace", fontWeight: 700, fontSize: 13 }}>DÉPLOIEMENT IMMÉDIAT — {totalDeploy.toLocaleString("fr-FR")}€</span>
-          <span style={{ fontSize: 10, color: css.dim, background: css.bg, padding: "3px 10px", borderRadius: 20, border: `1px solid ${css.border}` }}>
-            {DEPLOY_STOCKS.length} positions · {deployPct}%
-          </span>
-        </div>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: css.bg3 }}>
-                {["Ticker", "Société", "Couche", "Montant", "%", "Entrée", "Stop", "Cible", "R/R"].map(h => (
-                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 9, color: css.dim, letterSpacing: 2, textTransform: "uppercase", borderBottom: `1px solid ${css.border}` }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {DEPLOY_STOCKS.map(({ ticker, name, couche, montant }) => {
-                const pct = Math.round(montant / PORTFOLIO.capital_total * 100);
-                return (
-                  <tr key={ticker} style={{ borderBottom: `1px solid ${css.border}` }}>
-                    <td style={{ padding: "12px 14px", fontFamily: "monospace", fontSize: 14, fontWeight: 800 }}>{ticker}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 11, color: css.dim }}>{name}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 10, color: couche_color(couche) }}>{couche}</td>
-                    <td style={{ padding: "12px 14px", fontFamily: "monospace", fontWeight: 700, color: css.c4 }}>{montant.toLocaleString("fr-FR")}€</td>
-                    <td style={{ padding: "12px 14px", fontSize: 11, color: css.dim }}>{pct}%</td>
-                    <td style={{ padding: "12px 14px", fontSize: 12, color: css.leader }}>{fmtEntry(ticker)}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 12, color: css.c3 }}>{fmtStop(ticker)}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 12, color: css.c1 }}>{fmtTarget(ticker)}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 12, color: css.c1 }}>{fmtRR(ticker)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Reserve table */}
-      <div style={{ background: css.bg2, border: `1px solid ${css.border}`, borderRadius: 12, overflow: "hidden" }}>
-        <div style={{ background: css.bg3, padding: "14px 20px", borderBottom: `1px solid ${css.border}`, display: "flex", justifyContent: "space-between" }}>
-          <span style={{ fontFamily: "monospace", fontWeight: 700, fontSize: 13 }}>RÉSERVE VEILLE — {totalReserve.toLocaleString("fr-FR")}€</span>
-          <span style={{ fontSize: 10, color: css.dim, background: css.bg, padding: "3px 10px", borderRadius: 20, border: `1px solid ${css.border}` }}>
-            {VEILLE_DATA.filter(v => v.reserve !== "—").length} positions · {reservePct}%
-          </span>
-        </div>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: css.bg3 }}>
-                {["Ticker", "Société", "Réservé", "Condition d'entrée", "Priorité"].map(h => (
-                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 9, color: css.dim, letterSpacing: 2, textTransform: "uppercase", borderBottom: `1px solid ${css.border}` }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {VEILLE_DATA.map(v => {
-                const prios = { haute: { color: css.c3, label: "🔴 Haute" }, moyenne: { color: css.c4, label: "🟡 Moyenne" }, basse: { color: css.dim, label: "⬛ Basse" } };
-                const p = prios[v.prio];
-                return (
-                  <tr key={v.ticker} style={{ borderBottom: `1px solid ${css.border}` }}>
-                    <td style={{ padding: "12px 14px", fontFamily: "monospace", fontSize: 14, fontWeight: 800 }}>{v.ticker}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 11, color: css.dim }}>{STOCKS[v.ticker]?.name}</td>
-                    <td style={{ padding: "12px 14px", fontFamily: "monospace", fontWeight: 700, color: v.reserve !== "—" ? css.c4 : css.dim }}>{v.reserve}</td>
-                    <td style={{ padding: "12px 14px", fontSize: 11, color: css.dim, maxWidth: 280 }}>{v.condition}</td>
-                    <td style={{ padding: "12px 14px" }}>
-                      <span style={{ fontSize: 10, padding: "3px 10px", borderRadius: 4, background: `${p.color}18`, color: p.color, border: `1px solid ${p.color}33` }}>{p.label}</span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ============================================================
-// MAIN APP
-// ============================================================
-export default function App() {
-  const [page, setPage] = useState("dashboard");
-  const [selectedStock, setSelectedStock] = useState("MSFT");
-
-  const handleSelectStock = (ticker) => {
-    setSelectedStock(ticker);
-    setPage("analyses");
-  };
-
-  const navItems = [
-    { id: "dashboard", label: "Dashboard" },
-    { id: "analyses", label: "Analyses" },
-    { id: "veille", label: "Veille" },
-    { id: "allocation", label: "Allocation" },
+// Build allocation tables from STOCK_CONFIG
+function buildAllocation() {
+  var deployStocks = [
+    { ticker: 'MSFT', name: 'Microsoft', couche: 'C4', couche_class: 'couche-c4', montant: 2500 },
+    { ticker: 'NVDA', name: 'Nvidia', couche: 'C3', couche_class: 'couche-c3', montant: 2000 },
+    { ticker: 'MRVL', name: 'Marvell', couche: 'C3', couche_class: 'couche-c3', montant: 1500 },
   ];
 
-  return (
-    <div style={{ background: css.bg, minHeight: "100vh", color: css.text, fontFamily: "monospace" }}>
-      {/* Nav */}
-      <div style={{
-        position: "sticky", top: 0, zIndex: 100,
-        background: "rgba(7,9,15,0.95)", backdropFilter: "blur(20px)",
-        borderBottom: `1px solid ${css.border}`,
-        display: "flex", alignItems: "center", padding: "0 24px", height: 54, gap: 4,
-      }}>
-        <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: 3, color: css.c1, marginRight: 24 }}>
-          DC<span style={{ color: css.dim }}>/</span>HQ
-        </div>
-        {navItems.map(({ id, label }) => (
-          <button key={id} onClick={() => setPage(id)} style={{
-            background: page === id ? "rgba(0,229,160,0.08)" : "none",
-            border: page === id ? `1px solid rgba(0,229,160,0.2)` : "1px solid transparent",
-            color: page === id ? css.c1 : css.dim,
-            fontFamily: "monospace", fontSize: 11, letterSpacing: 1, textTransform: "uppercase",
-            padding: "5px 14px", borderRadius: 4, cursor: "pointer", transition: "all 0.2s",
-          }}>{label}</button>
-        ))}
-        <div style={{ marginLeft: "auto", display: "flex", gap: 12, alignItems: "center" }}>
-          <span style={{ fontSize: 10, color: css.dim }}>3 juin 2026</span>
-          <span style={{ fontSize: 11, color: css.c4, background: "rgba(255,201,74,0.08)", border: `1px solid rgba(255,201,74,0.2)`, padding: "4px 12px", borderRadius: 4 }}>
-            {PORTFOLIO.capital_total.toLocaleString("fr-FR")} €
-          </span>
-        </div>
-      </div>
+  var reserveStocks = [
+    { ticker: 'GOOGL', name: 'Alphabet', montant: 2000, prio: 'haute', condition: 'Stabilisation $360–375 — correction -3.9%' },
+    { ticker: 'ORCL', name: 'Oracle', montant: 1200, prio: 'haute', condition: 'Post-earnings Jun 16 + zone $225-245' },
+    { ticker: 'AMZN', name: 'Amazon', montant: 1000, prio: 'haute', condition: 'Pullback $255–270' },
+    { ticker: 'MU', name: 'Micron', montant: 1000, prio: 'moyenne', condition: 'Pullback $980–1050 — Earnings Jun 24' },
+    { ticker: 'DELL', name: 'Dell', montant: 900, prio: 'moyenne', condition: 'Consolidation $395–420 — ATH $469' },
+    { ticker: 'AVGO', name: 'Broadcom', montant: 500, prio: 'moyenne', condition: 'Stabilisation $440–465 post-earnings' },
+    { ticker: 'BUFFER', name: 'Opportunité', montant: 400, prio: 'basse', condition: 'Imprévu / renfort position' },
+  ];
 
-      {/* Content */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 20px 60px" }}>
-        {page === "dashboard" && <Dashboard onSelectStock={handleSelectStock} />}
-        {page === "analyses" && <Analyses selectedTicker={selectedStock} onSelectTicker={setSelectedStock} />}
-        {page === "veille" && <Veille />}
-        {page === "allocation" && <Allocation />}
-      </div>
-    </div>
-  );
+  // Calculate totals
+  var totalDeploy = deployStocks.reduce(function(s, x) { return s + x.montant; }, 0);
+  var totalReserve = reserveStocks.reduce(function(s, x) { return s + x.montant; }, 0);
+
+  // Update allocation stat cards dynamically
+  var statDeploy = document.getElementById('stat-deploye');
+  var statDeployPct = document.getElementById('stat-deploye-pct');
+  var statReserve = document.getElementById('stat-reserve');
+  var statReservePct = document.getElementById('stat-reserve-pct');
+  if (statDeploy) statDeploy.textContent = totalDeploy.toLocaleString('fr-FR') + '€';
+  if (statDeployPct) statDeployPct.textContent = Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '% du capital';
+  if (statReserve) statReserve.textContent = totalReserve.toLocaleString('fr-FR') + '€';
+  if (statReservePct) statReservePct.textContent = Math.round(totalReserve/PORTFOLIO.capital_total*100) + '% en attente';
+
+  // Sync dashboard stat cards too
+  var dashDeploy = document.getElementById('dash-stat-deploye');
+  var dashDeployPct = document.getElementById('dash-stat-deploye-pct');
+  var dashReserve = document.getElementById('dash-stat-reserve');
+  var dashReservePct = document.getElementById('dash-stat-reserve-pct');
+  if (dashDeploy) dashDeploy.textContent = totalDeploy.toLocaleString('fr-FR') + '€';
+  if (dashDeployPct) dashDeployPct.textContent = Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '% du capital';
+  if (dashReserve) dashReserve.textContent = totalReserve.toLocaleString('fr-FR') + '€';
+  if (dashReservePct) dashReservePct.textContent = Math.round(totalReserve/PORTFOLIO.capital_total*100) + '% en attente';
+
+  // Update headers
+  var dt = document.getElementById('alloc-deploy-title');
+  var dc = document.getElementById('alloc-deploy-count');
+  var rt = document.getElementById('alloc-reserve-title');
+  var rc = document.getElementById('alloc-reserve-count');
+  if (dt) dt.textContent = 'DÉPLOIEMENT IMMÉDIAT — ' + totalDeploy.toLocaleString('fr-FR') + '€';
+  if (dc) dc.textContent = deployStocks.length + ' positions · ' + Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '%';
+  if (rt) rt.textContent = 'RÉSERVE VEILLE — ' + totalReserve.toLocaleString('fr-FR') + '€';
+  if (rc) rc.textContent = reserveStocks.length + ' positions · ' + Math.round(totalReserve/PORTFOLIO.capital_total*100) + '%';
+
+  // Build deploy tbody
+  var dbody = document.getElementById('alloc-deploy-tbody');
+  if (dbody) {
+    dbody.innerHTML = '';
+    deployStocks.forEach(function(s) {
+      var pct = Math.round(s.montant / PORTFOLIO.capital_total * 100);
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td class="td-ticker">' + s.ticker + '</td>'
+        + '<td class="td-société">' + s.name + '</td>'
+        + '<td class="td-couche ' + s.couche_class + '">' + s.couche + '</td>'
+        + '<td style="color:var(--c4);font-weight:600">' + s.montant.toLocaleString('fr-FR') + '€</td>'
+        + '<td class="td-société">' + pct + '%</td>'
+        + '<td style="color:var(--c-leader)">' + fmtEntry(s.ticker) + '</td>'
+        + '<td style="color:var(--c3)">' + fmtStop(s.ticker) + '</td>'
+        + '<td style="color:var(--c1)">' + fmtTarget(s.ticker) + '</td>'
+        + '<td style="color:var(--c1)">' + fmtRR(s.ticker) + '</td>';
+      dbody.appendChild(tr);
+    });
+  }
+
+  // Build reserve tbody
+  var rbody = document.getElementById('alloc-reserve-tbody');
+  if (rbody) {
+    rbody.innerHTML = '';
+    reserveStocks.forEach(function(s) {
+      var prioBadge = s.prio === 'haute'
+        ? '<span class="priorité-badge prio-haute">🔴 Haute</span>'
+        : s.prio === 'moyenne'
+        ? '<span class="priorité-badge prio-moyenne">🟡 Moyenne</span>'
+        : '<span class="priorité-badge prio-basse">— Flexible</span>';
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td class="td-ticker">' + s.ticker + '</td>'
+        + '<td class="td-société">' + s.name + '</td>'
+        + '<td style="color:var(--c4);font-weight:600">' + s.montant.toLocaleString('fr-FR') + '€</td>'
+        + '<td style="font-size:11px;color:var(--dim)">' + s.condition + '</td>'
+        + '<td>' + prioBadge + '</td>';
+      rbody.appendChild(tr);
+    });
+  }
 }
+
+// Auto-select first stock
+showReport('MSFT');
+document.getElementById('sbtn-MSFT').classList.add('active');
+</script>
+</body>
+</html>
