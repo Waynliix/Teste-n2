@@ -753,6 +753,7 @@ td {
   <button class="nav-btn active" onclick="showPage('dashboard')">Dashboard</button>
   <button class="nav-btn" onclick="showPage('analyse')">Analyses</button>
   <button class="nav-btn" onclick="showPage('veille')">Veille</button>
+  <button class="nav-btn" onclick="showPage('radar')">Radar 👁️</button>
   <button class="nav-btn" onclick="showPage('allocation')">Allocation</button>
   <div class="nav-right">
     <span class="nav-date" id="navDate"></span>
@@ -782,7 +783,7 @@ td {
     </div>
     <div class="stat-card">
       <div class="stat-label">En veille</div>
-      <div class="stat-value stat-yellow">7</div>
+      <div class="stat-value stat-yellow">8</div>
       <div class="stat-sub">à surveiller</div>
     </div>
     <div class="stat-card">
@@ -813,13 +814,13 @@ td {
       <div style="display:flex;align-items:center;gap:12px">
         <span style="font-size:16px">🤖</span>
         <div>
-          <div style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700">Univers IA & Data Center</div>
-          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">10 STOCKS · 3 COUCHES</div>
+          <div style="font-family:sans-serif;font-size:16px;font-weight:700">Univers IA & Data Center</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">11 STOCKS · 3 COUCHES</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:12px">
         <span class="decision-badge dec-invest">3 🟢 Investir</span>
-        <span class="decision-badge dec-veille">7 ⏳ Veille</span>
+        <span class="decision-badge dec-veille">8 ⏳ Veille</span>
         <span id="acc-ia-arrow" style="color:var(--c1);font-size:14px;transition:transform 0.3s">▼</span>
       </div>
     </div>
@@ -845,7 +846,7 @@ td {
           <td class="td-société">Microsoft</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
           <td data-price-ticker="MSFT">$438</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">80</span></div></td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:81%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">81</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('GOOGL')">
@@ -922,13 +923,22 @@ td {
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
         <!-- C2 -->
+        <tr onclick="openAnalysis('ANET')">
+          <td class="td-couche couche-c3">C3</td>
+          <td class="td-ticker">ANET</td>
+          <td class="td-société">Arista Networks</td>
+          <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
+          <td data-price-ticker="ANET">$175</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:71%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">71</span></div></td>
+          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+        </tr>
         <tr onclick="openAnalysis('DELL')">
           <td class="td-couche couche-c2">C2</td>
           <td class="td-ticker">DELL</td>
           <td class="td-société">Dell Tech</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
           <td data-price-ticker="DELL">$423</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:82%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">82</span></div></td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:85%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">85</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr></tbody>
     </table>
@@ -942,7 +952,7 @@ td {
       <div style="display:flex;align-items:center;gap:12px">
         <span style="font-size:16px">⚡</span>
         <div>
-          <div style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700">Univers Énergie</div>
+          <div style="font-family:sans-serif;font-size:16px;font-weight:700">Univers Énergie</div>
           <div style="font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px">1 STOCK · EN CONSTRUCTION</div>
         </div>
       </div>
@@ -981,6 +991,17 @@ td {
     </div>
   </div>
 
+</div>
+
+<!-- =================== RADAR =================== -->
+<div class="page" id="page-radar">
+  <div class="page-header">
+    <div>
+      <div class="page-title">👁️ <span class="accent">Radar</span></div>
+      <div class="page-sub">Univers IA complet · Stocks à analyser · Surveillance sectorielle</div>
+    </div>
+  </div>
+  <div id="radarContainer"></div>
 </div>
 
 <!-- =================== ANALYSES =================== -->
@@ -1023,10 +1044,10 @@ td {
     </div>
   </div>
 
-  <div class="stats-grid" id="alloc-stats-grid">
+  <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-label">Capital total</div>
-      <div class="stat-value" style="color:var(--text)" id="stat-capital-total">13,000€</div>
+      <div class="stat-value" style="color:var(--text)">13,000€</div>
       <div class="stat-sub">100%</div>
     </div>
     <div class="stat-card">
@@ -1231,7 +1252,7 @@ const stockHistory = {
     ]},
   ],
 };
-// ====== PRIX & CONFIG CENTRALISÉS ======
+// ====== PRIX & CONFIG CENTRALISES ======
 const PORTFOLIO = {
   capital_total: 13000,
   capital_deploye: 6000,
@@ -1249,32 +1270,20 @@ const STOCK_CONFIG = {
   DELL: { entry_low: 395, entry_high: 420, stop: 365, target: 565, reserve: 900 },
   CRDO: { entry_low: 210, entry_high: 230, stop: 185, target: 340, reserve: 0 },
   AVGO: { entry_low: 440, entry_high: 465, stop: 410, target: 600, reserve: 500 },
+  ANET: { entry_low: 155, entry_high: 165, stop: 138, target: 220, reserve: 0 },
 };
 
-function fmtEntry(t) {
-  var c = STOCK_CONFIG[t];
-  return c ? '$' + c.entry_low + '–' + c.entry_high : '—';
-}
-function fmtStop(t) {
-  var c = STOCK_CONFIG[t];
-  return c ? '$' + c.stop : '—';
-}
-function fmtTarget(t) {
-  var c = STOCK_CONFIG[t];
-  return c ? '$' + c.target : '—';
-}
+function fmtEntry(t) { var c = STOCK_CONFIG[t]; return c ? '$' + c.entry_low + '–' + c.entry_high : '—'; }
+function fmtStop(t) { var c = STOCK_CONFIG[t]; return c ? '$' + c.stop : '—'; }
+function fmtTarget(t) { var c = STOCK_CONFIG[t]; return c ? '$' + c.target : '—'; }
 function fmtRR(t) {
-  var c = STOCK_CONFIG[t];
-  if (!c) return '—';
+  var c = STOCK_CONFIG[t]; if (!c) return '—';
   var entry = (c.entry_low + c.entry_high) / 2;
   var risk = entry - c.stop;
   var reward = c.target - entry;
   return '1:' + (reward / risk).toFixed(1);
 }
-function fmtReserve(t) {
-  var c = STOCK_CONFIG[t];
-  return c && c.reserve > 0 ? c.reserve.toLocaleString('fr-FR') + '€' : '—';
-}
+function fmtReserve(t) { var c = STOCK_CONFIG[t]; return c && c.reserve > 0 ? c.reserve.toLocaleString('fr-FR') + '€' : '—'; }
 
 // ====== DATA ======
 const stocks = {
@@ -1611,14 +1620,15 @@ bgcolor(signal ? color.new(color.green, 90) : na)`
 
 // ====== VEILLE DATA ======
 const veilleData = [
-  { ticker: 'GOOGL', name: 'Alphabet', reserve: '2,000€', prio: 'haute', condition: 'Correction -3.9% → prix $366. Attendre stabilisation <span class="cond-price">$360–375</span>. RSI doit se normaliser sous 55. Truist cible $480.' },
-  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Earnings <span class="cond-date">Jun 16</span> dans 13 jours — attendre absolument. Zone <span class="cond-price">$225–245</span>. Contrat gouvernement $30Mrd.' },
-  { ticker: 'AMZN', name: 'Amazon', reserve: '1,000€', prio: 'haute', condition: 'Correction legere a $267. Zone entree <span class="cond-price">$255–270</span>. AWS record growth. Truist cible $340.' },
-  { ticker: 'MU', name: 'Micron', reserve: '1,000€', prio: 'moyenne', condition: 'Prix $1,064 — trop haut. Pullback vers <span class="cond-price">$980–1050</span>. Earnings <span class="cond-date">Jun 24</span> dans 21 jours.' },
-  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'moyenne', condition: 'Consolidation depuis ATH $469 → $423. Zone <span class="cond-price">$395–420</span>. Pentagon deal $9.7Mrd. Earnings Sep 3.' },
-  { ticker: 'AVGO', name: 'Broadcom', reserve: '500€', prio: 'moyenne', condition: 'Earnings passés ✅. Stabilisation post sell-the-news. Zone <span class="cond-price">$440–465</span>. AI order book $73Mrd.' },
-  { ticker: 'CRDO', name: 'Credo Tech', reserve: '—', prio: 'basse', condition: 'Post-earnings déception -15.6% AH. 123 ventes insiders. Attendre stabilisation <span class="cond-price">$210–230</span> + confirmation.' },
-  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'basse', condition: 'Univers Énergie. Pullback vers <span class="cond-price">$65–70</span>. Sensible aux taux — surveiller la Fed.' },
+  { ticker: 'GOOGL', name: 'Alphabet', reserve: '2,000€', prio: 'haute', condition: 'Correction -3.9% → $366. Attendre stabilisation <span class="cond-price">$360–375</span>. Truist cible $480.' },
+  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Earnings <span class="cond-date">Jun 16</span> dans 13 jours — attendre. Zone <span class="cond-price">$225–245</span>. Contrat US Gov $30Mrd.' },
+  { ticker: 'AMZN', name: 'Amazon', reserve: '1,000€', prio: 'haute', condition: 'Zone entree <span class="cond-price">$255–270</span>. AWS record growth. Truist cible $340.' },
+  { ticker: 'MU', name: 'Micron', reserve: '1,000€', prio: 'moyenne', condition: 'Pullback <span class="cond-price">$980–1050</span>. Earnings <span class="cond-date">Jun 24</span> dans 21 jours.' },
+  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'moyenne', condition: 'Consolidation depuis ATH $469. Zone <span class="cond-price">$395–420</span>. Pentagon deal $9.7Mrd. Earnings Sep 3.' },
+  { ticker: 'AVGO', name: 'Broadcom', reserve: '500€', prio: 'moyenne', condition: 'Earnings passes. Stabilisation post sell-the-news. Zone <span class="cond-price">$440–465</span>. AI order book $73Mrd.' },
+  { ticker: 'CRDO', name: 'Credo Tech', reserve: '—', prio: 'basse', condition: 'Post-earnings deception -15.6% AH. 123 ventes insiders. Attendre stabilisation <span class="cond-price">$210–230</span>.' },
+  { ticker: 'ANET', name: 'Arista Networks', reserve: '—', prio: 'basse', condition: 'Pullback vers <span class="cond-price">$155–165</span>. Supply chain shortages. Monopole switching IA 50%+.' },
+  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'basse', condition: 'Univers Energie. Pullback vers <span class="cond-price">$65–70</span>. Sensible aux taux.' },
 ];
 
 // ====== FUNCTIONS ======
@@ -2282,6 +2292,71 @@ function rebuildSidebarAndVeille() {
 window.stocksActive = {...stocks};
 window.veilleActive = veilleData;
 
+// ====== RADAR DATA ======
+const radarData = {
+  'C4 — Hyperscalers': [
+    { ticker: 'TSM', name: 'TSMC', why: 'Fabrique 90% des chips IA mondiaux. PEG 0.79. Risque géopolitique Taiwan.', priority: 'haute' },
+    { ticker: 'CRWV', name: 'CoreWeave', why: 'Neocloud IA, backlog $66Mrd, revenue +112% YoY. Pas encore profitable.', priority: 'moyenne' },
+  ],
+  'C3 — Semi-conducteurs': [
+    { ticker: 'APH', name: 'Amphenol', why: '33% marché interconnects data center IA. Croissance triple digits organique.', priority: 'haute' },
+    { ticker: 'AMAT', name: 'Applied Materials', why: 'Machines à chips. Nouveau produit packaging HBM sur GPU. PEG attractif.', priority: 'haute' },
+    { ticker: 'AMD', name: 'AMD', why: 'Challenger NVDA sur GPU IA. MI300/MI400 en forte demande.', priority: 'haute' },
+    { ticker: 'LITE', name: 'Lumentum', why: 'Photonique CPO — prochaine révolution data center. Revenue +90% YoY. $905.', priority: 'moyenne' },
+    { ticker: 'STX', name: 'Seagate', why: 'Stockage data center. +180% en 2026. $921.', priority: 'moyenne' },
+    { ticker: 'SNDK', name: 'SanDisk', why: 'Mémoire flash IA. +464% en 2026. Trop tard pour entrer maintenant.', priority: 'basse' },
+  ],
+  'C2 — Infrastructure': [
+    { ticker: 'VRT', name: 'Vertiv', why: 'Refroidissement liquid cooling. Déjà analysé. Attendre pullback $300.', priority: 'haute' },
+    { ticker: 'MOD', name: 'Modine', why: 'Cooling data center +60% 2026. $288. Order book 5 ans.', priority: 'moyenne' },
+    { ticker: 'EME', name: 'EMCOR Group', why: 'Construction data centers. Zacks Strong Buy. Infrastructure électrique.', priority: 'moyenne' },
+  ],
+  'C1 — REITs & Utilities': [
+    { ticker: 'EQIX', name: 'Equinix', why: 'REIT data center #1 mondial. Déjà analysé. ATH — attendre pullback $980.', priority: 'moyenne' },
+    { ticker: 'DLR', name: 'Digital Realty', why: 'REIT data center global. 309 DCs. Short interest 0.01%.', priority: 'moyenne' },
+    { ticker: 'CEG', name: 'Constellation Energy', why: 'Nucléaire pour data centers IA. Microsoft/Google signent des deals.', priority: 'haute' },
+    { ticker: 'VST', name: 'Vistra', why: 'Énergie pour data centers. Forte croissance demandée par IA.', priority: 'moyenne' },
+  ],
+  '🛸 Space & Telecom': [
+    { ticker: 'ASTS', name: 'AST SpaceMobile', why: 'Satellite direct-to-phone. Score 51/100. Attendre profitabilité.', priority: 'basse' },
+    { ticker: 'RKLB', name: 'Rocket Lab', why: 'Lanceurs de satellites. Infrastructure spatiale en croissance.', priority: 'basse' },
+  ],
+};
+
+function buildRadar() {
+  var container = document.getElementById('radarContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  var prioColors = {
+    haute: { color: 'var(--c3)', bg: 'rgba(255,95,87,0.08)', border: 'rgba(255,95,87,0.2)', label: '🔴 Haute priorité' },
+    moyenne: { color: 'var(--c4)', bg: 'rgba(255,201,74,0.08)', border: 'rgba(255,201,74,0.2)', label: '🟡 Moyenne' },
+    basse: { color: 'var(--dim)', bg: 'rgba(90,100,128,0.08)', border: 'rgba(90,100,128,0.2)', label: '⬛ Basse' },
+  };
+  Object.entries(radarData).forEach(function(entry) {
+    var category = entry[0]; var stocks = entry[1];
+    var section = document.createElement('div');
+    section.style.cssText = 'margin-bottom:28px';
+    var header = document.createElement('div');
+    header.style.cssText = 'font-size:11px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)';
+    header.textContent = category;
+    section.appendChild(header);
+    var grid = document.createElement('div');
+    grid.style.cssText = 'display:flex;flex-direction:column;gap:8px';
+    stocks.forEach(function(s) {
+      var p = prioColors[s.priority];
+      var card = document.createElement('div');
+      card.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-left:3px solid '+p.color+';border-radius:0 8px 8px 0;padding:14px 18px;display:grid;grid-template-columns:100px 1fr auto;gap:16px;align-items:center;transition:all 0.2s';
+      card.innerHTML = '<div><div style="font-family:monospace;font-size:16px;font-weight:800;color:var(--text)">'+s.ticker+'</div><div style="font-size:10px;color:var(--dim);margin-top:2px">'+s.name+'</div></div>'
+        +'<div style="font-size:12px;color:#8a94a8;line-height:1.6">'+s.why+'</div>'
+        +'<div style="text-align:center"><span style="font-size:9px;padding:3px 10px;border-radius:4px;background:'+p.bg+';color:'+p.color+';border:1px solid '+p.border+'">'+p.label+'</span>'
+        +'<div style="margin-top:6px;font-size:9px;color:var(--c1);cursor:pointer;padding:4px 8px;background:rgba(0,229,160,0.06);border-radius:4px;border:1px solid rgba(0,229,160,0.15)" onclick="alert('Lance une analyse Citadel sur '+s.ticker+' en le demandant à Claude !')">+ Analyser</div></div>';
+      grid.appendChild(card);
+    });
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
+}
+
 // INIT
 buildSidebar();
 buildVeille();
@@ -2290,6 +2365,7 @@ addPriceStatus();
 patchTablePrices();
 startPriceRefresh();
 buildAllocation();
+buildRadar();
 
 // Build allocation tables from STOCK_CONFIG
 function buildAllocation() {
@@ -2300,40 +2376,36 @@ function buildAllocation() {
   ];
 
   var reserveStocks = [
-    { ticker: 'GOOGL', name: 'Alphabet', montant: 2000, prio: 'haute', condition: 'Stabilisation $360–375 — correction -3.9%' },
-    { ticker: 'ORCL', name: 'Oracle', montant: 1200, prio: 'haute', condition: 'Post-earnings Jun 16 + zone $225-245' },
+    { ticker: 'GOOGL', name: 'Alphabet', montant: 2000, prio: 'haute', condition: 'Stabilisation $360–375' },
+    { ticker: 'ORCL', name: 'Oracle', montant: 1200, prio: 'haute', condition: 'Post-earnings Jun 16 + zone $225–245' },
     { ticker: 'AMZN', name: 'Amazon', montant: 1000, prio: 'haute', condition: 'Pullback $255–270' },
-    { ticker: 'MU', name: 'Micron', montant: 1000, prio: 'moyenne', condition: 'Pullback $980–1050 — Earnings Jun 24' },
-    { ticker: 'DELL', name: 'Dell', montant: 900, prio: 'moyenne', condition: 'Consolidation $395–420 — ATH $469' },
-    { ticker: 'AVGO', name: 'Broadcom', montant: 500, prio: 'moyenne', condition: 'Stabilisation $440–465 post-earnings' },
-    { ticker: 'BUFFER', name: 'Opportunité', montant: 400, prio: 'basse', condition: 'Imprévu / renfort position' },
+    { ticker: 'MU', name: 'Micron', montant: 1000, prio: 'moyenne', condition: 'Pullback $980–1050' },
+    { ticker: 'DELL', name: 'Dell', montant: 900, prio: 'moyenne', condition: 'Consolidation $395–420' },
+    { ticker: 'AVGO', name: 'Broadcom', montant: 500, prio: 'moyenne', condition: 'Stabilisation $440–465' },
+    { ticker: 'BUFFER', name: 'Opportunité', montant: 400, prio: 'basse', condition: 'Imprévu / renfort' },
   ];
 
   // Calculate totals
   var totalDeploy = deployStocks.reduce(function(s, x) { return s + x.montant; }, 0);
   var totalReserve = reserveStocks.reduce(function(s, x) { return s + x.montant; }, 0);
 
-  // Update allocation stat cards dynamically
-  var statDeploy = document.getElementById('stat-deploye');
-  var statDeployPct = document.getElementById('stat-deploye-pct');
-  var statReserve = document.getElementById('stat-reserve');
-  var statReservePct = document.getElementById('stat-reserve-pct');
-  if (statDeploy) statDeploy.textContent = totalDeploy.toLocaleString('fr-FR') + '€';
-  if (statDeployPct) statDeployPct.textContent = Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '% du capital';
-  if (statReserve) statReserve.textContent = totalReserve.toLocaleString('fr-FR') + '€';
-  if (statReservePct) statReservePct.textContent = Math.round(totalReserve/PORTFOLIO.capital_total*100) + '% en attente';
-
-  // Sync dashboard stat cards too
-  var dashDeploy = document.getElementById('dash-stat-deploye');
-  var dashDeployPct = document.getElementById('dash-stat-deploye-pct');
-  var dashReserve = document.getElementById('dash-stat-reserve');
-  var dashReservePct = document.getElementById('dash-stat-reserve-pct');
-  if (dashDeploy) dashDeploy.textContent = totalDeploy.toLocaleString('fr-FR') + '€';
-  if (dashDeployPct) dashDeployPct.textContent = Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '% du capital';
-  if (dashReserve) dashReserve.textContent = totalReserve.toLocaleString('fr-FR') + '€';
-  if (dashReservePct) dashReservePct.textContent = Math.round(totalReserve/PORTFOLIO.capital_total*100) + '% en attente';
-
   // Update headers
+  // Sync all stat cards
+  var sd = document.getElementById('stat-deploye'); if (sd) sd.textContent = totalDeploy.toLocaleString('fr-FR') + '€';
+  var sdp = document.getElementById('stat-deploye-pct'); if (sdp) sdp.textContent = Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '% du capital';
+  var sr = document.getElementById('stat-reserve'); if (sr) sr.textContent = totalReserve.toLocaleString('fr-FR') + '€';
+  var srp = document.getElementById('stat-reserve-pct'); if (srp) srp.textContent = Math.round(totalReserve/PORTFOLIO.capital_total*100) + '% en attente';
+  var dd = document.getElementById('dash-stat-deploye'); if (dd) dd.textContent = totalDeploy.toLocaleString('fr-FR') + '€';
+  var ddp = document.getElementById('dash-stat-deploye-pct'); if (ddp) ddp.textContent = Math.round(totalDeploy/PORTFOLIO.capital_total*100) + '% du capital';
+  var dr = document.getElementById('dash-stat-reserve'); if (dr) dr.textContent = totalReserve.toLocaleString('fr-FR') + '€';
+  var drp = document.getElementById('dash-stat-reserve-pct'); if (drp) drp.textContent = Math.round(totalReserve/PORTFOLIO.capital_total*100) + '% en attente';
+
+  // Sync all stat cards dynamically
+  ['stat-deploye','dash-stat-deploye'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=totalDeploy.toLocaleString('fr-FR')+'€';});
+  ['stat-deploye-pct','dash-stat-deploye-pct'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=Math.round(totalDeploy/PORTFOLIO.capital_total*100)+'% du capital';});
+  ['stat-reserve','dash-stat-reserve'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=totalReserve.toLocaleString('fr-FR')+'€';});
+  ['stat-reserve-pct','dash-stat-reserve-pct'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=Math.round(totalReserve/PORTFOLIO.capital_total*100)+'% en attente';});
+
   var dt = document.getElementById('alloc-deploy-title');
   var dc = document.getElementById('alloc-deploy-count');
   var rt = document.getElementById('alloc-reserve-title');
