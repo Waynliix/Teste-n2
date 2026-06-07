@@ -112,7 +112,7 @@ nav {
 
 /* PAGES */
 .page { display: none; padding: 80px 32px 60px; max-width: 1200px; margin: 0 auto; }
-.page.active { display: block; animation: fadeIn 0.4s ease; }
+.page.active { display: block; }
 
 @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
@@ -1616,6 +1616,40 @@ alertcondition(signal, title="AVGO — ENTREE POST-EARNINGS", message="AVGO: RSI
 plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
+  ANET: {
+    name: 'Arista Networks Inc.', price: '$175', couche: 'C3 — Networking',
+    score: 71, decision: 'veille', profil: 'challenger',
+    entry: fmtEntry('ANET'), stop: fmtStop('ANET'), target: fmtTarget('ANET'), rr: fmtRR('ANET'),
+    change: '+5.8%', changeDir: 'pos',
+    criteria: [
+      { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 57 neutre. MACD -0.76 légèrement négatif. Williams %R oversold — signal rebond possible.' },
+      { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: 'ATH $179.80 le 24 avril. Prix $175 = -2.7% du sommet. Trop proche mais catalyst compense.' },
+      { name: 'Force tendance (ADX)', score: 8, flag: '✅', note: 'Breakout haussier confirmé au-dessus du canal horizontal. Momentum court terme fortement positif.' },
+      { name: 'Momentum fondamental (PEG)', score: 7, flag: '✅', note: 'PEG 2.0x justifié par monopole 50%+ switching IA. Revenue +35% YoY. Guidance relevée $11.5Mrd.' },
+      { name: 'Catalyseurs sectoriels', score: 10, flag: '✅', note: 'Leader Gartner Magic Quadrant 2026. IA revenue $3.5Mrd target. Computex boost. Meta et Microsoft clients.' },
+      { name: 'Flux institutionnels', score: 8, flag: '✅', note: 'Plusieurs firmes majeures ont augmenté leurs positions en Q4. Raymond James upgrade outperform.' },
+      { name: 'Sentiment (short interest)', score: 9, flag: '✅', note: 'Short interest 0.92% — quasi inexistant.' },
+      { name: 'Calendrier earnings', score: 7, flag: '✅', note: 'Earnings Q1 passés le 5 mai. Prochains août. Piste libre 10 semaines.' },
+      { name: 'Insider transactions', score: 6, flag: '🟡', note: 'Neutre. Aucun signal fort dans un sens ou dans l’autre.' },
+      { name: 'Corrélation macro', score: 5, flag: '⚠️', note: 'Beta 1.92. Supply chain shortages contraignent les shipments et les marges.' },
+    ],
+    sources: ['TradingKey', 'StockAnalysis.com', 'TradingView', 'ChartMill'],
+    pine: `//@version=5
+indicator("ANET Entry Alert", overlay=true)
+ma50 = ta.sma(close, 50)
+ma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+entryZone = close >= 138 and close <= 165
+rsiOk = rsi >= 35 and rsi <= 60
+macdOk = macdLine > signalLine
+aboveMA = close > ma200
+signal = entryZone and rsiOk and macdOk and aboveMA
+alertcondition(signal, title="ANET - PULLBACK ZONE", message="ANET revenu en zone entree 155-165.")
+plot(ma50, "MA50", color.new(color.blue, 0), 2)
+plot(ma200, "MA200", color.new(color.orange, 0), 2)
+bgcolor(signal ? color.new(color.green, 90) : na)`,
+  },
 };
 
 // ====== VEILLE DATA ======
@@ -1632,11 +1666,30 @@ const veilleData = [
 ];
 
 // ====== FUNCTIONS ======
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  event.target.classList.add('active');
+function showPage(pageId) {
+  try {
+    // Hide all pages
+    var pages = document.getElementsByClassName('page');
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].style.display = 'none';
+    }
+    // Show target page
+    var target = document.getElementById('page-' + pageId);
+    if (target) target.style.display = 'block';
+    
+    // Update nav buttons
+    var btns = document.getElementsByClassName('nav-btn');
+    for (var j = 0; j < btns.length; j++) {
+      btns[j].classList.remove('active');
+    }
+    // Find and activate the right button
+    var allBtns = document.querySelectorAll('.nav-btn');
+    allBtns.forEach(function(b) {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(pageId) > -1) {
+        b.classList.add('active');
+      }
+    });
+  } catch(e) { console.log('showPage error:', e); }
 }
 
 function getScoreColor(s) {
@@ -1898,11 +1951,12 @@ function copyPine(ticker, e) {
 }
 
 function openAnalysis(ticker) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-analyse').classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.nav-btn')[1].classList.add('active');
-  setTimeout(() => showReport(ticker), 50);
+  showPage('analyse');
+  setTimeout(function() {
+    showReport(ticker);
+    var btn = document.getElementById('sbtn-' + ticker);
+    if (btn) btn.classList.add('active');
+  }, 50);
 }
 
 // Build veille
@@ -2348,24 +2402,15 @@ function buildRadar() {
       card.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-left:3px solid '+p.color+';border-radius:0 8px 8px 0;padding:14px 18px;display:grid;grid-template-columns:100px 1fr auto;gap:16px;align-items:center;transition:all 0.2s';
       card.innerHTML = '<div><div style="font-family:monospace;font-size:16px;font-weight:800;color:var(--text)">'+s.ticker+'</div><div style="font-size:10px;color:var(--dim);margin-top:2px">'+s.name+'</div></div>'
         +'<div style="font-size:12px;color:#8a94a8;line-height:1.6">'+s.why+'</div>'
-        +'<div style="text-align:center"><span style="font-size:9px;padding:3px 10px;border-radius:4px;background:'+p.bg+';color:'+p.color+';border:1px solid '+p.border+'">'+p.label+'</span>'
-        +'<div style="margin-top:6px;font-size:9px;color:var(--c1);cursor:pointer;padding:4px 8px;background:rgba(0,229,160,0.06);border-radius:4px;border:1px solid rgba(0,229,160,0.15)" onclick="alert('Lance une analyse Citadel sur '+s.ticker+' en le demandant à Claude !')">+ Analyser</div></div>';
+        +'<div style="text-align:center"><span style="font-size:9px;padding:3px 10px;border-radius:4px;background:'+p.bg+';color:'+p.color+';border:1px solid '+p.border+'">'+p.label+'</span><br>'
+        +'<small style="font-size:9px;color:var(--c1);cursor:pointer" data-t="'+s.ticker+'">+ Analyser</small></div>';
+      card.querySelector('small').addEventListener('click', function(){ alert('Ticker: ' + this.getAttribute('data-t')); });
       grid.appendChild(card);
     });
     section.appendChild(grid);
     container.appendChild(section);
   });
 }
-
-// INIT
-buildSidebar();
-buildVeille();
-updateDate();
-addPriceStatus();
-patchTablePrices();
-startPriceRefresh();
-buildAllocation();
-buildRadar();
 
 // Build allocation tables from STOCK_CONFIG
 function buildAllocation() {
@@ -2456,9 +2501,23 @@ function buildAllocation() {
   }
 }
 
-// Auto-select first stock
+// ====== INIT — après toutes les définitions ======
+buildSidebar();
+buildVeille();
+updateDate();
+addPriceStatus();
+patchTablePrices();
+startPriceRefresh();
+buildAllocation();
+buildRadar();
+
+// Show dashboard on load
+showPage('dashboard');
+
+// Auto-select first stock in analyses
 showReport('MSFT');
-document.getElementById('sbtn-MSFT').classList.add('active');
+var msftBtn = document.getElementById('sbtn-MSFT');
+if (msftBtn) msftBtn.classList.add('active');
 </script>
 </body>
 </html>
