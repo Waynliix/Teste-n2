@@ -53,20 +53,26 @@ nav {
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  padding: 0 32px;
-  height: 56px;
-  gap: 4px;
+  padding: 0 12px;
+  height: 50px;
+  gap: 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+nav::-webkit-scrollbar { display: none; }
 
 .nav-logo {
   font-family: 'Clash Display', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   color: var(--c1);
   text-transform: uppercase;
-  margin-right: 32px;
+  margin-right: 8px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-logo span { color: var(--dim); }
@@ -76,13 +82,15 @@ nav {
   border: none;
   color: var(--dim);
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 1px;
-  padding: 6px 16px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
   text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
@@ -92,7 +100,8 @@ nav {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .nav-date {
@@ -778,12 +787,12 @@ td {
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-label">Investir maintenant</div>
-      <div class="stat-value stat-green">3</div>
+      <div class="stat-value stat-green">5</div>
       <div class="stat-sub">stocks prêts</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">En veille</div>
-      <div class="stat-value stat-yellow">8</div>
+      <div class="stat-value stat-yellow">6</div>
       <div class="stat-sub">à surveiller</div>
     </div>
     <div class="stat-card">
@@ -819,8 +828,8 @@ td {
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:12px">
-        <span class="decision-badge dec-invest">3 🟢 Investir</span>
-        <span class="decision-badge dec-veille">8 ⏳ Veille</span>
+        <span class="decision-badge dec-invest">5 🟢 Investir</span>
+        <span class="decision-badge dec-veille">6 ⏳ Veille</span>
         <span id="acc-ia-arrow" style="color:var(--c1);font-size:14px;transition:transform 0.3s">▼</span>
       </div>
     </div>
@@ -845,8 +854,8 @@ td {
           <td class="td-ticker">MSFT</td>
           <td class="td-société">Microsoft</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td data-price-ticker="MSFT">$438</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:81%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">81</span></div></td>
+          <td data-price-ticker="MSFT">$412</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">80</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('GOOGL')">
@@ -854,26 +863,26 @@ td {
           <td class="td-ticker">GOOGL</td>
           <td class="td-société">Alphabet</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td data-price-ticker="GOOGL">$366</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">78</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+          <td data-price-ticker="GOOGL">$350</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">80</span></div></td>
+          <td><span class="decision-badge dec-invest">⏳ Veille</span></td>
         </tr>
         <tr onclick="openAnalysis('AMZN')">
           <td class="td-couche couche-c4">C4</td>
           <td class="td-ticker">AMZN</td>
           <td class="td-société">Amazon</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td data-price-ticker="AMZN">$267</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:72%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">72</span></div></td>
-          <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
+          <td data-price-ticker="AMZN">$255</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:74%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">74</span></div></td>
+          <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('ORCL')">
           <td class="td-couche couche-c4">C4</td>
           <td class="td-ticker">ORCL</td>
           <td class="td-société">Oracle</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td data-price-ticker="ORCL">$239</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:73%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">73</span></div></td>
+          <td data-price-ticker="ORCL">$210</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:68%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">68</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
         <!-- C3 -->
@@ -882,7 +891,7 @@ td {
           <td class="td-ticker">NVDA</td>
           <td class="td-société">Nvidia</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td data-price-ticker="NVDA">$222</td>
+          <td data-price-ticker="NVDA">$204</td>
           <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:78%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">78</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
@@ -891,8 +900,8 @@ td {
           <td class="td-ticker">MU</td>
           <td class="td-société">Micron</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td data-price-ticker="MU">$1,064</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:80%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">80</span></div></td>
+          <td data-price-ticker="MU">$944</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:77%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">77</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
         <tr onclick="openAnalysis('MRVL')">
@@ -900,8 +909,8 @@ td {
           <td class="td-ticker">MRVL</td>
           <td class="td-société">Marvell</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td data-price-ticker="MRVL">$291</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:88%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">88</span></div></td>
+          <td data-price-ticker="MRVL">$263</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:84%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">84</span></div></td>
           <td><span class="decision-badge dec-invest">🟢 Investir</span></td>
         </tr>
         <tr onclick="openAnalysis('AVGO')">
@@ -909,7 +918,7 @@ td {
           <td class="td-ticker">AVGO</td>
           <td class="td-société">Broadcom</td>
           <td><span class="profil-badge profil-leader">🏛️ Leader</span></td>
-          <td data-price-ticker="AVGO">$477</td>
+          <td data-price-ticker="AVGO">$385</td>
           <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:72%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">72</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
@@ -918,7 +927,7 @@ td {
           <td class="td-ticker">CRDO</td>
           <td class="td-société">Credo Tech</td>
           <td><span class="profil-badge profil-specu">🚀 Spéculatif</span></td>
-          <td data-price-ticker="CRDO">$229</td>
+          <td data-price-ticker="CRDO">$227</td>
           <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:62%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">62</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
@@ -928,8 +937,8 @@ td {
           <td class="td-ticker">ANET</td>
           <td class="td-société">Arista Networks</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td data-price-ticker="ANET">$175</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:71%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">71</span></div></td>
+          <td data-price-ticker="ANET">$160</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:74%;background:var(--c1)"></div></div><span class="score-num" style="color:var(--c1)">74</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr>
         <tr onclick="openAnalysis('DELL')">
@@ -937,8 +946,8 @@ td {
           <td class="td-ticker">DELL</td>
           <td class="td-société">Dell Tech</td>
           <td><span class="profil-badge profil-challenger">⚡ Challenger</span></td>
-          <td data-price-ticker="DELL">$423</td>
-          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:85%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">85</span></div></td>
+          <td data-price-ticker="DELL">$394</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:83%;background:var(--c4)"></div></div><span class="score-num" style="color:var(--c4)">83</span></div></td>
           <td><span class="decision-badge dec-veille">⏳ Veille</span></td>
         </tr></tbody>
     </table>
@@ -1128,6 +1137,12 @@ const stockHistory = {
       { icon: '⚠️', text: 'Prix $366 — plus dans notre zone entrée $380-395' },
       { icon: '✅', text: 'Opportunité : attendre stabilisation vers $360-375' },
     ]},
+    { date: '7 juin 2026', score: 80, price: 350, decision: 'invest', changes: [
+      { icon: '🚨', text: 'REVISION Veille→Investir — selloff cree opportunite' },
+      { icon: '✅', text: 'Prix $350 sous zone $360-375 — meilleur setup depuis debut' },
+      { icon: '✅', text: 'Alphabet $84.75Mrd levee AI compute. Gemini 3 deploiement.' },
+      { icon: '✅', text: 'GOOGL +67% YTD — fondamentaux les plus solides du C4' },
+    ]},
   ],
   AMZN: [
     { date: '27 mai 2026', score: 76, price: 272, decision: 'veille', changes: [
@@ -1140,6 +1155,12 @@ const stockHistory = {
       { icon: '⚠️', text: 'Correction -1.8% — selloff sectoriel' },
       { icon: '✅', text: 'AWS growth record — fondamentaux intacts' },
       { icon: '=', text: 'Score -1 — distance ATH reste insuffisante' },
+    ]},
+    { date: '7 juin 2026', score: 74, price: 255, decision: 'invest', changes: [
+      { icon: '🚨', text: 'REVISION Veille→Investir — zone atteinte exactement' },
+      { icon: '✅', text: 'Prix $255 = bas de zone $248-265. Entree justifiee.' },
+      { icon: '✅', text: 'BofA cible $303. Amazon investit $10Mrd dans OpenAI sur AWS.' },
+      { icon: '✅', text: 'AWS fastest growth 15 quarters. Robot IA warehouse deploye.' },
     ]},
   ],
   ORCL: [
@@ -1156,6 +1177,11 @@ const stockHistory = {
       { icon: '⚠️', text: 'Earnings Jun 16 dans 13 jours — attendre absolument' },
       { icon: '↑', text: 'Score +3 — catalyseurs renforcés' },
     ]},
+    { date: '7 juin 2026', score: 68, price: 210, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Selloff -11% vendredi — Nasdaq -4.2% jobs report' },
+      { icon: '⚠️', text: 'Earnings Jun 16 dans 9 jours — ne pas entrer avant' },
+      { icon: '↓', text: 'Score -5 — macro + earnings imminents' },
+    ]},
   ],
   NVDA: [
     { date: '27 mai 2026', score: 77, price: 212, decision: 'invest', changes: [
@@ -1168,6 +1194,12 @@ const stockHistory = {
       { icon: '✅', text: 'Partenariat NVDA-MSFT agentic AI annoncé au Computex' },
       { icon: '✅', text: 'Jensen Huang déclare MRVL "next trillion dollar company"' },
       { icon: '=', text: 'Score stable — position maintenue' },
+    ]},
+    { date: '7 juin 2026', score: 79, price: 204, decision: 'invest', changes: [
+      { icon: '⚠️', text: 'Selloff -5.9% — Nasdaq -4.2% vendredi jobs report' },
+      { icon: '✅', text: 'MA50 $192 toujours support. Zone DCA $198-215 atteinte.' },
+      { icon: '✅', text: 'NVDA 1ere entreprise a franchir $5,000Mrd market cap.' },
+      { icon: '=', text: 'Score stable — monopole IA intact.' },
     ]},
   ],
   MU: [
@@ -1186,6 +1218,12 @@ const stockHistory = {
       { icon: '⚠️', text: 'Zone entrée révisée $980-1050. Earnings Jun 24 dans 21 jours' },
       { icon: '↑', text: 'Score +2 — momentum fondamental exceptionnel' },
     ]},
+    { date: '7 juin 2026', score: 77, price: 944, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Selloff -13% vendredi — semis massacres sur jobs report' },
+      { icon: '✅', text: 'Zone entree $900-960 se rapproche. PEG 0.06 inchange.' },
+      { icon: '⚠️', text: 'Earnings Jun 24 dans 17 jours — attendre encore' },
+      { icon: '↓', text: 'Score -3 — macro + earnings proches' },
+    ]},
   ],
   MRVL: [
     { date: '27 mai 2026', score: 63, price: 200, decision: 'veille', changes: [
@@ -1198,11 +1236,15 @@ const stockHistory = {
       { icon: '✅', text: 'Score stable. Momentum post-earnings confirmé' },
     ]},
     { date: '3 juin 2026', score: 88, price: 291, decision: 'invest', changes: [
-      { icon: '🔥', text: 'CATALYST MAJEUR : Jensen Huang déclare MRVL "next trillion dollar company" au Computex' },
+      { icon: '🔥', text: 'CATALYST MAJEUR : Jensen Huang déclare MRVL next trillion dollar company' },
       { icon: '🚀', text: '+42% en quelques jours — de $205 à $291' },
       { icon: '✅', text: 'Stifel cible $321 (street-high). Nouveau 52W high $333.50' },
-      { icon: '✅', text: 'NVDA NVLink Fusion partnership — positionnement IA data center confirmé' },
-      { icon: '↑', text: 'Score +12 — révision majeure haussière' },
+    ]},
+    { date: '7 juin 2026', score: 84, price: 263, decision: 'invest', changes: [
+      { icon: '⚠️', text: 'Selloff -16% vendredi — pire de notre univers. Macro pas fondamentaux.' },
+      { icon: '✅', text: 'MRVL rejoint le S&P 500 le 22 juin — catalyseur achat forcé à venir.' },
+      { icon: '✅', text: 'DCA 1/3 recommandé à $263. Fondamentaux Jensen Huang intacts.' },
+      { icon: '↓', text: 'Score -4 — pression macro. Cible long terme inchangée.' },
     ]},
   ],
   DELL: [
@@ -1221,6 +1263,12 @@ const stockHistory = {
       { icon: '✅', text: 'Pentagon deal $9.7Mrd confirmé. Market cap $276Mrd' },
       { icon: '↑', text: 'Score +3 — fondamentaux renforcés. Zone entrée $395-420' },
     ]},
+    { date: '7 juin 2026', score: 83, price: 394, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Selloff -6.6% — retour en zone $380-410' },
+      { icon: '✅', text: 'Strong Buy signal technique. Analyst cible $484.' },
+      { icon: '✅', text: 'Zone entree atteinte — opportunite cette semaine' },
+      { icon: '↓', text: 'Score -2 — pression macro' },
+    ]},
   ],
   CRDO: [
     { date: '27 mai 2026', score: 60, price: 215, decision: 'veille', changes: [
@@ -1234,6 +1282,22 @@ const stockHistory = {
       { icon: '⚠️', text: '-15.6% after-hours puis légère reprise à $229' },
       { icon: '⚠️', text: '123 ventes insiders depuis mars — signal négatif' },
       { icon: '=', text: 'Score +1 légèrement. Toujours en veille — attendre stabilisation' },
+    ]},
+    { date: '7 juin 2026', score: 65, price: 227, decision: 'veille', changes: [
+      { icon: '✅', text: 'Resiste au selloff +4.5% vendredi — signal relatif positif' },
+      { icon: '⚠️', text: 'Insiders vendeurs toujours actifs' },
+    ]},
+  ],
+  ANET: [
+    { date: '3 juin 2026', score: 71, price: 175, decision: 'veille', changes: [
+      { icon: '✅', text: 'Premiere analyse Citadel. Revenue +35% YoY. Leader Gartner 2026.' },
+      { icon: '✅', text: 'Monopole switching IA 50%+. Guidance $11.5Mrd dont $3.5Mrd IA.' },
+      { icon: '⚠️', text: 'ATH $179.80 — -2.7% du sommet. Supply chain shortages.' },
+    ]},
+    { date: '7 juin 2026', score: 72, price: 160, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Selloff -8.6% — retour en zone entree $152-168' },
+      { icon: '✅', text: 'Zone entree atteinte — surveiller de pres' },
+      { icon: '↑', text: 'Score +1 — opportunite zone confirmee' },
     ]},
   ],
   AVGO: [
@@ -1250,27 +1314,32 @@ const stockHistory = {
       { icon: '⚠️', text: 'Réaction -7% AH puis rebond à $477 — sell the news classique' },
       { icon: '↑', text: 'Score +5 — earnings passés, risque calendrier éliminé' },
     ]},
+    { date: '7 juin 2026', score: 70, price: 385, decision: 'veille', changes: [
+      { icon: '⚠️', text: 'Double selloff : post-earnings + jobs report = -20% ATH $495' },
+      { icon: '✅', text: 'Zone entree $375-405 atteinte — vraie opportunite' },
+      { icon: '✅', text: 'AI order book $73Mrd intact. Guidance Q3 solide.' },
+    ]},
   ],
 };
 // ====== PRIX & CONFIG CENTRALISES ======
 const PORTFOLIO = {
   capital_total: 13000,
-  capital_deploye: 6000,
-  capital_reserve: 7000,
+  capital_deploye: 9000,
+  capital_reserve: 4000,
 };
 
 const STOCK_CONFIG = {
-  MSFT: { entry_low: 430, entry_high: 445, stop: 410, target: 560, reserve: 2500 },
-  GOOGL: { entry_low: 360, entry_high: 375, stop: 335, target: 480, reserve: 2000 },
-  AMZN: { entry_low: 255, entry_high: 270, stop: 235, target: 340, reserve: 1000 },
-  ORCL: { entry_low: 225, entry_high: 245, stop: 205, target: 320, reserve: 1200 },
-  NVDA: { entry_low: 215, entry_high: 228, stop: 198, target: 290, reserve: 2000 },
-  MU:   { entry_low: 980, entry_high: 1050, stop: 900, target: 1400, reserve: 1000 },
-  MRVL: { entry_low: 270, entry_high: 295, stop: 240, target: 400, reserve: 1500 },
-  DELL: { entry_low: 395, entry_high: 420, stop: 365, target: 565, reserve: 900 },
-  CRDO: { entry_low: 210, entry_high: 230, stop: 185, target: 340, reserve: 0 },
-  AVGO: { entry_low: 440, entry_high: 465, stop: 410, target: 600, reserve: 500 },
-  ANET: { entry_low: 155, entry_high: 165, stop: 138, target: 220, reserve: 0 },
+  MSFT: { entry_low: 405, entry_high: 420, stop: 385, target: 560, reserve: 2500 },
+  GOOGL: { entry_low: 345, entry_high: 362, stop: 320, target: 480, reserve: 1500 },
+  AMZN: { entry_low: 248, entry_high: 265, stop: 228, target: 340, reserve: 1500 },
+  ORCL: { entry_low: 205, entry_high: 220, stop: 188, target: 320, reserve: 1200 },
+  NVDA: { entry_low: 198, entry_high: 215, stop: 183, target: 290, reserve: 2000 },
+  MU:   { entry_low: 900, entry_high: 960, stop: 840, target: 1300, reserve: 900 },
+  MRVL: { entry_low: 255, entry_high: 275, stop: 230, target: 400, reserve: 1500 },
+  DELL: { entry_low: 380, entry_high: 410, stop: 355, target: 565, reserve: 900 },
+  CRDO: { entry_low: 210, entry_high: 235, stop: 185, target: 340, reserve: 0 },
+  AVGO: { entry_low: 375, entry_high: 405, stop: 348, target: 570, reserve: 500 },
+  ANET: { entry_low: 152, entry_high: 168, stop: 136, target: 220, reserve: 0 },
 };
 
 function fmtEntry(t) { var c = STOCK_CONFIG[t]; return c ? '$' + c.entry_low + '–' + c.entry_high : '—'; }
@@ -1288,8 +1357,8 @@ function fmtReserve(t) { var c = STOCK_CONFIG[t]; return c && c.reserve > 0 ? c.
 // ====== DATA ======
 const stocks = {
   MSFT: {
-    name: 'Microsoft Corporation', price: '$438', couche: 'C4 — Hyperscaler',
-    score: 81, decision: 'invest', profil: 'leader',
+    name: 'Microsoft Corporation', price: '$412', couche: 'C4 — Hyperscaler',
+    score: 80, decision: 'invest', profil: 'leader',
     entry: fmtEntry('MSFT'), stop: fmtStop('MSFT'), target: fmtTarget('MSFT'), rr: fmtRR('MSFT'),
     change: '-2.7%', changeDir: 'pos',
     criteria: [
@@ -1322,10 +1391,10 @@ plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   GOOGL: {
-    name: 'Alphabet Inc.', price: '$366', couche: 'C4 — Hyperscaler',
-    score: 78, decision: 'veille', profil: 'leader',
+    name: 'Alphabet Inc.', price: '$350', couche: 'C4 — Hyperscaler',
+    score: 80, decision: 'invest', profil: 'leader',
     entry: fmtEntry('GOOGL'), stop: fmtStop('GOOGL'), target: fmtTarget('GOOGL'), rr: fmtRR('GOOGL'),
-    change: '-3.9%', changeDir: 'neg',
+    change: '-4.3%', changeDir: 'neg',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'Structure haussière solide. MAs toutes haussières. RSI neutre.' },
       { name: 'Distance ATH + marge sécurité', score: 6, flag: '🟡', note: '+128% en 52 semaines. Prix actuel $390 proche de zone support.' },
@@ -1356,8 +1425,8 @@ plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   AMZN: {
-    name: 'Amazon.com Inc.', price: '$267', couche: 'C4 — Hyperscaler',
-    score: 71, decision: 'veille', profil: 'leader',
+    name: 'Amazon.com Inc.', price: '$255', couche: 'C4 — Hyperscaler',
+    score: 74, decision: 'invest', profil: 'leader',
     entry: fmtEntry('AMZN'), stop: fmtStop('AMZN'), target: fmtTarget('AMZN'), rr: fmtRR('AMZN'),
     change: '+1.2%', changeDir: 'pos',
     criteria: [
@@ -1388,8 +1457,8 @@ plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   ORCL: {
-    name: 'Oracle Corporation', price: '$239', couche: 'C4 — Hyperscaler',
-    score: 73, decision: 'veille', profil: 'leader',
+    name: 'Oracle Corporation', price: '$210', couche: 'C4 — Hyperscaler',
+    score: 68, decision: 'veille', profil: 'leader',
     entry: fmtEntry('ORCL'), stop: fmtStop('ORCL'), target: fmtTarget('ORCL'), rr: fmtRR('ORCL'),
     change: '+6.5%', changeDir: 'pos',
     criteria: [
@@ -1422,10 +1491,10 @@ plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   NVDA: {
-    name: 'NVIDIA Corporation', price: '$222', couche: 'C3 — Semi-conducteurs',
+    name: 'NVIDIA Corporation', price: '$204', couche: 'C3 — Semi-conducteurs',
     score: 78, decision: 'invest', profil: 'leader',
     entry: fmtEntry('NVDA'), stop: fmtStop('NVDA'), target: fmtTarget('NVDA'), rr: '1:4.0',
-    change: '+0.1%', changeDir: 'pos',
+    change: '-5.9%', changeDir: 'neg',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI neutre. MA50 $192 et MA200 $187 — prix bien au-dessus des deux. Volume normalisé.' },
       { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: '-9% du 52W high $236. Limite — compensé par fondamentaux exceptionnels.' },
@@ -1456,8 +1525,8 @@ plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   MU: {
-    name: 'Micron Technology Inc.', price: '$1,064', couche: 'C3 — Semi-conducteurs',
-    score: 80, decision: 'veille', profil: 'challenger',
+    name: 'Micron Technology Inc.', price: '$944', couche: 'C3 — Semi-conducteurs',
+    score: 77, decision: 'veille', profil: 'challenger',
     entry: fmtEntry('MU'), stop: fmtStop('MU'), target: fmtTarget('MU'), rr: fmtRR('MU'),
     change: '+4.9%', changeDir: 'pos',
     criteria: [
@@ -1488,10 +1557,10 @@ plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   MRVL: {
-    name: 'Marvell Technology Inc.', price: '$291', couche: 'C3 — Semi-conducteurs',
-    score: 88, decision: 'invest', profil: 'challenger',
+    name: 'Marvell Technology Inc.', price: '$263', couche: 'C3 — Semi-conducteurs',
+    score: 84, decision: 'invest', profil: 'challenger',
     entry: fmtEntry('MRVL'), stop: fmtStop('MRVL'), target: fmtTarget('MRVL'), rr: fmtRR('MRVL'),
-    change: '+42%', changeDir: 'pos',
+    change: '-16%', changeDir: 'neg',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 7, flag: '✅', note: 'RSI 65.87 neutre/haussier. MACD Buy $2.31. MA50 $191 et MA200 $170 — Strong Buy 10/10 ChartMill.' },
       { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: 'Quasi ATH. Mais earnings passés — risque calendrier éliminé.' },
@@ -1522,10 +1591,10 @@ plot(ma200, "MA200", color.new(color.orange, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   DELL: {
-    name: 'Dell Technologies Inc.', price: '$423', couche: 'C2 — Infrastructure',
-    score: 85, decision: 'veille', profil: 'challenger',
+    name: 'Dell Technologies Inc.', price: '$394', couche: 'C2 — Infrastructure',
+    score: 83, decision: 'veille', profil: 'challenger',
     entry: fmtEntry('DELL'), stop: fmtStop('DELL'), target: fmtTarget('DELL'), rr: fmtRR('DELL'),
-    change: '=', changeDir: 'pos',
+    change: '-6.6%', changeDir: 'neg',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'Nouveau 52W high $437. RSI en zone haute post-gap. Consolidation nécessaire.' },
       { name: 'Distance ATH + marge sécurité', score: 4, flag: '⚠️', note: 'Prix $423 — +33% en 1 semaine. Trop chaud pour entrer. Attendre $385-400.' },
@@ -1553,7 +1622,7 @@ plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   CRDO: {
-    name: 'Credo Technology Group', price: '$229', couche: 'C3 — Semi-conducteurs',
+    name: 'Credo Technology Group', price: '$227', couche: 'C3 — Semi-conducteurs',
     score: 63, decision: 'veille', profil: 'specu',
     entry: fmtEntry('CRDO'), stop: '$175', target: fmtTarget('CRDO'), rr: '1:4.0',
     change: '+6.0%', changeDir: 'pos',
@@ -1585,10 +1654,10 @@ plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   AVGO: {
-    name: 'Broadcom Inc.', price: '$477', couche: 'C3 — Semi-conducteurs',
-    score: 72, decision: 'veille', profil: 'leader',
+    name: 'Broadcom Inc.', price: '$385', couche: 'C3 — Semi-conducteurs',
+    score: 70, decision: 'veille', profil: 'leader',
     entry: fmtEntry('AVGO'), stop: fmtStop('AVGO'), target: fmtTarget('AVGO'), rr: '1:3.5',
-    change: '-6.8%', changeDir: 'neg',
+    change: '-19%', changeDir: 'neg',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 5, flag: '🟡', note: 'RSI 79.10 — suracheté. MACD 19.59 Sell. Tension technique élevée.' },
       { name: 'Distance ATH + marge sécurité', score: 3, flag: '🔴', note: '+1% au-dessus du 52W high. Nouveau ATH. Ne pas entrer maintenant.' },
@@ -1617,10 +1686,10 @@ plot(ma50, "MA50", color.new(color.blue, 0), 2)
 bgcolor(signal ? color.new(color.green, 90) : na)`
   },
   ANET: {
-    name: 'Arista Networks Inc.', price: '$175', couche: 'C3 — Networking',
-    score: 71, decision: 'veille', profil: 'challenger',
+    name: 'Arista Networks Inc.', price: '$160', couche: 'C3 — Networking',
+    score: 72, decision: 'veille', profil: 'challenger',
     entry: fmtEntry('ANET'), stop: fmtStop('ANET'), target: fmtTarget('ANET'), rr: fmtRR('ANET'),
-    change: '+5.8%', changeDir: 'pos',
+    change: '-8.6%', changeDir: 'neg',
     criteria: [
       { name: 'Setup technique (RSI/MACD/MAs)', score: 6, flag: '🟡', note: 'RSI 57 neutre. MACD -0.76 légèrement négatif. Williams %R oversold — signal rebond possible.' },
       { name: 'Distance ATH + marge sécurité', score: 5, flag: '🟡', note: 'ATH $179.80 le 24 avril. Prix $175 = -2.7% du sommet. Trop proche mais catalyst compense.' },
@@ -1654,15 +1723,14 @@ bgcolor(signal ? color.new(color.green, 90) : na)`,
 
 // ====== VEILLE DATA ======
 const veilleData = [
-  { ticker: 'GOOGL', name: 'Alphabet', reserve: '2,000€', prio: 'haute', condition: 'Correction -3.9% → $366. Attendre stabilisation <span class="cond-price">$360–375</span>. Truist cible $480.' },
-  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Earnings <span class="cond-date">Jun 16</span> dans 13 jours — attendre. Zone <span class="cond-price">$225–245</span>. Contrat US Gov $30Mrd.' },
-  { ticker: 'AMZN', name: 'Amazon', reserve: '1,000€', prio: 'haute', condition: 'Zone entree <span class="cond-price">$255–270</span>. AWS record growth. Truist cible $340.' },
-  { ticker: 'MU', name: 'Micron', reserve: '1,000€', prio: 'moyenne', condition: 'Pullback <span class="cond-price">$980–1050</span>. Earnings <span class="cond-date">Jun 24</span> dans 21 jours.' },
-  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'moyenne', condition: 'Consolidation depuis ATH $469. Zone <span class="cond-price">$395–420</span>. Pentagon deal $9.7Mrd. Earnings Sep 3.' },
-  { ticker: 'AVGO', name: 'Broadcom', reserve: '500€', prio: 'moyenne', condition: 'Earnings passes. Stabilisation post sell-the-news. Zone <span class="cond-price">$440–465</span>. AI order book $73Mrd.' },
-  { ticker: 'CRDO', name: 'Credo Tech', reserve: '—', prio: 'basse', condition: 'Post-earnings deception -15.6% AH. 123 ventes insiders. Attendre stabilisation <span class="cond-price">$210–230</span>.' },
-  { ticker: 'ANET', name: 'Arista Networks', reserve: '—', prio: 'basse', condition: 'Pullback vers <span class="cond-price">$155–165</span>. Supply chain shortages. Monopole switching IA 50%+.' },
-  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'basse', condition: 'Univers Energie. Pullback vers <span class="cond-price">$65–70</span>. Sensible aux taux.' },
+  { ticker: 'MRVL', name: 'Marvell 2/3 DCA', reserve: '1,000€', prio: 'haute', condition: 'Selloff -16% vendredi. 2ème tranche DCA : <span class="cond-price">$240–250</span>. S&P 500 inclusion Jun 22 = catalyseur. Fondamentaux Jensen Huang intacts.' },
+  { ticker: 'ORCL', name: 'Oracle', reserve: '1,200€', prio: 'haute', condition: 'Earnings <span class="cond-date">Jun 16</span> dans 9 jours. -11% vendredi. Zone post-earnings <span class="cond-price">$205–220</span>.' },
+  { ticker: 'MU', name: 'Micron', reserve: '900€', prio: 'haute', condition: 'Selloff -13%. Zone <span class="cond-price">$900–960</span> approche. Earnings <span class="cond-date">Jun 24</span>. Fondamentaux HBM intacts.' },
+  { ticker: 'DELL', name: 'Dell Technologies', reserve: '900€', prio: 'haute', condition: 'Prix $394 dans zone <span class="cond-price">$380–410</span>. Strong Buy signal technique. Pentagon deal $9.7Mrd. Earnings Sep 3.' },
+  { ticker: 'AVGO', name: 'Broadcom', reserve: '500€', prio: 'haute', condition: 'Prix $385 = -20% de ATH $495. Zone <span class="cond-price">$375–405</span>. Guidance Q3 solide. AI order book $73Mrd.' },
+  { ticker: 'ANET', name: 'Arista Networks', reserve: '—', prio: 'moyenne', condition: 'Prix ~$160 dans zone <span class="cond-price">$152–168</span>. Monopole switching IA. Earnings août.' },
+  { ticker: 'CRDO', name: 'Credo Tech', reserve: '—', prio: 'basse', condition: 'Résiste au selloff +4.5% vendredi. Zone <span class="cond-price">$210–235</span>. Insiders vendeurs toujours présents.' },
+  { ticker: 'NEE', name: 'NextEra Energy', reserve: '—', prio: 'basse', condition: 'Univers Energie. Pullback vers <span class="cond-price">$65–70</span>. Sensible aux taux — surveiller la Fed.' },
 ];
 
 // ====== FUNCTIONS ======
@@ -2417,17 +2485,18 @@ function buildAllocation() {
   var deployStocks = [
     { ticker: 'MSFT', name: 'Microsoft', couche: 'C4', couche_class: 'couche-c4', montant: 2500 },
     { ticker: 'NVDA', name: 'Nvidia', couche: 'C3', couche_class: 'couche-c3', montant: 2000 },
-    { ticker: 'MRVL', name: 'Marvell', couche: 'C3', couche_class: 'couche-c3', montant: 1500 },
+    { ticker: 'GOOGL', name: 'Alphabet', couche: 'C4', couche_class: 'couche-c4', montant: 1500 },
+    { ticker: 'AMZN', name: 'Amazon', couche: 'C4', couche_class: 'couche-c4', montant: 1500 },
+    { ticker: 'MRVL', name: 'Marvell 1/3 DCA', couche: 'C3', couche_class: 'couche-c3', montant: 500 },
   ];
 
   var reserveStocks = [
-    { ticker: 'GOOGL', name: 'Alphabet', montant: 2000, prio: 'haute', condition: 'Stabilisation $360–375' },
-    { ticker: 'ORCL', name: 'Oracle', montant: 1200, prio: 'haute', condition: 'Post-earnings Jun 16 + zone $225–245' },
-    { ticker: 'AMZN', name: 'Amazon', montant: 1000, prio: 'haute', condition: 'Pullback $255–270' },
-    { ticker: 'MU', name: 'Micron', montant: 1000, prio: 'moyenne', condition: 'Pullback $980–1050' },
-    { ticker: 'DELL', name: 'Dell', montant: 900, prio: 'moyenne', condition: 'Consolidation $395–420' },
-    { ticker: 'AVGO', name: 'Broadcom', montant: 500, prio: 'moyenne', condition: 'Stabilisation $440–465' },
-    { ticker: 'BUFFER', name: 'Opportunité', montant: 400, prio: 'basse', condition: 'Imprévu / renfort' },
+    { ticker: 'MRVL', name: 'Marvell 2/3 DCA', montant: 1000, prio: 'haute', condition: 'Pullback $240–250 puis $220–230' },
+    { ticker: 'ORCL', name: 'Oracle', montant: 1200, prio: 'haute', condition: 'Post-earnings Jun 16 — zone $205–220' },
+    { ticker: 'MU', name: 'Micron', montant: 900, prio: 'haute', condition: 'Pullback $900–960 — Earnings Jun 24' },
+    { ticker: 'DELL', name: 'Dell', montant: 900, prio: 'haute', condition: 'Zone $380–410 atteinte — surveiller' },
+    { ticker: 'AVGO', name: 'Broadcom', montant: 500, prio: 'haute', condition: 'Zone $375–405 — -20% de ATH' },
+    { ticker: 'BUFFER', name: 'Opportunité', montant: 400, prio: 'basse', condition: 'Imprévu / renfort MRVL DCA' },
   ];
 
   // Calculate totals
